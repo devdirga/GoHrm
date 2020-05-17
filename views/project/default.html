@@ -1,0 +1,232 @@
+
+<script type="text/javascript">
+    model.PageId("Project");
+    model.BreadCrumbs.push(new BreadCrumb("Project", "Project", "#", "active", ""));
+    model.Access = ko.observable('{{.Menuid}}');
+    model.View = ko.observable('{{.View}}');
+    model.Create= ko.observable('{{.Create}}');
+    model.Delete= ko.observable('{{.Delete}}');
+    model.Process= ko.observable('{{.Process}}');
+    model.Edit= ko.observable('{{.Edit}}')
+    model.User= ko.observable('{{.Username}}');
+    
+</script>
+<script src="{{NoCacheUrl "/static/core/project.js"}}"></script>
+
+<!-- materialzes -->
+<!-- <link rel="stylesheet" href="/static/css/materializeCustom.css" />
+<script src="/static/js/materialize.min.js"></script> -->
+<!-- <script src="/static/core/profile.js"></script> -->
+<style type="text/css">
+   
+    .k-event-delete {
+        display: none !important; 
+    }
+
+    .k-current-time{
+        display: none !important;
+    }
+    .k-event{
+        background:transparent;
+        position: absolute;
+        border-style: none;
+        border-width: 0px;
+        text-align: left;
+        overflow: auto;
+        color: black;
+    }
+    .tbl-template{
+        width:24% !important;
+    }
+</style>
+<div data-bind="with:proj">
+    <div id="main" data-bind="visible:mainPage">
+        <div class="row">
+            <div class="col-md-12">
+                <section class="panel">
+                    <header class="panel-heading">
+                        <span style="color:#464646;">Project</span>
+                        <span class="tools pull-right" style="margin-top: -4px;">
+                            <button class="btn btn-sm btn-success" onclick="proj.openForm()"><i class="fa fa-plus" ></i> Add Project</button>
+                            
+                        </span>
+                    </header>
+                    <div class="panel-body">
+                        <div id="scheduler-leave"></div>
+                        <!-- <div id="messageNullData" style="text-align: center; display: none;">Data None</div> -->
+                    </div>
+                </section>
+            </div>
+            <div class="col-md-12">
+                <section class="panel">
+                    <header class="panel-heading">
+                        <span style="color:#464646;">HR Admin</span>
+                        <span class="tools pull-right" style="margin-top: -4px;">
+                            <button class="btn btn-sm btn-success" onclick="hr.openFormHR()"><i class="fa fa-plus" ></i> Add Project</button>
+                            
+                        </span>
+                    </header>
+                    <div class="panel-body">
+                        <div id="hr"></div>
+                        <!-- <div id="messageNullData" style="text-align: center; display: none;">Data None</div> -->
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+    <div data-bind="visible:formProject">
+        <div class="row">
+            <div class="col-md-12">
+                <section class="panel">
+                    <header class="panel-heading">
+                        <span style="color:#464646;">Add Project</span>
+                        <span class="tools pull-right">
+                            <!-- <a href="javascript:;" class="fa fa-chevron-down"></a> -->
+                            <a href="javascript:;" class="fa fa-times" onclick="proj.closeForm()"></a>
+                        </span>
+                    </header>
+                    <div class="panel-body">
+                        <form class="form-horizontal form-custom" >
+                            <div class="col-md-1"></div>
+                            <div class="col-md-10" id="formProject">
+                                <div class="form-group">
+                                    <div class="col-md-6 form-wrapper">
+                                        <div class="form-label">
+                                            <label>Project Name<span class="mandatory">*</span></label>
+                                        </div>
+                                        <div class="form-input-wrapper">
+                                            <input type="text" class="form-control" name="projectname" id="projectname" validationMessage="Name Project required" required data-bind="value:projectname"/>
+                                            <div class="bar"></div>
+                                            <span class="k-invalid-msg" data-for="projectname"></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6 form-wrapper">
+                                        <div class="form-label">
+                                            <label>Project Manager<span class="mandatory">*</span></label>
+                                        </div>
+                                        <div class="form-input-wrapper">
+                                            <input style="width: 100%;" type="text" class="form-control" name="projectmanager" id="projectmanager" data-bind="kendoDropDownList:{value: projectmanager, data: allUser, dataValueField:'Fullname', dataTextField:'Fullname', optionLabel: 'Select Employee', filter: 'contains'}" validationMessage="Project Manager required" required/>
+                                            <div class="bar"></div>
+                                            <span class="k-invalid-msg" data-for="projectmanager"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-md-6 form-wrapper">
+                                        <div class="form-label">
+                                            <label>Business Analist<span class="mandatory">*</span></label>
+                                        </div>
+                                        <div class="form-input-wrapper">
+                                            <select type="text" class="form-control" name="businessanalist" id="businessanalist" data-bind="kendoMultiSelect: {value:businessanalisttemp, data: allUser, dataValueField:'Fullname', dataTextField:'Fullname', optionLabel: 'Select Employee', filter: 'contains'}" validationMessage="Business Analist required" required></select>
+                                            <div class="bar"></div>
+                                            <span class="k-invalid-msg" data-for="businessanalist"></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6 form-wrapper">
+                                        <div class="form-label">
+                                            <label>Project Leader<span class="mandatory">*</span></label>
+                                        </div>
+                                        <div class="form-input-wrapper">
+                                            <select style="width: 100%;" type="text" class="form-control" name="leader" id="leader" data-bind="kendoDropDownList:{value: projectleadertemp, data: allUser, dataValueField:'Fullname', dataTextField:'Fullname', optionLabel: 'Select Employee', filter: 'contains'}"   validationMessage="Project Leader required" required></select>
+                                            <div class="bar"></div>
+                                            <span class="k-invalid-msg" data-for="leader"></span>
+                                        </div>
+                                    </div>
+                                </div>    
+                                <div class="form-group">
+                                    <div class="col-md-6 form-wrapper">
+                                        <div class="form-label">
+                                            <label>Developer<span class="mandatory">*</span></label>
+                                        </div>
+                                        <div class="form-input-wrapper">
+                                            <select type="text" class="form-control" name="developer" id="developer" data-bind="kendoMultiSelect: {value:developertemp, data: allUser, dataValueField:'Fullname', dataTextField:'Fullname', optionLabel: 'Select Employee', filter: 'contains'}"  validationMessage="Developer required" required></select>
+                                            <div class="bar"></div>
+                                            <span class="k-invalid-msg" data-for="projectname"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6"></div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-6"></div>
+                                    <div class="col-sm-6"><button type="button" class="btn btn-flat btn-sm btn-success pull-right" onclick="proj.saveProject()">Save Project</button></div>
+                                </div> 
+                            </div>
+                            <div class="col-md-1"></div>
+                        </form>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+</div>
+<div data-bind="with:hr">
+    <div data-bind="visible:formHr">
+        <div>
+            <section class="panel">
+                <header class="panel-heading">
+                    <span style="color:#464646;">HR Admin Form</span>
+                    <span class="tools pull-right">
+                        <!-- <a href="javascript:;" class="fa fa-chevron-down"></a> -->
+                        <a href="javascript:;" class="fa fa-times" onclick="hr.closeFormHR()"></a>
+                    </span>
+                    <!-- <span class="tools pull-right" style="margin-top: -4px;">
+                        <button class="btn btn-sm btn-success" onclick="proj.openForm()"><i class="fa fa-plus" ></i> Add Project</button>
+                        
+                    </span> -->
+                </header>
+                <div class="panel-body">
+                    <form class="form-horizontal form-custom" >
+                        <div class="col-md-1"></div>
+                        <div class="col-md-10" id="formHr">
+                            <div class="form-group" >
+                                <div class="col-md-6 form-wrapper">
+                                    <div class="form-label">
+                                        <label>Managing Director1<span class="mandatory">*</span></label>
+                                    </div>
+                                    <div class="form-input-wrapper">
+                                        <select style="width: 100%;" type="text" class="form-control" name="managingdirector" id="managingdirector" data-bind="kendoDropDownList: {value:managingdirectortemp, data: proj.allUser, dataValueField:'Id', dataTextField:'Id', optionLabel: 'Select Employee'}" validationMessage="Managing Director required" required></select>
+                                        <div class="bar"></div>
+                                        <span class="k-invalid-msg" data-for="managingdirector"></span>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 form-wrapper">
+                                    <div class="form-label">
+                                        <label>Account Manager<span class="mandatory">*</span></label>
+                                    </div>
+                                    <div class="form-input-wrapper">
+                                        <select  style="width: 100%;" type="text" class="form-control" name="accountmanager" id="accountmanager" data-bind="kendoDropDownList: {value:accountmanagertemp, data: proj.allUser, dataValueField:'Id', dataTextField:'Fullname', optionLabel: 'Select Employee'}" validationMessage="Account Manager required" required></select>
+                                        <div class="bar"></div>
+                                        <span class="k-invalid-msg" data-for="accountmanager"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-6 form-wrapper">
+                                    <div class="form-label">
+                                        <label>Staff<span class="mandatory">*</span></label>
+                                    </div>
+                                    <div class="form-input-wrapper">
+                                        <select type="text" class="form-control" name="staff" id="staff" data-bind="kendoMultiSelect: {value:stafftemp, data: proj.allUser, dataValueField:'Id', dataTextField:'Fullname', optionLabel: 'Select Employee'}" validationMessage="Staff required" required></select>
+                                        <div class="bar"></div>
+                                        <span class="k-invalid-msg" data-for="staff"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6"></div>
+                            </div>    
+                            <div class="form-group">
+                                <div class="col-sm-6"></div>
+                                <div class="col-sm-6"><button type="button" class="btn btn-flat btn-sm btn-success pull-right" onclick="hr.saveHr()">Save Hr</button></div>
+                            </div> 
+                        </div>
+                        <div class="col-md-1"></div>
+                            
+                    </form>
+                </div>
+            </section>
+        </div>
+    </div>
+    
+</div>

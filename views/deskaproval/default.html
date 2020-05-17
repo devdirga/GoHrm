@@ -1,0 +1,34 @@
+<script type="text/javascript">
+    model.PageId("DeskAproval");
+    model.BreadCrumbs.push(new BreadCrumb("DeskAproval", "DeskAproval", "#", "active", ""));
+    model.Access = ko.observable('{{.Menuid}}');
+    model.View = ko.observable('{{.View}}');
+    model.Create= ko.observable('{{.Create}}');
+    model.Delete= ko.observable('{{.Delete}}');
+    model.Process= ko.observable('{{.Process}}');
+    model.Edit= ko.observable('{{.Edit}}')
+    model.User= ko.observable('{{.Username}}');
+    
+</script>
+<script src="{{NoCacheUrl "/static/core/deskaproval.js"}}"></script>
+
+<div>
+    <div>
+        <div class="col-md-12">
+            <section class="panel">
+                <header class="panel-heading">
+                    <span style="color:#464646;">Request Leave</span>
+                    <span class="tools pull-right" style="margin-top: -4px;">
+                        <button class="btn btn-sm btn-warning" onclick="desk.approveAll()"><i class="fa fa-plus" ></i> Approve All</button>
+                        <button class="btn btn-sm btn-danger"  onClick="desk.checkAll(this)"><i class="fa fa-plus"></i> Cancel</button>
+                        
+                    </span>
+                </header>
+                <div class="panel-body">
+                    <div id="grid2"></div>
+                    <!-- <div id="messageNullData" style="text-align: center; display: none;">Data None</div> -->
+                </div>
+            </section>
+        </div>
+    </div>
+</div>

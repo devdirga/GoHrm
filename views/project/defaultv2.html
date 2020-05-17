@@ -1,0 +1,641 @@
+<script type="text/javascript">
+   model.PageId("Project");
+   model.BreadCrumbs.push(new BreadCrumb("Project", "Project", "#", "active", ""));
+   model.Access = ko.observable('{{.Menuid}}');
+   model.View = ko.observable('{{.View}}');
+   model.Create= ko.observable('{{.Create}}');
+   model.Delete= ko.observable('{{.Delete}}');
+   model.Process= ko.observable('{{.Process}}');
+   model.Edit= ko.observable('{{.Edit}}')
+   model.User= ko.observable('{{.Username}}');
+   model.JobRoleName= ko.observable('{{.JobRoleName}}');
+   model.JobRoleLevel= ko.observable('{{.JobRoleLevel}}');
+   
+</script>
+
+<script src="{{NoCacheUrl "/static/core/project.js"}}"></script>
+<style type="text/css">
+   .k-event-delete {
+   display: none !important; 
+   }
+   .k-current-time{
+   display: none !important;
+   }
+   .k-event{
+   background:transparent;
+   position: absolute;
+   border-style: none;
+   border-width: 0px;
+   text-align: left;
+   overflow: auto;
+   color: black;
+   }
+   .tbl-template{
+   width:24% !important;
+   }
+   .form-custom .form-wrapper {
+   margin-top: 10px !important;
+   }
+   .nopadding {
+   padding: 0 !important;
+   margin: 0 !important;
+   }
+   .btn-footer{
+   margin: 0px 3px 10px 0px;
+   }
+   .user-pic {
+   background-color: lightgray;
+   min-width: 242px;
+   max-width: 242px;
+   min-height: 242px;
+   background-position: center;
+   background-size: cover;
+   border-radius: 12%;
+   position: relative;
+   }
+   .file-hidden {
+   opacity: 0;
+   display: none !important;
+   }
+   .btn-edit-photo{
+   position: absolute;
+   bottom: 12px;
+   right: 12px;
+   }
+   .logo-title{
+   top: 28%;
+   height: inherit;
+   position: absolute;
+   left: 5%;
+   color: white;
+   font-size: 74px;
+   font-weight: 600;
+   }
+   .label-active{
+   border-radius: 10%;
+   color:white;
+   padding: 6px;
+   font-weight: 600;
+   }
+   .project-photo {
+   display: inline-block;
+   width: 32px;
+   height: 32px;
+   border-radius: 50%;
+   background-size: cover;
+   background-position: center center;
+   vertical-align: middle;
+   line-height: 32px;
+   box-shadow: inset 0 0 1px #999, inset 0 0 10px rgba(0,0,0,.2);
+   margin-left: 5px;
+   }
+   .project-name {
+   display: inline-block;
+   vertical-align: middle;
+   line-height: 32px;
+   padding-left: 3px;
+   }
+   .header-img{
+   background-image: url("/static/img/header-image.png"); 
+   height: inherit;
+   background-repeat: no-repeat;
+   margin-top: -12px;
+   padding: 24px;
+   }
+   .labelvalue-view{
+   font-size: large;
+   }
+   .btn-warning-frameonly{
+   background-color:white;
+   color:#f1c500;
+   border-width:2px;
+   }
+   .btn-info-frameonly{
+   background-color:white;
+   color:#58c9f3;
+   border-width:2px;
+   }
+   .btn-danger-frameonly{
+   background-color:white;
+   color:#ff6c60;
+   border-width:2px;
+   }
+   #printLayout{
+   z-index:-1;
+   position:absolute;
+   }
+</style>
+<div id="printLayout"></div>
+<div data-bind="with:proj">
+   <div id="main" data-bind="visible:mainPage">
+      <div class="row">
+         <div class="col-md-12">
+            <section class="panel">
+               <header class="panel-heading" style="height: 100px;border-bottom: 0;">
+                  <div class="header-img">
+                     <span style="color:white;font-size: x-large;font-weight: bolder;">Project</span><br>
+                     <span style="color: white;font-weight: bolder;">List</span>
+                  </div>
+                  <input id="filterAllProject" type="text" class="form-control input-sm pull-right" placeholder="Search" style="width: 200px; display: unset; margin-top: -40px;">
+               </header>
+               <div class="panel-body">
+                  <div class="col-md-12">
+                     <div class="row">
+                        <div class="col-md-6"> 
+                           <span class="tools" style="margin-top: -4px;">
+                           <button class="btn btn-sm btn-success" onclick="proj.openForm()"><i class="fa fa-plus" ></i> Add Project</button>        
+                           </span>
+                        </div>
+                        <div class="col-md-6">
+                           <div class="pull-right">
+                              <button class="btn btn-sm btn-success"  onclick='$(".button-excel-upload").click()'>
+                              <i class="fa fa-upload"></i>&nbsp; Import
+                              </button>
+                              <input type="file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel,text/comma-separated-values, text/csv, application/csv" class="file-hidden button-excel-upload" onchange="proj.uploadExcel(this)">
+                              <button class="btn btn-sm btn-warning" onclick="proj.exportExcelGridProject()">
+                              <i class="fa fa-download"></i> Export
+                              </button>  
+                              <button class="btn btn-sm btn-danger" onclick="proj.exportPDFGridProject()"><i class="fa fa-file-pdf-o" ></i> PDF</button>  
+                           </div>
+                        </div>
+                     </div>
+                     <div id="scheduler-leave" style="margin-top:10px"></div>
+                  </div>
+               </div>
+            </section>
+         </div>
+         <div class="col-md-12">
+            <section class="panel">
+               <header class="panel-heading">
+                  <span style="color:#464646;">HR Admin</span>
+                  <span class="tools pull-right" style="margin-top: -4px;">
+                  <button class="btn btn-sm btn-success" onclick="hr.openFormHR()"><i class="fa fa-plus" ></i> Add Project</button>
+                  </span>
+               </header>
+               <div class="panel-body">
+                  <div id="hr"></div>
+               </div>
+            </section>
+         </div>
+      </div>
+   </div>
+   <div data-bind="visible:formProject">
+      <div class="row">
+         <div class="col-md-12">
+            <section class="panel">
+               <header class="panel-heading">
+                  <span style="color:#464646;">Add Project</span>
+                  <span class="tools pull-right">
+                  <a href="javascript:;" class="fa fa-times" onclick="proj.closeForm()"></a>
+                  </span>
+               </header>
+               <div class="panel-body">
+                  <form class="form-horizontal form-custom" >
+                     <div class="col-md-1"></div>
+                     <div class="col-md-10" id="formProject">
+                        <div class="form-group">
+                           <div class="col-md-6 form-wrapper">
+                              <div class="form-label">
+                                 <label>Project Name<span class="mandatory">*</span></label>
+                              </div>
+                              <div class="form-input-wrapper">
+                                 <input type="text" class="form-control" name="projectname" id="projectname" validationMessage="Name Project required" required data-bind="value:projectname"/>
+                                 <div class="bar"></div>
+                                 <span class="k-invalid-msg" data-for="projectname"></span>
+                              </div>
+                           </div>
+                           <div class="col-md-6 form-wrapper">
+                              <div class="form-label">
+                                 <label>Project Manager<span class="mandatory">*</span></label>
+                              </div>
+                              <div class="form-input-wrapper">
+                                 <input style="width: 100%;" type="text" class="form-control" name="projectmanager" id="projectmanager" data-bind="kendoDropDownList:{value: projectmanager, data: listManagerGroup, dataValueField:'EmpId', dataTextField:'Name', optionLabel: 'Select Employee', filter: 'contains'}" validationMessage="Project Manager required" required/>
+                                 <div class="bar"></div>
+                                 <span class="k-invalid-msg" data-for="projectmanager"></span>
+                              </div>
+                           </div>
+                        </div>
+                        <div class="form-group">
+                           <div class="col-md-6 form-wrapper">
+                              <div class="form-label">
+                                 <label>Business Analist<span class="mandatory">*</span></label>
+                              </div>
+                              <div class="form-input-wrapper">
+                                 <select type="text" class="form-control" name="businessanalist" id="businessanalist" data-bind="kendoMultiSelect: {value:businessanalisttemp, data: allUser, dataValueField:'Fullname', dataTextField:'Fullname', optionLabel: 'Select Employee', filter: 'contains'}" validationMessage="Business Analist required" required></select>
+                                 <div class="bar"></div>
+                                 <span class="k-invalid-msg" data-for="businessanalist"></span>
+                              </div>
+                           </div>
+                           <div class="col-md-6 form-wrapper">
+                              <div class="form-label">
+                                 <label>Project Leader<span class="mandatory">*</span></label>
+                              </div>
+                              <div class="form-input-wrapper">
+                                 <select style="width: 100%;" type="text" class="form-control" name="leader" id="leader" data-bind="kendoDropDownList:{value: projectleadertemp, data: allUser, dataValueField:'Fullname', dataTextField:'Fullname', optionLabel: 'Select Employee', filter: 'contains'}"   validationMessage="Project Leader required" required></select>
+                                 <div class="bar"></div>
+                                 <span class="k-invalid-msg" data-for="leader"></span>
+                              </div>
+                           </div>
+                        </div>
+                        <div class="form-group">
+                           <div class="col-md-6 form-wrapper">
+                              <div class="form-label">
+                                 <label>Developer<span class="mandatory">*</span></label>
+                              </div>
+                              <div class="form-input-wrapper">
+                                 <select type="text" class="form-control" name="developer" id="developer" data-bind="kendoMultiSelect: {value:developertemp, data: allUser, dataValueField:'Fullname', dataTextField:'Fullname', optionLabel: 'Select Employee', filter: 'contains'}"  validationMessage="Developer required" required></select>
+                                 <div class="bar"></div>
+                                 <span class="k-invalid-msg" data-for="developer"></span>
+                              </div>
+                           </div>
+                           <div class="col-sm-6"></div>
+                        </div>
+                        <div class="form-group">
+                           <div class="col-sm-6"></div>
+                           <div class="col-sm-6"><button type="button" class="btn btn-flat btn-sm btn-success pull-right" onclick="proj.saveProject()">Save Project</button></div>
+                        </div>
+                     </div>
+                     <div class="col-md-1"></div>
+                  </form>
+               </div>
+            </section>
+         </div>
+      </div>
+   </div>
+</div>
+<div data-bind="with:hr">
+   <div data-bind="visible:formHr">
+      <div>
+         <section class="panel">
+            <header class="panel-heading">
+               <span style="color:#464646;">HR Admin Form</span>
+               <span class="tools pull-right">
+               <a href="javascript:;" class="fa fa-times" onclick="hr.closeFormHR()"></a>
+               </span>
+            </header>
+            <div class="panel-body">
+               <form class="form-horizontal form-custom" >
+                  <div class="col-md-1"></div>
+                  <div class="col-md-10" id="formHr">
+                     <div class="form-group" >
+                        <div class="col-md-6 form-wrapper">
+                           <div class="form-label">
+                              <label>Managing Director<span class="mandatory">*</span></label>
+                           </div>
+                           <div class="form-input-wrapper">
+                              <select style="width: 100%;" type="text" class="form-control" name="managingdirector" id="managingdirector" data-bind="kendoDropDownList: {value:managingdirectortemp, data: proj.allUser, dataValueField:'Id', dataTextField:'Fullname', optionLabel: 'Select Employee'}" validationMessage="Managing Director required" required></select>
+                              <div class="bar"></div>
+                              <span class="k-invalid-msg" data-for="managingdirector"></span>
+                           </div>
+                        </div>
+                        <div class="col-md-6 form-wrapper">
+                           <div class="form-label">
+                              <label>Account Manager<span class="mandatory">*</span></label>
+                           </div>
+                           <div class="form-input-wrapper">
+                              <select  style="width: 100%;" type="text" class="form-control" name="accountmanager" id="accountmanager" data-bind="kendoDropDownList: {value:accountmanagertemp, data: proj.allUser, dataValueField:'Id', dataTextField:'Fullname', optionLabel: 'Select Employee'}" validationMessage="Account Manager required" required></select>
+                              <div class="bar"></div>
+                              <span class="k-invalid-msg" data-for="accountmanager"></span>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="form-group">
+                        <div class="col-md-6 form-wrapper">
+                           <div class="form-label">
+                              <label>Staff<span class="mandatory">*</span></label>
+                           </div>
+                           <div class="form-input-wrapper">
+                              <select type="text" class="form-control" name="staff" id="staff" data-bind="kendoMultiSelect: {value:stafftemp, data: proj.allUser, dataValueField:'Id', dataTextField:'Fullname', optionLabel: 'Select Employee'}" validationMessage="Staff required" required></select>
+                              <div class="bar"></div>
+                              <span class="k-invalid-msg" data-for="staff"></span>
+                           </div>
+                        </div>
+                        <div class="col-md-6"></div>
+                     </div>
+                     <div class="form-group">
+                        <div class="col-sm-6"></div>
+                        <div class="col-sm-6"><button type="button" class="btn btn-flat btn-sm btn-success pull-right" onclick="hr.saveHr()">Save Hr</button></div>
+                     </div>
+                  </div>
+                  <div class="col-md-1"></div>
+               </form>
+            </div>
+         </section>
+      </div>
+   </div>
+</div>
+<!-- Modal Project start -->
+<div class="modal fade" id="mdlProjectProfile" role="dialog" aria-labelledby="ProjectProfileModalLabel" aria-hidden="true" data-backdrop="static">
+   <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+         <!-- Modal Header -->
+         <!-- Modal Body -->
+         <div>
+            <div class="col-md-12 body-panel"  style=' padding-left: 0; padding-bottom: 0px; padding-top: 35px;'>
+               <form class="form-custom" id="formProjectProfile" method="POST" data-bind="with:proj">
+                  <div class="row" style="margin-top: -15px;">
+                     <div class="col-md-1"></div>
+                     <div class="col-md-10" id="formProject55" style="margin-bottom: 46px;">
+                        <div class="form-group">
+                           <div class="col-md-6 form-wrapper">
+                              <div class="form-label">
+                                 <label>Project Key<span class="mandatory">*</span></label>
+                              </div>
+                              <div class="form-input-wrapper">
+                                 <input type="text" class="form-control" name="projectname" id="projectkey" validationMessage="Project is required" required data-bind="value:projectkey"/>
+                                 <div class="bar"></div>
+                                 <span class="k-invalid-msg" data-for="projectkey"></span>
+                              </div>
+                           </div>
+                           <div class="col-md-6 form-wrapper">
+                              <div class="form-label">
+                                 <label>Project Name<span class="mandatory">*</span></label>
+                              </div>
+                              <div class="form-input-wrapper">
+                                 <input type="text" class="form-control" name="projectname" id="projectname" validationMessage="Name Project required" required data-bind="value:projectname"/>
+                                 <div class="bar"></div>
+                                 <span class="k-invalid-msg" data-for="projectname"></span>
+                                 <br/>
+                              </div>
+                              
+                              <div class="form-label">
+                                 <label>Project Manager<span class="mandatory">*</span></label>
+                              </div>
+                              <div class="form-input-wrapper">
+                                 <input style="width: 100%;" type="text" class="form-control" name="projectmanager" id="projectmanager" data-bind="kendoDropDownList:{value: projectmanager, data: listManagerGroup, dataValueField:'Id', dataTextField:'Name', optionLabel: 'Select Employee', filter: 'contains'}" validationMessage="Project Manager required" required/>
+                                 <div class="bar"></div>
+                                 <span class="k-invalid-msg" data-for="projectmanager"></span>
+                              </div>
+                           </div>
+                        </div>
+                        <div class="form-group">
+                           <div class="col-md-6 form-wrapper">
+                              <div class="user-pic">
+                                 <span class="logo-title">Image</span>
+                                 <button type="button" class="btn-edit btn btn-info btn-edit-photo" onclick='$(".button-photo-upload").click()'><i class="fa fa-edit"></i></button>
+                                 <input type="file" accept="image/*" class="file-hidden button-photo-upload" onchange="proj.logoProjectChange(this)">
+                              </div>
+                           </div>
+                           <div class="col-md-6 form-wrapper">
+                              <div class="form-label">
+                                 <label>Supervising Manager<span class="mandatory">*</span></label>
+                              </div>
+                              <div class="form-input-wrapper">
+                                 <select style="width: 100%;" type="text" class="form-control" name="spvmanager" id="spvmanager" data-bind="kendoMultiSelect:{value: supervisingmanagertemp, data: listManagerGroup, dataValueField:'Id', dataTextField:'Name', optionLabel: 'Select Employee', filter: 'contains'}" ></select>
+                                 <div class="bar"></div>
+                                 
+                              </div>
+                           </div>
+                           
+                        </div>
+                        <div class="form-group">
+                           <div class="col-md-6 form-wrapper">
+                              <div class="form-label">
+                                 <label>Project Leader<span class="mandatory">*</span></label>
+                              </div>
+                              <div class="form-input-wrapper">
+                                 <select style="width: 100%;" type="text" class="form-control" name="leader" id="leader" data-bind="kendoDropDownList:{value: projectleadertemp, data: listLeaderGroup, dataValueField:'Id', dataTextField:'Name', optionLabel: 'Select Employee', filter: 'contains'}"></select>
+                                 <div class="bar"></div>
+                              </div>
+                           </div>
+                           <div class="col-md-6 form-wrapper">
+                              <div class="form-label">
+                                 <label>Business Analyst<span class="mandatory">*</span></label>
+                              </div>
+                              <div class="form-input-wrapper">
+                                 <select type="text" class="form-control" name="businessanalist" id="businessanalist" data-bind="kendoMultiSelect: {value:businessanalisttemp, data: listDeveloperGroup, dataValueField:'Id', dataTextField:'Name', optionLabel: 'Select Employee', filter: 'contains'}" validationMessage="Business Analist required" required></select>
+                                 <div class="bar"></div>
+                                 <span class="k-invalid-msg" data-for="businessanalist"></span>
+                              </div>
+                           </div>
+                        </div>
+                        <div class="form-group">
+                           <div class="col-md-6 form-wrapper">
+                           </div>
+                           <div class="col-md-6 form-wrapper">
+                              <div class="form-label">
+                                 <label>Developer<span class="mandatory">*</span></label>
+                              </div>
+                              <div class="form-input-wrapper">
+                                 <select type="text" class="form-control" name="developer" id="developer" data-bind="kendoMultiSelect: {value:developertemp, data: listDeveloperGroup, dataValueField:'Id', dataTextField:'Name', optionLabel: 'Select Employee', filter: 'contains'}"></select>
+                                 <div class="bar"></div>
+                                 
+                              </div>
+                           </div>
+                        </div>
+                        <div class="form-group">
+                           <div class="col-md-12 nopadding">
+                              <div class="col-md-6 form-wrapper">
+                                 <div class="form-label">
+                                    <label>Location<span class="mandatory">*</span></label>
+                                 </div>
+                                 <div class="form-input-wrapper">
+                                    <input style="width: 100%;" type="text" class="form-control" name="location" id="locationname" data-bind="kendoDropDownList:{value: Location, data: allLocation, dataValueField:'Location', dataTextField:'Location', optionLabel: 'Select Location', filter: 'contains'}" validationMessage="Project Manager required" required/>
+                                    <!-- <input type="text" class="form-control" name="location" id="locationname" validationMessage="Location required" required data-bind="value:Location"/> -->
+                                    <div class="bar"></div>
+                                    <span class="k-invalid-msg" data-for="locationname"></span>
+                                 </div>
+                              </div>
+                              <div class="col-md-6 form-wrapper">
+                                 <div class="form-label">
+                                    <label>Active</label>
+                                 </div>
+                                 <div class="form-input-wrapper">
+                                    <input type="checkbox" class="form-control input-sm switch pm-switch-button" data-off-text="False" data-on-text="True">
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                        <div class="form-group">
+                           <div class="col-md-12 nopadding">
+                              <div class="col-md-6 form-wrapper">
+                                 <div class="form-label">
+                                    <label>Address<span class="mandatory">*</span></label>
+                                 </div>
+                                 <div class="form-input-wrapper">
+                                    <input type="text" class="form-control" name="addressname" id="address" validationMessage="Address required" required data-bind="value:Address"/>
+                                    <div class="bar"></div>
+                                    <span class="k-invalid-msg" data-for="addressname"></span>
+                                 </div>
+                              </div>
+                              <div class="col-md-6"></div>
+                           </div>
+                        </div>
+                        <div class="form-group">
+                           <div class="col-md-12 nopadding">
+                              <div class="col-md-6 form-wrapper">
+                                 <div class="form-label">
+                                    <label>URL<span class="mandatory">*</span></label>
+                                 </div>
+                                 <div class="form-input-wrapper">
+                                    <input type="text" class="form-control" name="uriname" id="uri" validationMessage="URL required" required data-bind="value:Uri"/>
+                                    <div class="bar"></div>
+                                    <span class="k-invalid-msg" data-for="uriname"></span>
+                                 </div>
+                              </div>
+                              <div class="col-md-6"></div>
+                           </div>
+                        </div>
+                        <div class="form-group">
+                           <div class="col-md-6 form-wrapper">
+                           </div>
+                           <div class="col-sm-6"></div>
+                        </div>
+                     </div>
+                     <div class="form-group">
+                        <div class="col-sm-6"></div>
+                        <div class="col-sm-6">
+                           <button type="button" class="btn btn-flat btn-sm btn-success pull-right btn-footer" onclick="proj.saveProject()">Save Project</button>
+                           <button type="button" class="btn btn-flat btn-sm btn-danger pull-right btn-footer" data-dismiss="modal">Cancel</button>
+                        </div>
+                     </div>
+                     <div class="col-md-1"></div>
+                  </div>
+               </form>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+<div class="modal fade" id="mdlProjectProfileView" role="dialog" aria-labelledby="ProjectProfileModalLabelView" aria-hidden="true" data-backdrop="static">
+   <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+         <!-- Modal Header -->
+         <!-- Modal Body -->
+         <div>
+            <div class="col-md-12 body-panel"  style=' padding-left: 0; padding-bottom: 0px; padding-top: 35px;'>
+               <form class="form-custom" id="formProjectProfileView" method="POST" data-bind="with:projView">
+                  <div class="row" style="margin-top: -15px;">
+                     <div class="col-md-1"></div>
+                     <div class="col-md-10" id="formProjectContentOnly" style="margin-bottom: 46px;">
+                        <div class="form-group">
+                           <div class="col-md-6 form-wrapper">
+                              <div class="form-label">
+                                 <label>Project Key</label>
+                              </div>
+                              <div class="form-input-wrapper">
+                                 <span class="labelvalue-view" data-bind="text: projectkey"></span>
+                              </div>
+                           </div>
+                           <div class="col-md-6 form-wrapper">
+                              <div class="form-label">
+                                 <label>Project Name</label>
+                              </div>
+                              <div class="form-input-wrapper">
+                                 <span class="labelvalue-view" data-bind="text: projectname"></span>
+                              </div>
+                              <div class="form-label">
+                                 <label>Project Manager</label>
+                              </div>
+                              <div class="form-input-wrapper">
+                                 <span class="labelvalue-view" data-bind="text: projectmanager"></span>
+                              </div>
+                           </div>
+                        </div>
+                        <div class="form-group">
+                           <div class="col-md-6 form-wrapper">
+                              <div class="user-pic">
+                                 <span class="logo-title">Image</span>
+                              </div>
+                           </div>
+                           <div class="col-md-6 form-wrapper">
+                              <div class="form-label">
+                                 <label>Project Leader</label>
+                              </div>
+                              <div class="form-input-wrapper">
+                                 <span class="labelvalue-view" data-bind="text: projectleadertemp"></span>
+                              </div>
+                           </div>
+                        </div>
+                        <div class="form-group">
+                           <div class="col-md-6 form-wrapper">
+                           </div>
+                           <div class="col-md-6 form-wrapper">
+                              <div class="form-label">
+                                 <label>Business Analyst</label>
+                              </div>
+                              <div class="form-input-wrapper">
+                                 <span class="labelvalue-view" data-bind="text: businessanalisttemp"></span>
+                              </div>
+                           </div>
+                        </div>
+                        <div class="form-group">
+                           <div class="col-md-6 form-wrapper">
+                           </div>
+                           <div class="col-md-6 form-wrapper">
+                              <div class="form-label">
+                                 <label>Developer</label>
+                              </div>
+                              <div class="form-input-wrapper">
+                                 <span class="labelvalue-view" data-bind="text: developertemp"></span>
+                              </div>
+                           </div>
+                        </div>
+                        <div class="form-group">
+                           <div class="col-md-12 nopadding">
+                              <div class="col-md-6 form-wrapper">
+                                 <div class="form-label">
+                                    <label>Location</label>
+                                 </div>
+                                 <div class="form-input-wrapper">
+                                    <span class="labelvalue-view" data-bind="text: Location"></span>
+                                 </div>
+                              </div>
+                              <div class="col-md-6 form-wrapper">
+                                 <div class="form-label">
+                                    <label>Status</label>
+                                 </div>
+                                 <div class="form-input-wrapper">
+                                    <span class="labelvalue-view" data-bind="text: Active"></span>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                        <div class="form-group">
+                           <div class="col-md-12 nopadding">
+                              <div class="col-md-6 form-wrapper">
+                                 <div class="form-label">
+                                    <label>Address</label>
+                                 </div>
+                                 <div class="form-input-wrapper">
+                                    <span class="labelvalue-view" data-bind="text: Address"></span>
+                                 </div>
+                              </div>
+                              <div class="col-md-6"></div>
+                           </div>
+                        </div>
+                        <div class="form-group">
+                           <div class="col-md-12 nopadding">
+                              <div class="col-md-6 form-wrapper">
+                                 <div class="form-label">
+                                    <label>URL</label>
+                                 </div>
+                                 <div class="form-input-wrapper">
+                                    <span class="labelvalue-view" data-bind="text: Uri"></span>
+                                 </div>
+                              </div>
+                              <div class="col-md-6"></div>
+                           </div>
+                        </div>
+                        <div class="form-group">
+                           <div class="col-md-6 form-wrapper">
+                           </div>
+                           <div class="col-sm-6"></div>
+                        </div>
+                     </div>
+                     <div class="form-group">
+                        <div class="col-sm-6"></div>
+                        <div class="col-sm-6">
+                           <button type="button" class="btn btn-flat btn-sm btn-danger pull-right btn-footer" onclick="proj.printView()"><i class="fa fa-file-pdf-o" ></i>PDF</button>
+                           <button type="button" class="btn btn-flat btn-sm btn-success pull-right btn-footer" data-dismiss="modal">Close</button>
+                        </div>
+                     </div>
+                     <div class="col-md-1"></div>
+                  </div>
+               </form>
+            </div>
+         </div>
+      </div>
+   </div>
+</div> 
+<!-- Modal Project end -->

@@ -1,0 +1,372 @@
+
+<style type="text/css">
+	/* .center {
+	 margin: 0 auto;
+	 width: 100%; 
+   } */
+   .dht{
+	   height: auto;
+	   background-color: white;
+	   margin-top: 20px;
+   }
+   .form-label{
+	   font-weight: 100 !important;
+   }
+	   .image-left{
+		   text-align: center;
+		   padding: 15px;
+	   }
+	   .image-left.leave-bg{
+		   background-color: #03BBC7;	
+	   }
+	   .image-left.emcleave-bg{
+		   background-color: #ED5629;	
+	   }
+	   .image-left.remote-bg{
+		   background-color: #039BE5;	
+	   }
+	   .image-left img{
+		   margin: 15px 0;
+		   width: 81%;
+		   /*position: absolute;*/
+		   /*top: 50%;*/
+	   }	
+	   .form-inputan {
+		   padding: 15px 0;
+	   }
+	   .image-left span{
+		   font-weight: 600;
+		   font-size: 20px;
+		   text-align: center;
+		   color: white;
+	   }	
+	   .cb-developer{
+		   border: solid 1px #a9a9ae;
+		   border-radius: 4px;
+	   }
+	   .option-dev{
+		   padding-left: 18px;
+		   margin-bottom: 3px;
+	   }
+	   .checkbox-dev{
+		   position: absolute !important;
+		   top: -1px;
+	   }
+	   @media only screen and (max-width: 1200px) {
+			.wm{
+				width: 135px;
+			}
+		}
+   </style>
+	   
+		 <div id="confirmed">
+			 	<div class="col-md-4"></div>
+				<div class="col-md-4" >
+						<div class="panel panel-success">
+								<div class="panel-heading">User Confirmation</div>
+								<div class="panel-body">Users has been confirmed</div>
+						</div>
+				</div>
+				<div class="col-md-4"></div>
+		 </div>
+		 <div id="notconfirmed">
+			 	<div class="col-md-1"></div>
+			   	<div class="col-md-10" >
+					   <div class="panel panel-success">
+						   <div class="panel-heading">User Confirmation</div>
+						   <div class="panel-body">
+								   <div data-bind="visible: veruser.viswarn" style="text-align: center; font-size: 15px; font-weight: bold;">Overtime is Over.</div>
+								   <table  data-bind="visible : veruser.vischeck" style="background-color: white; width: 100%">
+									   <tr>
+										   <!-- <td  width="25%"  class="image-left leave-bg" valign="top">
+											   <span>Hi There !<br>Please Don't Leave <br>Any Field Blank</span>
+										   </td> -->
+										   <td  id="uov" style="padding: 20px; height: 200px; vertical-align: top;" >
+												<div data-bind="foreach: veruser.dataListOvertime">
+													<div class="panel panel-default">
+														<div class="panel-heading" data-bind="text:'Overtime : ' + $data.Date">Panel Heading</div>
+														<div class="panel-body">
+															<div class="form-group row" data-role="validator" novalidate="novalidate">
+																<div class="col-md-3">
+																	<label class="col-md-4 control-label">Type:</label>
+																	<div class="col-md-8">
+																	<select class="wm" type="text" required validationMessage="Select type Overtime" data-bind="kendoDropDownList:{value: veruser.dateListOvertime()[$index()].Type, data: veruser.dataOverType, select: function(e){veruser.dateListOvertime()[$index()].Type = e.dataItem.value;}, dataTextField: 'text', dataValueField: 'value',  optionLabel: 'Select'}, attr:{'name': 'otype_'+$index()}"></select>
+																	<span class="k-invalid-msg" data-bind="attr:{'data-for': 'otype_'+$index()}"></span>
+																	</div>
+																</div>
+																
+																<div class="col-md-3">
+																	<label class="col-md-4 control-label">Start:</label>
+																	<div class="col-md-8">
+																	<input class="wm" type="text"  required validationMessage="Set Start Time" data-bind="attr:{'name': 'start_'+$index()},value:veruser.dateListOvertime()[$index()].Start" /><span class="k-invalid-msg" data-bind="attr:{'data-for': 'start_'+$index()}"></span>
+																	</div>
+																</div>
+																
+																<div class="col-md-3">
+																	<label class="col-md-4 control-label">End:</label>
+																	<div class="col-md-8">
+																	<input class="wm" type="text" required validationMessage="Set End Time"  data-bind="attr:{'name' :'end_'+$index()},value:veruser.dateListOvertime()[$index()].End" />
+																	<span class="k-invalid-msg" data-bind="attr:{'data-for': 'end_'+$index()}"></span>
+																	</div>
+																</div>
+																<div class="col-sm-3">
+																	<label class="col-md-4 control-label">DeadLine:</label>
+																	<div  class="col-md-8">
+																	<input class="wm" required validationMessage="Set deadline date"  data-bind="attr:{'name': 'deadline_'+$index()}, value:veruser.dateListOvertime()[$index()].DeadLine" />
+																	<span class="k-invalid-msg" data-bind="attr:{'data-for': 'deadline_'+$index()}"></span>
+																	</div>
+																</div>
+																<div class="col-sm-12">
+																		<label class="col-md-12 control-label">Task:</label>
+																		<div class="col-md-12" >
+																			<textarea style="width:100%" rows="10"  data-bind="value: veruser.dateListOvertime()[$index()].Task"></textarea>
+																		</div>
+																		
+																	</div>
+															</div>
+															<!-- <div class="form-group row">
+																
+																<div class="col-sm-8"></div>
+															</div> -->
+															<!-- <div class="form-group row">
+																<div class="col-sm-12">
+																	<label class="col-md-3" data-bind="attr:{'for': 'desc_'+$index()}" class="control-label" >Task Discription:</label>
+																	<textarea class="col-md-9" cols="100" rows="10"  data-bind="attr:{'id': 'desc_'+$index()}, value: veruser.dateListOvertime()[$index()].Task">
+
+																	</textarea>
+																	<span class="k-invalid-msg"></span>
+																	<div class="col-sm-9"></div>
+																</div>
+															</div> -->
+														</div>
+													</div>
+													
+												</div>
+												
+										   </td>
+									   </tr>
+									   <tr>
+										   <td style="padding: 20px; text-align: right">
+										   <!-- <td class="image-left leave-bg">
+											   <img src="/static/img/leave.png" class="img-fluid signup">
+										  </td>  -->
+										 
+											<button type="button" class="btn btn-sm btn-danger btn-flat" ><i class="fa fa-times"></i> Cancel</button>
+											<button type="button" class="btn btn-sm btn-success btn-flat" data-bind="click : veruser.getParam" ><i class="fa fa-floppy-o"></i> Submit Form</button>
+										  </td>
+									   </tr>
+									   <!-- <tr>
+											  <td class="image-left leave-bg" valign="bottom" >    
+											   <span>Have a Great Day !</span>
+										   </td>
+									   </tr> -->
+								   </table>
+						   </div>
+					   </div>						
+				</div>
+				<div class="col-md-1"></div>
+		 </div>
+					 
+   
+   <script>
+   $("#confirmed").hide();
+   $("#notconfirmed").hide();
+   var veruser = {
+	   viswarn: ko.observable(false),
+	   vischeck: ko.observable(true),
+	   location:ko.observable(""),
+	   nationalHolidayDates:ko.observableArray([]),
+	   check: ko.observable(""),
+	   hour: ko.observable(0),
+	   overtimeType : ko.observable(""),
+	   dateListOvertime: ko.observableArray([]),
+	   dataListOvertime: ko.observableArray([]),
+	   coba: ko.observable(""),
+	   hour : ko.observable(0),
+	   dataOverType: ko.observableArray([
+		   {text : "Office", value: "Office"},
+		   {text : "Remote", value: "Remote"}
+	   ]),
+	//    onChange: function(e){
+	// 	veruser.dataListOvertime()[0].Type = e.dataItem.value
+	//    },
+	   getParam : function(){
+		   var validator = $("#uov").kendoValidator().data("kendoValidator")
+			   if (validator.validate()) {
+			   model.isLoading(true);
+			   var urlParams = new URLSearchParams(window.location.search);
+			   dtl = ko.mapping.toJS(veruser.dateListOvertime());
+			   param ={
+				   Param:urlParams.get('param'),
+				   Typeovertime: veruser.overtimeType(),
+				   Hours:parseInt(veruser.hour()),
+				   DateDetails:ko.mapping.toJS(veruser.dateListOvertime())
+			   }
+			   //console.log(param);
+			   url = "/overtime/verificationovertimeuser";
+			   ajaxPost(url, param, function(res){
+				   model.isLoading(false);
+				   if(res.IsError == true){
+					   swal("info", res.Message, "info");
+				   }else{
+					   swal("Success", "Data Successfully saved", "success");
+					   if(res.Data.IsConfirmed == true){
+							$("#confirmed").show();
+							$("#notconfirmed").hide();
+					   }
+					   
+					//    setTimeout(function(){window.close()}, 5000)
+				   }
+			   });
+		   }
+	   },
+	   Checkday : function(y){
+			var param = {
+				Year : new Date().getFullYear(),
+				Location: veruser.location()
+			}
+			var url = "/dashboard/getnationalholidays"
+			ajaxPost(url, param, function(res){
+				var data = res.Data
+				if (data.length>0){
+					veruser.nationalHolidayDates(data)
+				}else{
+					data = ["20112018","25122018"]
+					veruser.nationalHolidayDates(data)
+				}
+			})
+		//    veruser.getovtime()
+		   var a = ["Saturday", "Sunday"];
+		   var check = moment();
+		   var getday = check.format('dddd');
+		   var n = a.includes(getday);
+		//    var md = kendo.toString(new Date(dashovertime.date()), "ddMMyyyy");
+    	//    var inc = md.includes(dashboard.nationalHolidayDates());
+		   if(n){
+			   veruser.inphour(3)
+			   veruser.hour(3)
+		   }else{
+			   veruser.inphour(6)
+			   veruser.hour(6)
+		   }
+	   },
+	   inphour: function(s){
+		   $("#hour").kendoNumericTextBox({
+						   format: "#",
+						   decimals: 3,
+						   min: s,
+						   value: s
+		   });
+	   },
+	//    onChangeType = function(ind){
+	// 	   alert
+	//    },
+	   getovtime : function(){
+		   model.isLoading(true);
+		   var urlParams = new URLSearchParams(window.location.search);
+			   param ={
+				   Param:urlParams.get('param'),
+			   }
+		   url = "/overtime/getdatadev2";
+		   ajaxPost(url, param, function(res){
+			   var isConfirm1 = false;
+			   var isConfirm2 = false;
+			   if (res.newovertime[0].membersovertime.result == "Confirmed"){
+				   isConfirm1 = true;
+			   }
+			   if (res.employeeovertime[0].Hours != 0) {
+				   isConfirm2 = true;
+			   }
+			   if(isConfirm1 && isConfirm2) {
+				//    $("#confirmed").show();
+				   model.isLoading(false);
+			   }else{
+					veruser.location(res.newovertime[0].location)
+					veruser.Checkday()
+					dataMb = []
+					// veruser.dataListOvertime(res.newovertime[0].daylist)
+					// veruser.dataListOvertime([])
+					$.each(res.employeeovertime, function(idx, empl){
+						var a = ["Saturday", "Sunday"];
+						var check = moment(empl.DateOvertime);
+						var getday = check.format('dddd');
+						var n = a.includes(getday);
+						var md = kendo.toString(new Date(empl.DateOvertime), "ddMMyyyy");
+						inc = _.find(veruser.nationalHolidayDates(), function(x){return x == md})
+						if(n){
+							// console.log("masuk sini 1 ", n)
+							veruser.hour(3)
+						}else{
+							// console.log("masuk sini 2 ", n)
+							if(inc != undefined){
+								// console.log("masuk sini 3 ", inc)
+								veruser.hour(3)
+							}else{
+								// console.log("masuk sini 4 ", inc)
+								veruser.hour(6)
+							}
+						}
+						veruser.dateListOvertime.push({Date: empl.DateOvertime, Start: empl.TimeStart, End: empl.TimeEnd, Type:empl.TypeOvertime, DeadLine:empl.Deadline, Task: empl.Task, Hour: veruser.hour()})
+						veruser.dataListOvertime.push({Date: kendo.toString(new Date(empl.DateOvertime), 'dd MMM yyyy'), Start: "", End: "", Type:""})
+								$("#start_"+idx).attr('name',"#start_"+idx)
+								$("input[name=start_"+idx+"]").kendoTimePicker({
+									
+									change:function(){
+										veruser.dateListOvertime()[idx].Start = kendo.toString(this.value(), "hh mm tt")
+									},
+								});
+								$("input[name=start_"+idx+"]").attr("readonly", true);
+								$("#end_"+idx).attr('name',"#end_"+idx)
+								$("input[name=end_"+idx+"]").kendoTimePicker({
+									
+									change:function(){
+										veruser.dateListOvertime()[idx].End = kendo.toString(this.value(), "hh mm tt")
+									},
+								});
+								$("input[name=end_"+idx+"]").attr("readonly", true);
+								$("#deadline_"+idx).attr('name',"#deadline_"+idx)
+								$("input[name=deadline_"+idx+"]").kendoDatePicker({ 
+									format: "dd MMM yyyy",
+									change: function(){
+										veruser.dateListOvertime()[idx].DeadLine = kendo.toString(this.value(), "yyyy-MM-dd")
+									}
+								});
+					})
+					// $.each(res.newovertime[0].daylist, function(idx, dt){
+					// 	console.log(dt.date)
+					// 	if(dt.result == "Approved"){
+					// 		// setTimeout(function(){
+								
+					// 		// }, 200)
+							
+					// 	}
+						
+					// });
+					// veruser.dataListOvertime(veruser.dataListOvertime())
+				   $("#notconfirmed").show();
+				   model.isLoading(false);
+				   veruser.check(res.length > 0 ?res[0] : "")
+				   if(veruser.check() !== ""){
+					   var getday = moment().format("DD")
+					   if(veruser.check().ischeck){
+						   veruser.vischeck(false)
+						   veruser.viswarn(true)
+					   }else if(veruser.check().day < getday){
+						   veruser.vischeck(false) 
+						   veruser.viswarn(true)
+					   }else{
+						   veruser.vischeck(true)
+						   veruser.viswarn(false)
+					   }
+				   }
+			   }
+		   });
+	   }
+   }    
+   
+   
+   $(function(){
+	//    veruser.Checkday()
+	   veruser.getovtime()
+   });
+   </script>

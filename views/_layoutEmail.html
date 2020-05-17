@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="creativelab">
+    <link rel="shortcut icon" href="#">
+
+    <title>creativelab Recruitment Application</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="/static/flatlab/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/flatlab/css/bootstrap-reset.css" rel="stylesheet">
+    <!--external css-->
+    <link href="/static/flatlab/assets/font-awesome/css/font-awesome.css" rel="stylesheet" />
+    <!--<link href="/static/flatlab/css/navbar-fixed-top.css" rel="stylesheet">-->
+
+      <!-- Custom styles for this template -->
+    <link href="/static/flatlab/css/style.css" rel="stylesheet">
+    <link href="/static/flatlab/css/style-responsive.css" rel="stylesheet" />
+
+    
+
+    <link href="/static/sweetalert/sweetalert.css" type="text/css" rel="stylesheet" />
+    <link href="/static/switch-css/bootstrap-switch.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="/static/kendoui/styles/kendo.uniform.min.css" />
+    <link rel="stylesheet" href="/static/kendoui/styles/kendo.common-bootstrap.min.css" />
+    <link rel="stylesheet" href="/static/kendoui/styles/kendo.dataviz.min.css" />
+    <link rel="stylesheet" href="/static/kendoui/styles/kendo.dataviz.bootstrap.min.css" />
+    <link rel="stylesheet" href="/static/kendoui/styles/kendo.material.min.css" />
+    <link rel="stylesheet" href="/static/loader/style.css" />
+
+    <!-- js placed at the end of the document so the pages load faster -->
+  <script src="/static/flatlab/js/jquery.js"></script>
+  <script src="/static/flatlab/js/bootstrap.min.js"></script>
+  <script class="include" type="text/javascript" src="/static/flatlab/js/jquery.dcjqaccordion.2.7.js"></script>
+  <script type="text/javascript" src="/static/flatlab/js/hover-dropdown.js"></script>
+  <script src="/static/flatlab/js/jquery.scrollTo.min.js"></script>
+  <script src="/static/flatlab/js/jquery.nicescroll.js" type="text/javascript"></script>
+  <script src="/static/flatlab/js/respond.min.js" ></script>
+
+    <script src="/static/js/knockout-3.1.0.js"></script>
+    <script src="/static/js/knockout-3.3.0.js"></script>
+    <script src="/static/js/knockout.mapping-latest.js"></script>
+    <script src="/static/js/knockout.validation.js"></script>
+
+
+    <script src="/static/kendoui2018/js/kendo.all.min.js"></script>
+    <script src="/static/kendoui2018/js/cultures/kendo.culture.de-DE.min.js"></script>
+
+    <script src="/static/js/knockout-kendo.min.js"></script>
+
+    <!--right slidebar-->
+    <script src="/static/flatlab/js/slidebars.min.js"></script>
+
+    <!--common script for all pages-->
+    <script src="/static/flatlab/js/common-scripts.js"></script>
+
+
+
+    <!-- ================= add framework here for js ============== -->
+
+    <script src="/static/js/underscore.min.js"></script>
+    <script src="/static/js/linq.js"></script>
+    <script src="/static/js/ecis_config.js"></script>
+    <script src="/static/js/main.js"></script>
+    <script src="/static/js/ecis_start.js"></script>
+    <script src="/static/js/jquery.fullscreen.min.js"></script>
+
+    <!-- Sweetalert -->
+    <script src="/static/sweetalert/sweetalert.min.js"></script>
+    <link href="/static/sweetalert/sweetalert.css" type="text/css" rel="stylesheet" />
+    <!-- Sweetalert -->
+
+    <!-- ==================== tooltip new ============================ -->
+    <link rel="stylesheet" href="/static/tooltipster-new/css/tooltipster.bundle.min.css" />
+    <link rel="stylesheet" href="/static/tooltipster-new/css/plugins/tooltipster/sideTip/themes/tooltipster-sideTip-light.min.css" />
+
+    <script src="/static/tooltipster-new/js/tooltipster.bundle.min.js"></script>
+    <link rel="stylesheet" href="/static/kendoui/styles/kendo.uniform.min.css" />
+    <link rel="stylesheet" href="/static/kendoui/styles/kendo.common-bootstrap.min.css" />
+    <link rel="stylesheet" href="/static/kendoui/styles/kendo.dataviz.min.css" />
+    <link rel="stylesheet" href="/static/kendoui/styles/kendo.dataviz.bootstrap.min.css" />
+    <link rel="stylesheet" href="/static/kendoui/styles/kendo.material.min.css" />
+    <link rel="stylesheet" href="/static/loader/style.css" />
+
+    <link rel="stylesheet" href="/static/kendoui2018/styles/kendo.common-material.min.css" />
+    <link rel="stylesheet" href="/static/kendoui2018/styles/kendo.material.min.css" />
+    <link rel="stylesheet" href="/static/kendoui2018/styles/kendo.material.mobile.min.css" />
+
+    <script src="/static/kendoui2018/js/kendo.all.min.js"></script>
+    <script src="/static/kendoui2018/js/cultures/kendo.culture.de-DE.min.js"></script>
+
+    <!-- Loader-->
+    <link href="/static/loader/style.css" rel="stylesheet" />
+
+    <script src="/static/js/underscore.min.js"></script>
+    <script src="/static/js/moment.min.js"></script>
+    <script src="/static/js/color.js"></script>
+    <script src="/static/js/tools.js"></script>
+    <script src="/static/js/linq.js"></script>
+    <script src="/static/js/custom.js"></script>
+    <script src="/static/switch-js/bootstrap-switch.js"></script>
+    
+    <script src="/static/js/knockout-3.1.0.js"></script>
+    <script src="/static/js/knockout-3.3.0.js"></script>
+    <script src="/static/js/knockout.mapping-latest.js"></script>
+    <script src="/static/js/knockout.validation.js"></script>
+    <script src="/static/js/w3data.js"></script>
+
+    <!-- <script src="/static/kendoui/js/kendo.all.min.js"></script> -->
+
+    <!-- <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2018.3.911/styles/kendo.common-material.min.css" />
+    <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2018.3.911/styles/kendo.material.min.css" />
+    <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2018.3.911/styles/kendo.material.mobile.min.css" /> -->
+    
+
+    <!-- <script src="https://kendo.cdn.telerik.com/2018.3.911/js/kendo.all.min.js"></script> -->
+
+    <script src="/static/js/knockout-kendo.min.js"></script>
+    
+    <!-- <script src="/static/core/layout.js"></script> -->
+    <link rel="stylesheet" href="/static/core/css/layout.css">
+
+    <!-- <link href="/static/css/bootstrap-material-design.css" rel="stylesheet">
+    <link href="/static/css/ripples.min.css" rel="stylesheet"> -->
+
+  <!-- Dropdown.js -->
+  <link href="//cdn.rawgit.com/FezVrasta/dropdown.js/master/jquery.dropdown.css" rel="stylesheet">
+
+  <!-- <script src="/static/js/material.js"></script>
+  <script src="/static/js/ripples.min.js"></script> -->
+    <style type="text/css">
+      .navsecond a {
+        color: white;
+      }
+
+      .horizontal-menu .navbar-nav > li > a {
+        color: black;
+      }
+      .wrapper {
+          display: inline-block;
+          margin-top: 35px;
+          padding: 15px;
+          width: 100%;
+      }
+      .header, .footer {
+          min-height: 50px;
+          padding: 0 15px;
+      }
+      .padding-left0{
+        padding-left:0px;
+      }
+      /* .wrapper{
+        background-color: #d2d2d38f !important;
+      } */
+      /* .panel{
+        background-color:#a1a1a161 !important;
+      } */
+      .form-control[disabled], .form-control[readonly], fieldset[disabled] .form-control {
+          background-color: #fff;
+      }
+    </style>
+
+    
+    <!-- ==============END ASSET FROM FLAT UI================= -->
+
+    <script>
+      var model = {
+        PageTabID: ko.observable(""),
+        Loading: ko.observable(false)
+      };
+      Notification = ko.observableArray([]);
+      var gbLastProcessDate;
+      // $.ajax({
+      //   url: "/processlog/getpaymentreceiptmindate",
+      //   type: "POST",
+      //   success: function (res) {
+      //     gbLastProcessDate = res.Data;
+      //   },
+      //   async: false
+      // });
+    </script>
+
+    <!-- <script id="navbarTemplate" type="text/html">
+      <li data-bind="if: Submenus().length==0">
+        <a data-bind="text: Title, attr:{href:Url}"></a>
+      </li>
+
+      <li data-bind="if: Submenus().length>0" class="dropdown">
+        <a data-bind="html: Title() + '&nbsp;&nbsp;<i></i>'" style="cursor:pointer" class="dropdown-toggle" data-toggle="dropdown"></a>
+        <ul class="dropdown-menu" role="menu" data-bind="template:{name:'navbarSubTemplate', foreach:Submenus}"></ul>
+      </li>
+    </script> -->
+
+<!--     <script id="navbarSubTemplate" type="text/html">
+      <li data-bind="if: Submenus().length==0">
+        <a data-bind="text: Title, attr:{href:Url}"></a>
+      </li>
+
+      <li data-bind="if: Submenus().length>0" class="dropdown-submenu">
+        <a data-bind="html: Title() + '&nbsp;&nbsp;<i></i>'" style="cursor:pointer" class="dropdown-toggle" data-toggle="dropdown"></a>
+        <ul class="dropdown-menu" role="menu" data-bind="template:{name:'navbarSubTemplate', foreach:Submenus}"></ul>
+      </li>
+    </script> -->
+
+    <!-- <script id="navbarSubTemplate" type="text/html">
+        
+        <li data-bind="if: Submenus().length==0, css:{'active': ($root.PageSubId() == Id())}">
+            <a data-bind="text: Title, attr:{href:Url}"></a>
+        </li>
+        
+        <li data-bind="if: Submenus().length>0, css:{'active': ($root.PageSubId() == Id())}" class="dropdown-submenu">
+            <a data-bind="text: Title" style="cursor:pointer" class="dropdown-toggle" data-toggle="dropdown"></a>
+            <ul class="dropdown-menu" role="menu" data-bind="template:{name:'navbarSubTemplate', foreach:Submenus}"></ul>
+        </li>
+        
+    </script> -->
+
+    <script id="breadcrumbTemplate" type="text/html">
+      <li data-bind="attr:{class:CssClass}"><a data-bind="text: Title, attr:{href:Url, class:CssClass, onclick: (Action!=undefined?Action:'')}"></a></li>
+    </script>
+</head>
+<body class="full-width">
+<section id="container" class="">
+    <div>
+      <!--header start-->
+      
+      <div class="header white-bg" style="border-bottom: 4px solid #ff6c60;">
+          <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                  <span class="fa fa-bars" style="color:#202020;"></span>
+              </button>
+              <a href="#" class="logo" style="margin-top: 10px !important;"><img class="onlogo" src="/static/admin/layout/img/ECL-09.png"></a>
+              <div class="horizontal-menu navbar-collapse collapse ">
+
+                  
+                  <!-- <ul class="nav navbar-nav navsecond" data-bind="template:{name:'navbarTemplate', foreach:MainMenus}"></ul> -->
+                  
+                  <!-- <ul class="nav navbar-nav navsecond">
+                      <li class="active"><a href="index-2.html">Dashboard </a></li>
+                      <li><a href="#">Aplicant Profile </a></li>
+                      <li class="dropdown">
+                          <a data-toggle="dropdown" data-hover="dropdown" class="dropdown-toggle" href="#">Administrator <b class=" fa fa-angle-down"></b></a>
+                          <ul class="dropdown-menu">
+                              <li><a href="general.html">User</a></li>
+                              <li><a href="buttons.html">Role</a></li>
+                              <li><a href="widget.html">Menu</a></li>
+                          </ul>
+                      </li>
+                      <li><a href="basic_table.html">Report</a></li>
+                  </ul> -->
+              </div>
+              
+                  </li>
+                  <!-- user login dropdown end -->
+              </ul>
+          </div>
+      </div>
+      <!--header end-->
+      <script>
+        
+      </script>
+
+      <!-- This is START for create breadcrumb -->
+      <!-- <script>
+          model.BreadCrumbs.push(new BreadCrumb("youare", "You are here : ", "#", "youare"));
+      </script>
+      <section class="breadcrumb-section">
+        <ol class="breadcrumb" data-bind="template:{name:'breadcrumbTemplate', foreach:BreadCrumbs}"></ol>
+      </section> -->
+      <!-- This is END for create breadcrumb -->
+    </div>
+    <div data-bind="visible:model.isLoading()"><div w3-include-html="/static/_loader.html"></div></div>
+    <div style="display:none" data-bind="visible:!model.Loading()">
+      <!--main content start-->
+      <section id="main-content">
+          <section class="wrapper">
+              <!-- page start-->
+              <div class="row">
+                  <div class="col-lg-12">
+                    <!--breadcrumbs start -->
+                    <!-- <ul class="breadcrumb">
+                      <li><span style="font-size:18px; font-weight:600;">Dashboard</span></li>
+                      <li><a href="#"><i class="fa fa-home"></i> Home</a></li>
+                      <li><a href="#">Library</a></li>
+                      <li class="active">Data</li>
+                    </ul> -->
+                    <!--breadcrumbs end -->
+                    <!-- <h3><span data-bind="html:PageTitle"></span></h3> -->
+                    <h3><span data-bind=""></span></h3>
+                  </div>
+              </div>
+              <!-- 1234 -->
+              <!-- Main content start here -->
+              {{.Content}}
+              {{template "_loader.html"}}
+              <!-- page end-->
+          </section>
+      </section>
+      
+      <!--main content end-->
+    </div>
+      <!--footer start-->
+      <!-- <footer class="site-footer">
+          <div class="text-center">
+              2016 &copy; powered by creativelab
+              <a href="#" class="go-top">
+                  <i class="fa fa-angle-up"></i>
+              </a>
+          </div>
+      </footer> -->
+      <!--footer end-->
+  </section>
+  <!-- wrapper ends here -->
+
+  <!-- START FLATLAB -->
+  <!-- js placed at the end of the document so the pages load faster -->
+    <!-- <script src="/static/flatlab/js/jquery.js"></script> -->
+    <!-- <script src="/static/flatlab/js/bootstrap.min.js"></script> -->
+    <script class="include" type="text/javascript" src="/static/flatlab/js/jquery.dcjqaccordion.2.7.js"></script>
+    <script type="text/javascript" src="/static/flatlab/js/hover-dropdown.js"></script>
+    <script src="/static/flatlab/js/jquery.scrollTo.min.js"></script>
+    <script src="/static/flatlab/js/jquery.nicescroll.js" type="text/javascript"></script>
+    <script src="/static/flatlab/js/respond.min.js"></script>
+    <script src="/static/flatlab/assets/fuelux/js/spinner.min.js"></script>
+    <script type="text/javascript" src="/static/flatlab/assets/gritter/js/jquery.gritter.js"></script>
+    <script type="text/javascript" src="/static/flatlab/js/jquery.pulsate.min.js"></script>
+    <script type="text/javascript" src="/static/flatlab/assets/bootstrap-fileupload/bootstrap-fileupload.js"></script>
+    <!-- <script type="text/javascript" src="/static/flatlab/js/bootstrap-switch.js"></script> -->
+    
+    
+
+    <!--right slidebar-->
+    <script src="/static/flatlab/js/slidebars.min.js"></script>
+
+    <!--common script for all pages-->
+    <script src="/static/flatlab/js/common-scripts.js"></script>
+    
+  <!-- END FLATLAB -->
+
+  <script>
+      model.isLoading = ko.observable(false);
+      $(function(){
+          $('#logo-link').on('click', function() {
+              $('body').fullscreen({ overflow: 'auto' });
+              return false;
+          });
+      });
+
+      ko.applyBindings(model);
+
+     
+
+      $(document).ready(function () {
+        
+      });
+  </script>
+</body>
+</html>

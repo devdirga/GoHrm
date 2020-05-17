@@ -1,0 +1,158 @@
+
+<script type="text/javascript">
+model.PageId("ADMINISTRATOR");
+model.PageSubId();
+model.BreadCrumbs.push(new BreadCrumb('{{.Menuname}}', '{{.Menuname}}', "#", "active", ""));
+model.Access = ko.observable('{{.Menuid}}');
+model.View = ko.observable('{{.View}}');
+model.Create= ko.observable('{{.Create}}');
+model.Delete= ko.observable('{{.Delete}}');
+model.Process= ko.observable('{{.Process}}');
+model.Edit= ko.observable('{{.Edit}}')
+ model.User= ko.observable('{{.Username}}');
+</script>
+
+<script src="/static/switch-js/bootstrap-switch.js"></script>
+<script src="/static/switch-js/highlight.js"></script>
+<script src="/static/switch-js/main.js"></script>
+
+<script src="{{NoCacheUrl "/static/core/menusetting.js"}}"></script>
+
+<!-- <script src="/static/core/authentication.js"></script> -->
+<div data-bind="with: menusett">
+    <div class="row">
+        <script id="menulist-template" type="text/kendo-ui-template">
+            <input type="hidden" value="#:item._id#" />
+            <span class="glyphicon glyphicon-credit-card"></span>&nbsp;#: item.title #
+        </script>
+        <div class="col-md-4">
+            <section class="panel">
+                <header class="panel-heading">
+                    Menu List
+                    <span class="tools pull-right">
+                        <a class="fa fa-chevron-down" href="javascript:;"></a>
+                        <!-- <a class="fa fa-times" href="javascript:;"></a> -->
+                    </span>
+                </header>
+                <div class="panel-body">
+                    <ul id="menu-list"></ul>
+                </div>
+            </section>
+        </div>
+        <div class="col-md-8">
+            <section class="panel">
+                <header class="panel-heading">
+                    Menu Entry
+                    <span class="tools pull-right" style="margin-top: -4px;">
+                        <button class="btn btn-sm btn-success btn-flat" data-bind="click:newdataMenulist"><i class="fa fa-plus"></i> Add New</button>
+                        <button class="btn btn-sm btn-primary  btn-flat" data-bind="click:editdataMenulist"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</button>
+                        <button class="btn btn-sm btn-danger  btn-flat"  data-bind="click:deleteMunulist"><i class="fa fa-times" aria-hidden="true"></i> Remove</button>
+                    </span>
+                </header>
+                <div class="panel-body">
+                    <form id="AppMenu" role="form">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Parent </label>
+                                    <input style="width:100%;" class="form-control" type="text" id="parent" name="parent" tabindex="-1" data-bind= "kendoDropDownList: {value: Parent, data:listMenu, dataValueField: 'Id', dataTextField: 'title'}" placeholder="Select Parent"  validationMessage="Parent required"/>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Title </label>
+                                    <input style="width:100%;" id="title" type="text" name="title" required class="form-control" data-bind="value:Title"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>URL </label>
+                                    <input style="width:100%;" id="Url" name="mm" type="text" class="form-control" placeholder="Input Format:  /folder/default" class="form-control input-sm" data-bind="value:Url" />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Index </label>
+                                    <input style="width:100%;" class="form-control" type="number" required validationMessage="Index Menu required" data-bind="value:IndexMenu, min: 0" />
+                                    <!-- <input class="form-control" type="text" name="IndexMenu" id="IndexMenu" validationMessage="Index Menu required" required data-bind="kendoNumericTextBox: {value:IndexMenu, min: 0}" />
+                                    <span class="k-invalid-msg" data-for="IndexMenu"></span> -->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>Enable </label>
+                                    <input type="checkbox" name="my-checkbox" checked class="form-control input-sm" id="Enable" />
+                                </div>                        
+                            </div>
+                            <div class="col-md-12" style="text-align:right;">
+                                <button  data-bind="click:saveAppmenu" id= "save" class="btn btn-sm btn-primary btn-flat" > <i class="fa fa-floppy-o"></i> Save</button>
+                                <button  data-bind="click:updateAppmenu" id= "update" class="btn btn-sm btn-primary btn-flat" > <i class="fa fa-floppy-o"></i> Update</button>
+                                <button  data-bind="click:resetAppMenu" class="btn btn-sm btn-danger btn-flat"><i class="fa fa-refresh"></i> Reset</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </section>
+        </div>
+    </div>
+
+
+    <!-- <div  class="panel panel-default" >
+        <div class="panel-body collapse in" >
+        	<div class="row">
+        		<div class="col-md-12">
+                    <div  id="menu_container" class="col-md-12">
+                        <form id="AppMenu">
+                            <div class="form-group col-md-6" id="form-wrapper" >
+                                <h4>Form Entry</h4>
+                                <div class="form-group col-md-8">
+                                    <label for="uset" class="control-label">Parent:</label><br>
+                                    <input type="text" id="parent" name="parent" tabindex="-1"   data-bind= "kendoDropDownList: {value: Parent, data:listMenu, dataValueField: 'Id', dataTextField: 'title'}" placeholder="Select Parent"  validationMessage="Parent required"/>
+                                </div>
+                                <div class="col-md-8 form-group">
+                                    <label for="uset" class="control-label">Title:</label>
+                                    <input id = "title" type="text" name="title"  required="" class="form-control input-sm" data-bind="value:Title"/>
+                                </div>
+                                <div class="col-md-8 form-group">
+                                    <label for="uset" class="control-label">Url </label>
+                                    <input id = "Url" name="mm" type="text" class="form-control input-sm"   placeholder="Input Format:  /folder/default" class="form-control input-sm" data-bind="value:Url" />
+                                </div>
+                                <div class="col-md-8 form-group">
+                                    <label for="uset" class="control-label">Index </label>
+                                    <input type="text" name="IndexMenu" id="IndexMenu" validationMessage="Index Menu required" required="" data-bind="kendoNumericTextBox: {value:IndexMenu, min: 0}" />
+                                    <span class="k-invalid-msg" data-for="IndexMenu"></span>
+                                </div>
+                                <div class="col-md-8 form-group">
+                                    <label for="uset" class="control-label">Enable </label><br>
+                                    <input type="checkbox"  name="my-checkbox" checked class="form-control input-sm" id="Enable" />
+                                </div>
+                                <div class="col-md-8 form-group">
+                                    <button  data-bind="click:saveAppmenu" id= "save" class="btn btn-sm btn-primary btn-flat" > <i class="fa fa-floppy-o"></i> Save</button>
+                                    <button  data-bind="click:updateAppmenu" id= "update" class="btn btn-sm btn-primary btn-flat" > <i class="fa fa-floppy-o"></i> Update</button>
+                                    <button  data-bind="click:resetAppMenu" class="btn btn-sm btn-danger btn-flat"><i class="fa fa-refresh"></i> Reset</button>
+                                </div>
+                            </div>
+                        </form>
+                        
+                        <div id="menu-wrapper" class="col-md-6" >
+                            <div>
+                                <h4>
+                                    Menu List
+                                    <div style="float:right;">
+                                        
+                                    </div>
+                                </h4>
+                            </div>
+                            <div>
+                            </div>
+                        </div>
+                    </div>
+        		</div>
+        	</div>
+        </div>
+    </div> -->
+</div>

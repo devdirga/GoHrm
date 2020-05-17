@@ -1,0 +1,728 @@
+<script src="{{NoCacheUrl "/static/core/dashboard.js"}}"></script>
+<script src="{{NoCacheUrl "/static/core/overtime.js"}}"></script>
+<link rel="stylesheet" href="{{NoCacheUrl "/static/core/css/dashboard.css"}}">
+<style type="text/css">
+ 
+	.image-left{
+		text-align: center;
+		padding: 15px;
+	}
+	.image-left.leave-bg{
+		background-color: #03BBC7;	
+	}
+	.image-left.emcleave-bg{
+		background-color: #ED5629;	
+	}
+	.image-left.remote-bg{
+		background-color: #039BE5;	
+	}
+	.image-left.overtime-bg{
+		background-color: #928FDE;	
+	}
+	.image-left img{
+		margin: 15px 0;
+		/*position: absolute;*/
+		/*top: 50%;*/
+	}	
+	.form-inputan {
+		padding: 15px 0;
+	}
+	.image-left span{
+		font-weight: 600;
+		font-size: 20px;
+	    text-align: center;
+	    color: white;
+	}	
+	.cb-developer{
+		border: solid 1px #a9a9ae;
+        border-radius: 4px;
+	}
+	.option-dev{
+		padding-left: 18px;
+        margin-bottom: 3px;
+	}
+	.checkbox-dev{
+		position: absolute !important;
+		top: -1px;
+	}
+</style>
+
+<div data-bind="with: dashboard">
+	<!-- modal Leave -->
+	<div class="modal fade" id="leaveModal" role="dialog" aria-labelledby="LeaveModalLabel" aria-hidden="true" data-backdrop="static">
+	    <div class="modal-dialog modal-xl">
+	        <div class="modal-content">
+	            <!-- Modal Header -->
+	            <!-- Modal Body -->
+	            <div class="col-md-12 body-panel"  style=' padding-left: 0; padding-bottom: 0px;'>
+	                <form class="form-custom" id="formRequestLeave" method="POST">
+	                    <div   style="    margin-top: -15px;">
+	                        <table width="100%">
+		                    	<tr>
+			                        <td  width="25%"  class="image-left leave-bg" valign="top">
+			                        	<span>Hi There !<br>Please Don't Leave <br>Any Field Blank</span>
+			                        </td>
+			                        <td  width="75%" class="form-inputan"  rowspan="3" valign="top">
+				                        <div class="col-md-12">
+				                                <div class="col-md-12">
+														<div class="form-wrapper col-md-5" data-bind="visible:(typeLeave() != 'Others')">
+															<div class="form-label">
+																<label for="type" class="form-label err-msg">Type Leave<span class="k-invalid-msg" data-for="type"></label>
+															</div>
+															<div class="form-input-wrapper">
+																	<input style="width:100%;" class="form-control" type="text" data-bind="kendoDropDownList:{value: typeLeave, data: typeLeaveList,  dataTextField: 'Description', dataValueField: 'Description', optionLabel: 'Select one', change: onchangeType, filter:'contains'}" name="type" id="type" validationMessage=" " required/>
+															</div>
+														</div>
+				                                        <div class="form-wrapper col-md-5" data-bind="visible:(typeLeave() == 'Others')">
+				                                  
+				                                            <div class="form-label">
+				                                                <label for="inputPassword3" class="form-label err-msg">Reason Leave<span class="k-invalid-msg" data-for="reason"></label>
+				                                            </div>
+				                                            <div class="form-input-wrapper">
+				                                                <textarea type="text" cols="5" rows="5" class="form-control" data-bind="value:reason" name="reason" id="reason" validationMessage=" " required></textarea>
+				                                                <div class="bar"></div>
+				                                                <!-- <span class="k-invalid-msg" data-for="reason"></span> -->
+				                                            </div>
+				                                        </div>
+				                                        <div class="form-wrapper col-md-7">
+															<div class="form-label">
+																<label class="err-msg">Contact No<span class="k-invalid-msg" data-for="contact"></span></label>
+															</div>
+															<div class="form-input-wrapper">
+																	<input type="number" class="form-control" name="contact" id="contact" data-bind="value:contact" validationMessage=" " required />
+																<div class="bar"></div>
+															</div>
+				                                            <!-- <div class="col-md-6">
+				                                                <div class="form-label">
+				                                                    <label class="err-msg">Leave From<span class="k-invalid-msg" data-for="leaveFrom"></span></label>
+				                                                </div>
+				                                                <div class="form-input-wrapper">
+				                                                    <input type="text" class="form-control" name="leaveFrom" id="leaveFrom" validationMessage=" " required data-bind="kendoDatePicker:{value:leaveFrom, format: 'dd-MMM-yyyy', min: minDateFromLeave, disableDates: ['sa', 'su']}" onclick="return false;"/>
+				                                                    <div class="bar"></div>
+				                                                    
+				                                                </div>
+				                                            </div>
+				                                            <div class="col-md-6">
+				                                                <div class="form-label">
+				                                                    <label class="err-msg">Leave To<span class="k-invalid-msg" data-for="leaveTo"></span></label>
+				                                                </div>
+				                                                <div class="form-input-wrapper">
+				                                                    <input type="text" class="form-control" name="leaveTo" id="leaveTo" validationMessage=" " required data-bind="kendoDatePicker:{value:leaveTo, format: 'dd-MMM-yyyy', min: leaveFrom, disableDates: ['sa', 'su']}" />
+				                                                    <div class="bar"></div>
+				                                                    
+				                                                </div>
+				                                            </div> -->
+				                                        </div>
+				                                    </div>
+				                                    <div class="col-md-12">
+				                                        <div class="form-wrapper col-md-5">
+				                                            <div class="form-label">
+				                                                    <label class="err-msg">Address<span class="k-invalid-msg" data-for="address"></span></label>
+				                                            </div>
+				                                            <div class="form-input-wrapper">
+				                                                <textarea type="text" class="form-control" name="address" id="address" data-bind="value:address" validationMessage=" " required></textarea>
+				                                                <div class="bar"></div>
+				                                                
+				                                            </div>
+				                                        </div>
+				                                        <div class="col-md-7 form-wrapper">
+															<div class="col-md-6">
+																<div class="form-label">
+																	<label>No of days<span class="mandatory">*</span></label>
+																</div>
+																<div class="form-input-wrapper">
+																	<input type="number" class="form-control" name="noOfDays" id="noOfDays" validationMessage="No of days required" required data-bind="value:noOfDays" readonly/>
+																	<div class="bar"></div>
+																	<span class="k-invalid-msg" data-for="noOfDays"></span>
+																</div>
+															</div>
+															<div class="col-md-6">
+																<div class="form-label">
+																	<label>Remaining Days Off <span class="mandatory">*</span></label>
+																</div>
+																<div class="form-input-wrapper">
+																	<input type="text" class="form-control" name="yearLeave" id="yearLeave" data-bind="value:yearLeave" validationMessage="Year Leave required" required readonly/>
+																	<div class="bar"></div>
+																	<span class="k-invalid-msg" data-for="yearLeave"></span>
+																</div>
+															</div>
+														</div>
+				                                    </div>
+				                                    <div class="col-md-12">
+														<div class="form-wrapper col-md-5" data-bind="visible:(typeLeave() == 'Maternity Leaves' || typeLeave() == 'Haj Leaves')">
+															<div class="col-md-6"  style="    padding-left: 0px;">
+																<div class="form-label">
+																	<label class="err-msg">From <span class="k-invalid-msg" data-for="from"></span></label>
+																</div>
+																<div class="form-input-wrapper">
+																	<input type="text" class="form-control" name="from" id="from" validationMessage=" " required data-bind="kendoDatePicker:{value:from, format: 'dd-MMM-yyyy', change: onchangeTo}" />
+																	<div class="bar"></div>
+																	
+																</div>
+															</div>
+															<div class="col-md-6">
+																<div class="form-label">
+																	<label class="err-msg">To<span class="k-invalid-msg" data-for="leaveTo"></span></label>
+																</div>
+																<div class="form-input-wrapper">
+																	<input type="text" class="form-control" name="leaveTo" id="leaveTo" validationMessage=" " required data-bind="kendoDatePicker:{value:to, format: 'dd-MMM-yyyy', min: from}" />
+																	<div class="bar"></div>
+																	
+																</div>
+															</div>
+														</div>
+				                                        <div class="form-wrapper col-md-5" id="calender">
+															<div class="form-label">
+																<label class="err-msg">Leave Date<span class="k-invalid-msg" data-for="leaveDate"></span></label>
+															</div>
+															<div id="dateCalendarLeave"></div>	
+															<div>* Press shift or ctrl to select between date</div>	                                           
+				                                        </div>
+				                                        <div class="col-md-7 form-wrapper">
+				                                                <!-- <div class="col-md-6 field-leader" >
+				                                                        <div class="form-label">
+				                                                            <label class="err-msg">Leader<span class="k-invalid-msg" data-for="leader"></span></label>
+				                                                        </div>
+				                                                        <div class="form-input-wrapper">
+				                                                            <input style="width:100%;" class="form-control" type="text" data-bind="kendoDropDownList:{value: leader, data: tempLeader,  dataTextField: 'fullname', dataValueField: '_id', optionLabel: 'Select one', filter:'contains'}" name="leader" id="leader" validationMessage=" " required/>
+				                                                            <div class="bar"></div>
+				                                                            
+				                                                        </div>
+																</div>
+																<div class="col-md-6">
+																	<div class="form-label">
+																		<label class="err-msg">Manager<span class="k-invalid-msg" data-for="manager"></span></label>
+																	</div>
+																	<div class="form-input-wrapper">
+																			<select style="width:100%;" type="text" class="form-control" data-bind="kendoDropDownList:{value: manager, data: tempManager,  dataTextField: 'fullname', dataValueField: '_id', filter: 'contains',  optionLabel: 'Select one'}" name="manager" id="manager" validationMessage=" " required></select>
+																		<div class="bar"></div>
+																		
+																	</div>
+																</div> -->
+																<div class="col-md-12">
+																	<div class="form-label">
+																		<label class="err-msg">Project<span class="k-invalid-msg" data-for="leader"></span></label>
+																	</div>
+																	<div class="form-input-wrapper">
+																		<select multiple="multiple" data-placeholder="Select Projects..." style="width:100%;" class="form-control" type="text" data-bind="kendoMultiSelect:{value: project, data: listProject,  dataTextField: 'ProjectName', dataValueField: 'ProjectName',change: dashboard.ProjectOnchange,optionLabel: 'Select one', filter:'contains'}" name="leader" id="leader" validationMessage=" " required></select>
+																		<div class="bar"></div>
+																	</div>
+																</div>
+																<div class="col-md-12 form-wrapper" data-bind="visible:(typeLeave() != 'Maternity Leaves' && typeLeave() != 'Haj Leaves')">
+																	<div class="form-label">
+																		<label>Selected Dates</label>
+																	</div>
+																	<div class="form-input-wrapper">
+																		<input type="text" class="form-control" name="selectedDatesTextforForm" id="selectedDatesTextforForm" required data-bind="value:selectedDatesTextforForm" disabled/>
+																		<div class="bar"></div>
+																	</div>
+																</div>
+				                                        </div>
+				                                    </div>
+				                                    <div class="col-md-12 form-wrapper">
+				                                            <div style="float: right">
+				                                                <button type="button" class="btn btn-sm btn-danger" data-bind="click:clearLeave"  data-dismiss="modal"><i class="fa fa-times"></i> Cancel</button>
+				                                                <button type="button" class="btn btn-sm btn-success" data-bind="click: sendRequest"><i class="fa fa-floppy-o"></i> Submit Form</button>
+				                                            </div>
+				                                    </div>   
+				                        </div>
+			                    	</td>
+			                    </tr>
+			                    <tr>
+			                       <td class="image-left leave-bg">
+			                        	<img src="/static/img/leave.png" class="img-fluid signup">
+			                       </td>
+			                    </tr>
+			                    <tr>
+			                       	<td class="image-left leave-bg" valign="bottom" >    
+			                            <span>Have a Great Day !</span>
+			                        </td>
+			                    </tr>
+		                    </table>
+	                    </div>  
+	                </form>
+	            </div>
+	        </div>
+	    </div>
+	</div>
+	<!-- end modal leave --> 
+
+	<!-- modal Leave Emergency-->
+	<div class="modal fade" id="leaveModalEmergency" role="dialog" aria-labelledby="LeaveModalLabel" aria-hidden="true" data-backdrop="static">
+	    <div class="modal-dialog modal-lg">
+	        <div class="modal-content">
+	            <div data-bind="with:dashboard">
+	                <div class="col-md-12 body-panel"   style=' padding-left: 0; padding-bottom: 0px;'>
+	                    <form class="form-custom" method="POST">
+	                        <div style="    margin-top: -15px;">
+	                            <!-- <div class="col-md-12" style="padding:0px;"> -->
+								<table width="100%">
+		                    	<tr>
+			                        <td  width="25%" class="image-left emcleave-bg" valign="top">
+			                        	<span>We Hope Everything <br>is Going Well Soon</span>
+			                        </td>
+									<td  width="75%"  class="form-inputan" rowspan="3" valign="top">
+			                       
+	                                    <div class="col-md-12" id="formRequestLeaveEmergency">
+	                                            <div class="col-md-12" style="padding:0px;">
+	                                                <div class="form-wrapper col-md-12">
+	                                                      <div class="col-md-12" style="text-align:right">
+				                                        	<strong><span data-bind="text:dateEmergencyleaveTop"></span></strong>
+				                                        </div>
+	                                                    <div class="form-label">
+	                                                        <label class="err-msg">Reason Leave<span class="k-invalid-msg" data-for="reasonEm" ></span></label>
+	                                                    </div>
+	                                                    <div class="form-input-wrapper">
+	                                                        <textarea type="text" cols="5" rows="5" class="form-control" data-bind="value:reason" name="reasonEm" id="reasonEm" validationMessage=" " required></textarea>
+	                                                        <div class="bar"></div>
+	                                                        <!-- <span class="k-invalid-msg" data-for="reason"></span> -->
+	                                                    </div>
+	                                                </div>
+	                                            </div>
+												<div class="col-md-12" style="padding: 0px;">
+													<div class="form-wrapper col-md-5">
+														<div class="form-label">
+															<label class="err-msg">Leave Days<span class="k-invalid-msg" data-for="leaveDateEm"></span></label>
+														</div>
+														<!-- <div id="dateCalendarLeaveEmergency"></div>-->
+														<div class="form-input-wrapper">
+	                                                        <input type="text" class="form-control" data-bind="kendoDropDownList:{data:countDays, value:manyDay, dataTextField: 'text', dataValueField: 'value', optionLabel: 'Select days'}" name="leaveDateEm" id="leaveDateEm" validationMessage=" " required/>
+	                                                        <div class="bar"></div>
+	                                                        <!-- <span class="k-invalid-msg" data-for="reason"></span> -->
+	                                                    </div>
+													</div>
+	                                                <!-- <div class="col-md-6" style="padding: 0px;">
+	                                                    <div class="form-wrapper col-md-12">
+	                                                        <div class="form-label">
+	                                                            <label class="err-msg">Leave From<span class="k-invalid-msg" data-for="leaveFrom"></span></label>
+	                                                        </div>
+	                                                        <div class="form-input-wrapper">
+	                                                            <input type="text" class="form-control" name="leaveFrom" id="leaveFrom" validationMessage=" " required data-bind="kendoDatePicker:{value:leaveFrom, format: 'dd-MMM-yyyy', min: minDateFromLeave, disableDates: ['sa', 'su']}" onclick="return false;"/>
+	                                                            <div class="bar"></div>
+	                                                            
+	                                                        </div>
+	                                                    </div>
+	                                                </div>
+	                                                <div class="col-md-6">
+	                                                    <div class="form-wrapper col-md-12">
+	                                                        <div class="form-label">
+	                                                            <label class="err-msg">Leave To<span class="k-invalid-msg" data-for="leaveTo"></span></label>
+	                                                        </div>
+	                                                        <div class="form-input-wrapper">
+	                                                            <input type="text" class="form-control" name="leaveTo" id="leaveTo" validationMessage=" " required data-bind="kendoDatePicker:{value:leaveTo, format: 'dd-MMM-yyyy', min: leaveFrom, disableDates: ['sa', 'su']}" />
+	                                                            <div class="bar"></div>
+	                                                            
+	                                                        </div>
+	                                                    </div>
+	                                                </div> -->
+	                                            </div>
+	                                            <!-- <div class="col-md-12 form-wrapper  field-leader"> -->
+	                                                <!-- <div class="form-label ">
+	                                                    <label class="err-msg">Leader<span class="k-invalid-msg" data-for="leaderEm" ></span></label>
+	                                                </div>
+	                                                <div class="form-input-wrapper">
+	                                                    <input style="width:100%;" type="text" data-bind="kendoDropDownList:{value: leader, data: dashboard.tempLeader,  dataTextField: 'fullname', dataValueField: '_id', optionLabel: 'Select one', filter:'contains'}" name="leaderEm" id="leaderEm" validationMessage=" " required/>
+	                                                    <div class="bar"></div> -->
+	                                                    <!-- <span class="k-invalid-msg" data-for="leaderEm"></span> -->
+	                                                <!-- </div> -->
+	                                            <!-- </div> -->
+	                                                <!-- <div class="col-md-12 form-wrapper"> -->
+	                                                        <!-- <div class="form-label">
+	                                                                <label class="err-msg">Manager<span class="k-invalid-msg" data-for="managerEm" ></span></label>
+	                                                            </div>
+	                                                            <div class="form-input-wrapper">
+	                                                                    <select style="width:100%;" type="text" class="form-control" data-bind="kendoDropDownList:{value: manager, data: tempManager,  dataTextField: 'fullname', dataValueField: '_id', filter: 'contains',  optionLabel: 'Select one'}" name="managerEm" id="managerEm" validationMessage=" " required></select>
+	                                                                <div class="bar"></div> -->
+	                                                                <!-- <span class="k-invalid-msg" data-for="managerEm"></span> -->
+	                                                            <!-- </div> -->
+														<!-- </div> -->
+												<div class="col-md-12 form-wrapper">
+													<div class="form-label">
+														<label class="err-msg">Project<span class="k-invalid-msg" data-for="leader"></span></label>
+													</div>
+													<div class="form-input-wrapper">
+														<select multiple="multiple" data-placeholder="Select Projects..." style="width:100%;" class="form-control project" type="text" data-bind="kendoMultiSelect:{value: project, data: listProject,  dataTextField: 'ProjectName', dataValueField: 'ProjectName'}" name="leader" id="leader" validationMessage=" " required></select>
+														<div class="bar"></div>
+													</div>
+												</div>	
+                                                <div class="col-md-12 form-wrapper">
+													<div style="float: right;margin-top:200px">
+		                                            <button type="button" class="btn btn-sm btn-danger"  data-dismiss="modal" onclick="dashboard.cancelForm()"><i class="fa fa-times"></i> Cancel</button>
+		                                            <button type="button" class="btn btn-sm btn-success" onclick="dashboard.sendRequest()"><i class="fa fa-floppy-o"></i> Submit Form</button>
+			                                        </div>
+			                                    </div>
+
+	                                    </div>
+	                                    
+	                            	</td>
+	                            </tr>
+			                    <tr>
+			                       <td class="image-left emcleave-bg">
+			                        	<img src="/static/img/emc_leave.png" class="img-fluid signup">
+			                       </td>
+			                    </tr>
+			                    <tr>
+			                       	<td class="image-left emcleave-bg" valign="bottom" >    
+			                            <span>Lets Us Take Care <br> Your Immediate Request</span>
+			                        </td>
+			                    </tr>
+		                    </table>
+	                        </div>  
+	                    </form>
+	                </div>
+	            </div>
+	        </div>
+	    </div>
+	</div>
+ 	<!-- end modal leave Emergency-->
+
+ 	<!-- modal remote-->
+	<div class="modal fade" id="remoteModal" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
+	    <div class="modal-dialog modal-xl">
+	        <div class="modal-content"  >
+	            <div class="modal-body " style="padding-top: 0;padding-bottom: 0px;">
+	                <form class="form-custom" id ="AddUserSetting">
+	                   
+	                    <!-- <div class="form-group margin-sidezero height-full" style="margin-bottom: 0;">  -->
+	                    
+	                        <div style="    margin-top: -15px;"> 
+                        		<table width="100%">
+		                    	<tr>
+			                        <td  width="25%" class="image-left remote-bg" valign="top">
+			                        	<span>We Hope Everything <br>is Going Well Soon</span>
+			                        </td>
+									<td  width="75%"  class="form-inputan" rowspan="3" valign="top">
+			                            <div class="col-md-12">
+			                                <div class="col-md-12">
+			                                    <div class="form-wrapper col-md-6">
+			                                        <div class="form-label">
+			                                            <label>Reason</label>
+			                                        </div>
+			                                        <div class="form-input-wrapper">
+			                                            <textarea name="remotereason" id="remotereason" cols="30" rows="10" data-bind="value: dashboard.remoteData.Reason" style="margin: 0px; height: 113px;" required></textarea>
+			                                            <span class="k-invalid-msg" data-for="remotereason"></span>
+			                                        </div>  
+			                                    </div>
+			                                    <div class="form-wrapper col-md-6">
+			                                        <!-- <div class="col-md-12 form-wrapper  field-leader" style="margin-top: 0px;">
+														<div class="form-label">
+															<label>Leader<span class="mandatory">*</span></label>
+														</div>
+														<div class="form-input-wrapper">
+															<input style="width:100%;" class="form-control" type="text" data-bind="kendoDropDownList:{value: dashboard.remoteTempLeader, data: dashboard.tempLeader,  dataTextField: 'fullname', dataValueField: '_id', optionLabel: 'Select one', filter:'contains'}" name="remotetempleader" id="remotetempleader" required/>
+															<div class="bar"></div>
+															<span class="k-invalid-msg" data-for="remotetempleader"></span>
+														</div>
+													</div>
+													<div class="col-md-12 form-wrapper field-manager-remote">
+														<div class="form-label">
+															<label>Manager<span class="mandatory">*</span></label>
+														</div>
+														<div class="form-input-wrapper">
+																<select style="width:100%;" type="text" class="form-control" data-bind="kendoDropDownList:{value: dashboard.remoteTempManager, data: dashboard.tempManager,  dataTextField: 'fullname', dataValueField: '_id',  optionLabel: 'Select one', filter:'contains'}" name="remotetempmanager" id="remotetempmanager" required></select>
+															<div class="bar"></div>
+															<span class="k-invalid-msg" data-for="remotetempmanager"></span>
+														</div>
+													</div> -->
+													<div class="col-md-12 field-manager-remote" style="padding:0px;">
+														<div class="form-label">
+															<label>Project<span class="mandatory">*</span></label>
+														</div>
+														<div class="form-input-wrapper">
+																<select style="width:100%;" type="text" class="form-control" data-bind="kendoDropDownList:{value: dashboard.projectVal, data: dashboard.listProject,  dataTextField: 'ProjectName', dataValueField: 'ProjectKey',  optionLabel: 'Select one project', filter:'contains'}" name="projectlist" id="projectlist" required></select>
+															<div class="bar"></div>
+															<span class="k-invalid-msg" data-for="projectlist"></span>
+														</div>
+													</div>
+			                                    </div>
+			                                </div>
+			                                <div class="col-md-12">
+		                                        <div class="form-wrapper col-md-6">
+		                                                <div class="form-label">
+		                                                    <label>Address</label>
+		                                                </div>
+		                                                <div class="form-input-wrapper">
+		                                                    <input class="form-control" name="remoteaddress" data-bind="value:dashboard.remoteData.Address" validationMessage="Address required" required />
+		                                                    <div class="bar"></div>
+		                                                    <span class="k-invalid-msg" data-for="remoteaddress"></span>
+		                                                </div>
+		                                        </div>
+		                                        <div class="form-wrapper col-md-6">
+		                                        <div class="form-label">
+		                                            <label>Phone Number</label>
+		                                        </div>
+		                                        <div class="form-input-wrapper">
+		                                            <input type="text" class="form-control" name="remotecontact" data-bind="value:dashboard.remoteData.Contact" validationMessage="Contact required" required></textarea>
+		                                            <div class="bar"></div>
+		                                            <span class="k-invalid-msg" data-for="remotecontact"></span>
+		                                        </div>
+		                                    </div>
+		                                        
+
+			                                <div class="col-md-12">
+			                                    <div class="form-wrapper col-md-2" style="padding: 0;">
+			                                        <div class="form-label">
+			                                            <label>Type Of Remote</label>
+			                                        </div>
+			                                        <div class="form-input-wrapper">
+			                                            <select class="form-control" data-bind="kendoDropDownList:{value: dashboard.remoteData.Type, data: dashboard.remoteTypeList,  dataTextField: 'text', dataValueField: 'id', change: dashboard.changeTipeRemote}" name="remotetype" validationMessage="Project required" style="width: 100%;" required ></select>
+			                                            <div class="bar"></div>
+			                                            <span class="k-invalid-msg" data-for="remotetype"></span>
+			                                        </div>
+			                                    </div>
+			                                    <div class="form-wrapper col-md-4" style="padding: 12;">
+			                                        <div class="form-label">
+			                                            <label>Plan your Remote</label>
+			                                        </div>
+			                                        <div class="form-input-wrapper">
+			                                            <div id="dateCalendar"></div>
+			                                        </div>  
+			                                        <div>* Press shift or ctrl to select between date</div>	
+			                                    </div>
+			                                    <!-- <div class="form-wrapper col-md-3" >
+			                                        <div class="form-label">
+			                                        </div>
+			                                        <div class="form-input-wrapper">
+			                                            <input type="checkbox" data-bind="checked: dashboard.needWeekDay">
+			                                            <label for="">need week day</label>
+			                                        </div>  
+			                                    </div> -->
+			                                </div>
+			                                <div class="col-md-12 form-wrapper">
+												<div style="float:right">
+				                                <button type="button" class="btn btn-sm btn-danger btn-flat" onclick="dashboard.hideModalRemote()"><i class="fa fa-times"></i> Cancel</button>
+				                                <button type="button" class="btn btn-sm btn-success btn-flat" onclick="dashboard.saveRemote()"><i class="fa fa-floppy-o"></i> Submit Form</button>
+				                                </div>
+		                                    </div>
+			                            </div>
+			                        </td>
+			                    </tr>
+	                           	<tr>
+			                       <td class="image-left remote-bg">
+			                        	<img src="/static/img/remote.png" class="img-fluid signup">
+			                       </td>
+			                    </tr>
+			                    <tr>
+			                       	<td class="image-left remote-bg" valign="bottom" >    
+			                            <span>Lets Us Take Care <br> Your Immediate Request</span>
+			                        </td>
+			                    </tr>
+			                  	</table>
+	                        </div>
+	                    <!-- </div> -->
+	                </form>
+	            </div>
+	           
+	        </div>
+	    </div>
+	</div>
+	<!-- end modal remote-->
+
+</div>
+<div data-bind="with: overtime.record">
+<!-- modal overtime -->
+<div class="modal fade" id="overtimeModal" role="dialog" aria-labelledby="LeaveModalLabel" aria-hidden="true" data-backdrop="static">
+	<div class="modal-dialog modal-xl">
+		<div class="modal-content">
+			<!-- Modal Header -->
+			<!-- Modal Body -->
+			<div class="col-md-12 body-panel"  style=' padding-left: 0; padding-bottom: 0px;'>
+				<form class="form-custom" id="formRequestLeave" method="POST">
+					<div   style="    margin-top: -15px;">
+						<table width="100%">
+							<tr>
+								<td  width="25%"  class="image-left overtime-bg" valign="top">
+									<span>Hi There !<br>Please Don't Leave <br>Any Field Blank</span>
+								</td>
+								<td  width="75%" class="form-inputan"  rowspan="3" valign="top">
+									<div class="col-md-12" style="margin-bottom: 190px;">
+										<div class="col-md-12">
+											<!-- 
+											<div class="form-wrapper col-md-5">
+												<div class="form-label">
+													<label for="hours" class="form-label err-msg">Overtime Hours<span class="k-invalid-msg" data-for="reason"></label>
+												</div>
+												<div class="form-input-wrapper">
+													<input type="number" class="form-control" data-bind="value:OvertimeHours" name="OvertimeHours" id="OvertimeHours" validationMessage=" " required />
+													<div class="bar"></div>
+													 <span class="k-invalid-msg" data-for="reason"></span> 
+												</div>
+											</div> -->
+										</div>
+										<div class="col-md-12">
+											<div class="form-wrapper col-md-5" id="calender">
+												<div class="form-label">
+													<label class="err-msg">Overtime Date<span class="k-invalid-msg" data-for="OvertimeDate"></span></label>
+												</div>
+												<div id="overtimeDatePicker"></div>	
+												<div>* Press shift or ctrl to select between date</div>	                                           
+											</div>
+											<div class="form-wrapper col-md-5">
+													<div class="form-label">
+														<label for="reason" class="form-label err-msg">Reason Overtime<span class="k-invalid-msg" data-for="reason"></label>
+													</div>
+													<div class="form-input-wrapper">
+														<textarea type="text" cols="5" rows="5" class="form-control" data-bind="value:Reason" name="reason" id="reason"  validationMessage="Reason required" required></textarea>
+														<div class="bar"></div>
+														 <span class="k-invalid-msg" data-for="reason"></span> 
+													</div>
+											</div>
+											<div class="form-wrapper col-md-5">
+												<div class="form-label">
+													<label for="project" class="form-label err-msg">Project<span class="k-invalid-msg" data-for="project"></label>
+												</div>
+												<div class="form-input-wrapper">
+													<select style="width:100%;" type="text" class="form-control" data-bind="kendoDropDownList:{value: Project, data: dashboard.listProject,  dataTextField: 'ProjectName', dataValueField: 'ProjectKey',  optionLabel: 'Select one project', filter:'contains', change: function(e){ overtime.changeProject(e.sender._old)}}" name="projectlist" id="projectlist" validationMessage="Project required" required></select>
+													<div class="bar"></div>
+													<span class="k-invalid-msg" data-for="projectlist"></span>
+													<!-- <span class="k-invalid-msg" data-for="reason"></span> -->
+												</div>
+											</div>
+											<div class="form-wrapper col-md-5" style="margin-top: 14px;">
+												<div class="form-label">
+													<label for="project" class="form-label err-msg">Assign Developer<span class="k-invalid-msg" data-for="project"></label>
+													<!-- <span data-bind="visible: overtime.developer().length > 0"><input name="sdf" onclick="overtime.checkall(this)" type="checkbox" >Check All</span> -->
+												</div>
+												<div class="cb-developer" data-bind="visible: overtime.developer().length > 0" id="dbxs2">
+													  <!-- <div class="checkbox">
+														<label><input class="checkbox-dev" type="checkbox" data-bind="checked: overtime.checkedDev, value : $data"><span class="option-dev" data-bind="text : Name">name</span></label>
+													  </div> -->
+													  <select multiple="multiple" data-placeholder="Select Devs..." style="width:100%;" class="form-control" type="text" data-bind="kendoMultiSelect:{value: overtime.checkedDev, data: dashboard.listUser,  dataTextField: 'fullname', dataValueField: '_id', optionLabel: 'Select one', filter:'contains'}" name="listdev" id="listdev" validationMessage=" " required></select>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="col-md-12 form-wrapper">
+										<div style="float:right">
+										<button type="button" class="btn btn-sm btn-danger btn-flat" onclick="overtime.hidemModalOvertime()"><i class="fa fa-times"></i> Cancel</button>
+										<button type="button" class="btn btn-sm btn-success btn-flat" onclick="overtime.saveovertime()"><i class="fa fa-floppy-o"></i> Submit Form</button>
+										</div>
+									</div>
+								</td>
+							</tr>
+							<tr>
+							   <td class="image-left overtime-bg">
+									<img src="/static/img/overtime.png" class="img-fluid signup">
+							   </td>
+							</tr>
+							<tr>
+								   <td class="image-left overtime-bg" valign="bottom" >    
+									<span>Have a Great Day !</span>
+								</td>
+							</tr>
+						</table>
+					</div>  
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+</div>
+
+
+<div class="modal fade" id="ModalAdminRequest" role="dialog" aria-labelledby="LeaveModalLabel" aria-hidden="true" data-backdrop="static">
+	<div class="modal-dialog modal-xl">
+		<div class="modal-content">
+			<div data-bind="with:dashboard">
+				<div class="col-md-12 body-panel"   style=' padding-left: 0; padding-bottom: 0px;'>
+					<form class="form-custom" method="POST">
+						<div style="    margin-top: -15px;">
+							<!-- <div class="col-md-12" style="padding:0px;"> -->
+							<table width="100%">
+							<tr>
+								<td  width="25%" class="image-left" style="background-color: #00CC99;" valign="top">
+									<span>We Hope Everything <br>is Going Well Soon</span>
+								</td>
+								<td  width="75%"  class="form-inputan" rowspan="3" valign="top">
+							   
+									<div class="col-md-6">
+
+											<div class="col-md-12" style="padding: 0px;">
+													<div class="form-wrapper col-md-5">
+														<div class="form-label">
+															<label class="err-msg">User<span class="k-invalid-msg" data-for="leaveDateEm"></span></label>
+														</div>
+													
+														<div class="form-input-wrapper">
+															<input type="text" style="width: 300px;" name="arusr" class="form-control" data-bind="kendoDropDownList:{value: dashboard.arUser,data: dashboard.listUser,  dataTextField: 'fullname', dataValueField: '_id', optionLabel: 'Select one', filter: 'contains'}" validationMessage=" " required/>
+															
+															<span class="k-invalid-msg" data-for="arusr"></span>
+														</div>
+													</div>
+													
+												</div>
+
+											<div class="col-md-12" style="padding:0px;">
+												<div class="form-wrapper col-md-12">
+													  <div class="col-md-12" style="text-align:right">
+														
+													</div>
+													<div class="form-label">
+														<label class="err-msg">Reason Leave<span class="k-invalid-msg" data-for="reasonEm" ></span></label>
+													</div>
+													<div class="form-input-wrapper">
+														<input type="text" class="form-control" data-bind="value:dashboard.arReason" name="arres"  validationMessage=" " required/>
+														<div class="bar"></div>
+														<span class="k-invalid-msg" data-for="arres"></span>
+													</div>
+												</div>
+											</div>
+											
+											
+											<div class="col-md-12 form-wrapper">
+												<div class="form-label">
+													<label class="err-msg">Project<span class="k-invalid-msg" data-for="leader"></span></label>
+												</div>
+												<div class="form-input-wrapper">
+													<select multiple="multiple" data-placeholder="Select Projects..." style="width:100%;" class="form-control project" type="text" data-bind="kendoMultiSelect:{value: dashboard.arProject, data: listProject,  dataTextField: 'ProjectName', dataValueField: 'ProjectName'}" name="leader" id="leader" validationMessage=" " required></select>
+													<div class="bar"></div>
+												</div>
+											</div>	
+
+									</div>
+
+									<div class="col-md-6">
+											<div class="col-md-12" style="padding: 0px;">
+													<div class="form-wrapper col-md-8">
+														<div class="form-label">
+															<label class="err-msg">Date<span class="k-invalid-msg" data-for="leaveDateEm"></span></label>
+														</div>
+													
+														<div class="form-input-wrapper">
+															<!-- <input type="text" class="form-control" data-bind="kendoDropDownList:{data:countDays, value:manyDay, dataTextField: 'text', dataValueField: 'value', optionLabel: 'Select days'}" name="leaveDateEm" id="leaveDateEm" validationMessage=" " required/>
+															<div class="bar"></div> -->
+															<div id="dateCalendarAR"></div>	
+															<div>* Press shift or ctrl to select between date</div>	    
+														</div>
+													</div>
+													
+												</div>	
+									</div>
+
+									<div class="col-md-12 form-wrapper">
+											<div style="float: right; margin-top: 80px;">
+											<button type="button" class="btn btn-sm btn-danger"  data-dismiss="modal" onclick="dashboard.cancelFormAR()"><i class="fa fa-times"></i> Cancel</button>
+											<button type="button" class="btn btn-sm btn-success" onclick="dashboard.sendAR()"><i class="fa fa-floppy-o"></i> Submit Form</button>
+											</div>
+									</div>	
+									
+								</td>
+							</tr>
+							<tr>
+							   <td class="image-left" style="background-color: #00CC99;">
+									<img src="/static/img/emc_leave.png" class="img-fluid signup">
+							   </td>
+							</tr>
+							<tr>
+								   <td class="image-left" style="background-color: #00CC99;" valign="bottom" >    
+									<span>Lets Us Take Care <br> Your Immediate Request</span>
+								</td>
+							</tr>
+						</table>
+						</div>  
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

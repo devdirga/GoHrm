@@ -1,0 +1,24 @@
+<div class="col-md-12">
+    <section class="panel" id="formLeave">
+        <div class="panel-body">
+            <p>You have already made the Approval Overtime on request <span data-bind="text:note"></span></p>
+        </div>
+    </section>
+</div>
+
+<script>
+    var note = ko.observable("");
+    var message = "{{.Message}}";
+    var status = "{{.Status}}";
+
+    var checkResponMail = function() {
+        if (message != "") {
+            note(message);
+            swal("info", message, "info");
+        } 
+    }
+
+    $(document).ready(function(){
+        checkResponMail();
+    })
+</script>

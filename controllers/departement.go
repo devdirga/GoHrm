@@ -1,0 +1,35 @@
+package controllers
+
+import (
+	. "creativelab/ecleave-dev/models"
+
+	"github.com/creativelab/knot/knot.v1"
+	tk "github.com/creativelab/toolkit"
+)
+
+type DepartementController struct {
+	*BaseController
+}
+
+func (c *DepartementController) GetDataDepartement(k *knot.WebContext) interface{} {
+	k.Config.OutputType = knot.OutputJson
+	data := make([]*DepartementModel, 0)
+	query := tk.M{}
+	crs, err := c.Ctx.Find(NewDepartementModel(), query)
+	if err != nil {
+		return nil
+	}
+
+	if crs != nil {
+		defer crs.Close()
+	} else {
+		return nil
+	}
+	// defer crs.Close()
+	err = crs.Fetch(&data, 0, false)
+	if err != nil {
+		return nil
+	}
+
+	return data
+}

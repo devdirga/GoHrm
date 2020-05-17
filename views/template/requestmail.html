@@ -1,0 +1,146 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta name="viewport" content="width=device-width"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>mail request</title>
+
+    <style type="text/css">
+        body {
+            margin-left: 30px;
+            margin-top: 30px;
+        }
+
+        .textform {
+          margin: 33px 0px;
+        }
+        
+        .form-wrapper {
+            width: 450px;
+        }
+        .form-group {
+            margin-bottom: 5px;
+        }
+        
+        .bottom {
+            margin-top: 100px;
+        }
+        
+        .pull-right {
+            float: right;
+        }
+        
+        .btn-decline {
+            display: inline-block;
+            padding: 6px 12px;
+            margin-bottom: 0;
+            font-size: 14px;
+            font-weight: 400;
+            line-height: 1.42857143;
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: middle;
+            touch-action: manipulation;
+            cursor: pointer;
+            text-decoration: none;
+            box-sizing: border-box;
+            border-radius: 4px;
+
+            width: 100px;
+            border: none;
+
+            background: #e49218;
+        } 
+        
+        a {
+            text-decoration: none;
+            color: white;
+        }
+        .btn-approved {
+            display: inline-block;
+            padding: 6px 12px;
+            margin-bottom: 0;
+            font-size: 14px;
+            font-weight: 400;
+            line-height: 1.42857143;
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: middle;
+            touch-action: manipulation;
+            cursor: pointer;
+            text-decoration: none;
+            box-sizing: border-box;
+            border-radius: 4px;
+
+            width: 100px;
+            border: none;
+            
+            background: #1daeb5;
+        } 
+        
+        .formleft {
+            float: left;
+            width: 100px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="row">
+        <div class="col-md-12 logo">
+            <img src="http://ecleave.creativelab.com/static/img/creativelab-main-logo.png" border="0" alt="Image and video hosting by TinyPic">
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-md-12 textform">
+            {{.namerequest}}</b> is requesting leave on :    
+        </div>
+        <div class="form-wrapper">
+            <table>
+                <tr>
+                    <td>Name</td>
+                    <td>:</td>
+                    <td>{{.namerequest}}</td>
+                </tr>
+                <tr>
+                    <td>Date Create</td>
+                    <td>:</td>
+                    <td>{{.DateCreate}}</td>
+                </tr>
+                <tr>
+                    <td>Leave date </td>
+                    <td>:</td>
+                    <td>{{.leaveFrom}} until {{.leaveTo}}</td>
+                </tr>
+                <tr>
+                    <td>Days&nbsp;Duration&nbsp</td>
+                    <td>:</td>
+                    <td>{{.noOfDays}}</td>
+                </tr>
+                <tr>
+                    <td>Available&nbsp;Leave </td>
+                    <td>:</td>
+                    <td>{{.noPaidLeave}} Day</td>
+                </tr>
+                <tr>
+                    <td>Paid Leave </td>
+                    <td>:</td>
+                    <td>{{.paidLeave}} Day</td>
+                </tr>
+                <tr>
+                    <td>Reason</td>
+                    <td>:</td>
+                    <td>{{.reason}}</td>
+                </tr>
+            </table>
+        </div>
+        
+        <div class="col-md-12 currentdate">
+            Has been {{.result}} by Manager  
+        </div>
+        <div class="col-md-12 textform">
+            reason : {{.managerReason}}
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,180 @@
+<script type="text/javascript">
+    model.PageId("Project");
+    model.BreadCrumbs.push(new BreadCrumb("Project", "Project", "#", "active", ""));
+    model.Access = ko.observable('{{.Menuid}}');
+    model.View = ko.observable('{{.View}}');
+    model.Create= ko.observable('{{.Create}}');
+    model.Delete= ko.observable('{{.Delete}}');
+    model.Process= ko.observable('{{.Process}}');
+    model.Edit= ko.observable('{{.Edit}}')
+    model.User= ko.observable('{{.Username}}');
+    model.JobRoleName= ko.observable('{{.JobRoleName}}');
+    model.JobRoleLevel= ko.observable('{{.JobRoleLevel}}');
+    
+ </script>
+ 
+ <script src="{{NoCacheUrl "/static/core/doctorcertificate.js"}}"></script>
+ <link rel="stylesheet" href="{{NoCacheUrl "/static/core/css/statusrequest.css"}}">
+ <style type="text/css">
+    .k-event-delete {
+    display: none !important; 
+    }
+    .k-current-time{
+    display: none !important;
+    }
+    .k-event{
+    background:transparent;
+    position: absolute;
+    border-style: none;
+    border-width: 0px;
+    text-align: left;
+    overflow: auto;
+    color: black;
+    }
+    .tbl-template{
+    width:24% !important;
+    }
+    .form-custom .form-wrapper {
+    margin-top: 10px !important;
+    }
+    .nopadding {
+    padding: 0 !important;
+    margin: 0 !important;
+    }
+    .btn-footer{
+    margin: 0px 3px 10px 0px;
+    }
+    .user-pic {
+    background-color: lightgray;
+    min-width: 242px;
+    max-width: 242px;
+    min-height: 242px;
+    background-position: center;
+    background-size: cover;
+    border-radius: 12%;
+    position: relative;
+    }
+    .file-hidden {
+    opacity: 0;
+    display: none !important;
+    }
+    .btn-edit-photo{
+    position: absolute;
+    bottom: 12px;
+    right: 12px;
+    }
+    .logo-title{
+    top: 28%;
+    height: inherit;
+    position: absolute;
+    left: 5%;
+    color: white;
+    font-size: 74px;
+    font-weight: 600;
+    }
+    .label-active{
+    border-radius: 10%;
+    color:white;
+    padding: 6px;
+    font-weight: 600;
+    }
+    .project-photo {
+    display: inline-block;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-size: cover;
+    background-position: center center;
+    vertical-align: middle;
+    line-height: 32px;
+    box-shadow: inset 0 0 1px #999, inset 0 0 10px rgba(0,0,0,.2);
+    margin-left: 5px;
+    }
+    .project-name {
+    display: inline-block;
+    vertical-align: middle;
+    line-height: 32px;
+    padding-left: 3px;
+    }
+    .header-img{
+    background-image: url("/static/img/header-image.png"); 
+    height: inherit;
+    background-repeat: no-repeat;
+    margin-top: -12px;
+    padding: 24px;
+    }
+    .labelvalue-view{
+    font-size: large;
+    }
+    .btn-warning-frameonly{
+    background-color:white;
+    color:#f1c500;
+    border-width:2px;
+    }
+    .btn-info-frameonly{
+    background-color:white;
+    color:#58c9f3;
+    border-width:2px;
+    }
+    .btn-danger-frameonly{
+    background-color:white;
+    color:#ff6c60;
+    border-width:2px;
+    }
+    #printLayout{
+    z-index:-1;
+    position:absolute;
+    }
+ </style>
+ <div id="printLayout"></div>
+ <div data-bind="with:dc">
+    <div id="main">
+       <div class="row">
+          <div class="col-md-12">
+             <section class="panel">
+                <header class="panel-heading" style="height: 100px;border-bottom: 0;">
+                   <div class="header-img">
+                      <span style="color:white;font-size: x-large;font-weight: bolder;">Attachment Certificate</span><br>
+                      <span style="color: white;font-weight: bolder;">List</span>
+                   </div>
+                   <input id="filterAllProject" type="text" class="form-control input-sm pull-right" placeholder="Search" style="width: 200px; display: unset; margin-top: -40px;">
+                </header>
+                <div class="panel-body">
+                   <div class="col-md-12">
+                      <div class="row">
+                      </div>
+                      <div id="dc-el" style="margin-top:10px"></div>
+                   </div>
+                </div>
+             </section>
+          </div>
+       </div>
+    </div>
+    
+ </div>
+
+ <!-- EL reset start -->
+<div class="modal fade" id="selectDays" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
+   <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+         <div class="body-panel col-md-12" style="background-color: #f3eeee;">
+            <div class="col-md-12" style="color:#000; font-weight: bolder;">
+               <div class="form-group">
+                  <label>
+                        <span>Days Cut off </span>
+                  </label>
+                  <input data-bind="kendoDropDownList: { dataTextField: 'text', dataValueField: 'value', data: dc.dataDaysSelection, value: dc.selectDays, optionLabel: 'Select Many Days'}"  />
+               </div>
+            </div>
+            <div class="col-md-12" style="padding-top:1%;" >
+               <div style="float:right;">
+                     <button type="button" class="btn btn-flat btn-sm btn-primary" onclick="dc.resetEmergencyLeave()"><i class="fa fa-upload" aria-hidden="true"></i> Send</button><button type="button" class="btn btn-flat btn-sm btn-danger" onclick="dc.CloseModalreset()"><i class="fa fa-times"></i> Cancel</button>
+               </div>
+            </div>  
+         </div>
+      </div>
+   </div>
+</div>
+<!-- EL Attachment end -->
+ 
+ 

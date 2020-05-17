@@ -1,0 +1,17 @@
+<script type="text/javascript">
+    model.PageId("log for admin");
+    model.BreadCrumbs.push(new BreadCrumb("log for admin", "log for admin", "#", "active", ""));
+    model.Access = ko.observable('{{.Menuid}}');
+    model.View = ko.observable('{{.View}}');
+    model.Create= ko.observable('{{.Create}}');
+    model.Delete= ko.observable('{{.Delete}}');
+    model.Process= ko.observable('{{.Process}}');
+    model.Edit= ko.observable('{{.Edit}}');
+    model.User= ko.observable('{{.Username}}');
+    model.UserId= ko.observable('{{.UserId}}'); 
+    model.JobRoleName= ko.observable('{{.JobRoleName}}');
+    model.JobRoleLevel= ko.observable('{{.JobRoleLevel}}');
+</script>
+<script src="{{NoCacheUrl "/static/core/logforadmin.js"}}"></script>
+
+tes

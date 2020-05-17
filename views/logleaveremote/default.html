@@ -1,0 +1,99 @@
+<script type="text/javascript">
+    model.PageId("ADMINISTRATOR");
+    model.PageSubId();
+    model.BreadCrumbs.push(new BreadCrumb('{{.Menuname}}', '{{.Menuname}}', "#", "active", ""));
+    model.Access = ko.observable('{{.Menuid}}');
+    model.View = ko.observable('{{.View}}');
+    model.Create= ko.observable('{{.Create}}');
+    model.Delete= ko.observable('{{.Delete}}');
+    model.Process= ko.observable('{{.Process}}');
+    model.Edit= ko.observable('{{.Edit}}')
+    model.User= ko.observable('{{.Username}}');
+    model.JobRoleName= ko.observable('{{.JobRoleName}}');
+    model.JobRoleLevel= ko.observable('{{.JobRoleLevel}}');
+</script>
+<script src="/static/switch-js/bootstrap-switch.js"></script>
+<script src="/static/switch-js/highlight.js"></script>
+<script src="/static/switch-js/main.js"></script>
+<script src="{{NoCacheUrl "/static/core/logleaveremote.js"}}"></script>
+<style>
+    .image-left{
+		text-align: center;
+		padding: 15px;
+	}
+    .image-left-bg{
+		background-color: #03BBC7;	
+    }
+    .image-left img{
+		margin: 15px 0;
+		/*position: absolute;*/
+		/*top: 50%;*/
+	}	
+	.form-inputan {
+		padding: 15px 0;
+	}
+	.image-left span{
+		font-weight: 600;
+		font-size: 20px;
+	    text-align: center;
+	    color: white;
+    }
+    .modal-header{
+        background: #ffffff;
+        color: #000;
+    }	
+</style>
+<div class="container" style="padding: 10px;">
+    <header class="panel-heading" style="height: 100px;border-bottom: 0; background-color:white;">
+        <div class="header-img">
+            <span style="color:white;font-size: x-large;font-weight: bolder;">Log Leave & Remote</span><br>
+            <span style="color: white;font-weight: bolder;">List</span>
+        </div>
+    </header>
+    <div class="tab-content" style="padding-top: 10px;">
+        <div id="home" class="tab-pane fade in active">
+            <div data-bind="with:log">
+                <section class="panel">
+                    <header class="panel-heading">
+                        Filter
+                    </header>
+                    <div class="panel-body">
+                        <form class="form-inline" role="form">
+                            <div class="col-md-4">
+                                <div class="col-md-3">
+                                    <label style="padding-top:8px;">Month </label>
+                                </div>
+                                <div class="col-md-9">
+                                    <input name="date" id="dateFilter" data-bind="kendoDatePicker:{value:log.dateFilter, start: 'year', depth: 'year',format: 'MMM-yyyy'}" style="width: 185px">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="col-md-3">
+                                    <label style="padding-top:8px;">Type Request </label>
+                                </div>
+                                <div class="col-md-9">
+                                    <input data-bind="kendoDropDownList: { dataTextField: 'title', dataValueField: 'field', data: log.dataTypeReq, value: log.valueTypeReq}" />
+                                </div>
+                            </div>
+                        </form>
+                        <button class="btn btn-sm btn-primary" onclick="log.refresh()"><i class="fa fa-refresh"></i> Refresh</button>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+    <div class="tab-content" style="padding-top: 10px;">
+        <div id="home" class="tab-pane fade in active">
+            <div data-bind="with:log">
+                <section class="panel">
+                    <header class="panel-heading">
+                        Data Log
+                    </header>
+                    <div class="panel-body">
+                        <div id="MasterGridLog"></div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+</div>

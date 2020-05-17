@@ -1,0 +1,34 @@
+<div class="col-md-12">
+    <section class="panel" id="formLeave">
+        <div class="panel-body">
+            <p id="note"></p>
+        </div>
+    </section>
+</div>
+
+<script>
+    getParam = function(){
+        model.isLoading(true);
+        var urlParams = new URLSearchParams(window.location.search);
+        // console.log("----------------",urlParams.get('param'));
+        param ={
+            Param:urlParams.get('Param'),
+        }
+        url = "/remote/responapproval";
+        ajaxPost(url, param, function(res){
+            if(res.IsError == true){
+                $("#note").text(res.Message);
+                swal("info", res.Message, "info");
+            }else{
+                $("#note").text(res.Message);
+                swal("info", res.Message, "info");
+            }
+            model.isLoading(false);
+            setTimeout(function(){window.close()}, 5000)
+        });
+    }
+
+    $(function(){
+        getParam()
+    });
+</script>

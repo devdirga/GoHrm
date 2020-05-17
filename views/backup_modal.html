@@ -1,0 +1,142 @@
+<div class="modal fade" id="leaveModal2" role="dialog" aria-labelledby="LeaveModalLabel" aria-hidden="true" data-backdrop="static">
+	    <div class="modal-dialog modal-xl">
+	        <div class="modal-content">
+	            <!-- Modal Header -->
+	            <!-- Modal Body -->
+	            <div class="col-md-12 body-panel"  style=' padding-left: 0; padding-bottom: 0px;'>
+	                <form class="form-custom" id="formRequestLeave2" method="POST">
+	                    <div   style="    margin-top: -15px;">
+	                        <table width="100%">
+		                    	<tr>
+			                        <td  width="25%"  class="image-left leave-bg" valign="top">
+			                        	<span>Hi There !<br>Please Don't Leave <br>Any Field Blank</span>
+			                        </td>
+			                        <td  width="75%" class="form-inputan"  rowspan="3" valign="top">
+										<div class="col-md-6">
+											<div class="col-md-12">
+												<div class="col-md-12">
+													<div class="form-wrapper col-md-12">
+														<div class="form-label">
+															<label for="inputPassword3" class="form-label err-msg">Reason Leave<span class="k-invalid-msg" data-for="reason2"></label>
+														</div>
+														<div class="form-input-wrapper">
+															<input type="text" class="form-control" data-bind="value:reason2" name="reason2" id="reason2" validationMessage=" " required />
+															<div class="bar"></div>
+															<!-- <span class="k-invalid-msg" data-for="reason"></span> -->
+														</div>
+													</div>
+												</div>            
+											</div>
+											<div class="col-md-12">
+												<div class="col-md-12">
+													<div class="form-wrapper col-md-12">
+														<div class="form-label">
+															<label for="inputPassword3" class="form-label err-msg">Project<span class="k-invalid-msg" data-for="project2"></label>
+														</div>
+														<div class="form-input-wrapper">
+															<!-- <input type="text" class="form-control" data-bind="value:project2" name="project2" id="project2" validationMessage=" " required /> -->
+															<select type="text" class="form-control" data-bind="kendoMultiSelect:{data:listProject, value: project2, dataValueField:'Id', dataTextField:'ProjectName', optionLabel: 'Select Employee', filter: 'contains'}" required ></select>
+															<div class="bar"></div>
+															<!-- <span class="k-invalid-msg" data-for="reason"></span> -->
+														</div>
+													</div>
+												</div>				                                       
+											</div>
+										</div>
+										<div class="col-md-6"></div>
+				                        
+										
+			                    	</td>
+			                    </tr>
+			                    <tr>
+			                       <td class="image-left leave-bg">
+			                        	<img src="/static/img/leave.png" class="img-fluid signup">
+			                       </td>
+			                    </tr>
+			                    <tr>
+			                       	<td class="image-left leave-bg" valign="bottom" >    
+			                            <span>Have a Great Day !</span>
+			                        </td>
+			                    </tr>
+		                    </table>
+	                    </div>  
+	                </form>
+	            </div>
+	        </div>
+	    </div>
+	</div>
+
+	<script>
+		// =========================== leave version 2 indonesia =========================
+
+dashboard.modalLeave2 = function(){
+	$("#leaveModal2").modal("show");
+	var minDate = moment().add(3, 'days');
+	dashboard.minDateFromLeave(minDate.toDate());
+	dashboard.minDateToLeave(minDate.toDate());
+	// dashboard.leaveFrom(minDate.toDate());
+	dashboard.dateFrom2(minDate.toDate());
+}
+
+dashboard.Hierachie2 = function(){
+	dashboard.ProjectManager({
+		"IdEmp": altManager.empid,
+		"Name": altManager.fullname,
+		"Email": altManager.email,
+		"PhoneNumber": altManager.phonenumber,
+		"StatusRequest": "Pending",
+		"Reason": "",
+		"Location": altManager.location,
+		"ProjectName": "",
+		"UserId": altManager._id
+	});
+	dashboard.ProjectListLeader([
+		{
+			"IdEmp": dashboard.dataUser().EmpId,
+			"Name": dashboard.dataUser().Fullname,
+			"Email": dashboard.dataUser().Email,
+			"PhoneNumber": dashboard.dataUser().PhoneNumber,
+			"StatusRequest": "Approved",
+			"Reason": "",
+			"Location": dashboard.dataUser().Location,
+			"ProjectName": " ",
+			"UserId": dashboard.dataUser().Id
+		}
+
+		$.each(dashboard.project2(), function(i, dt){
+			pr = _.find(dashboard.listProject(), function(p){
+				return p.Id == dt;
+			});
+			if(pr != undefined){
+				dashboard.ProjectListLeader().push(
+					{
+						"IdEmp": dashboard.dataUser().EmpId,
+						"Name": dashboard.dataUser().Fullname,
+						"Email": dashboard.dataUser().Email,
+						"PhoneNumber": dashboard.dataUser().PhoneNumber,
+						"StatusRequest": "Approved",
+						"Reason": "",
+						"Location": dashboard.dataUser().Location,
+						"ProjectName": " ",
+						"UserId": dashboard.dataUser().Id
+					}
+				)
+			}
+		});
+	]);
+
+
+
+	manager = []
+	mgr = _.find(dashboard.listUser(), function(dt){return dt._id == "5bd8065277b8a9b5c800008b" || dt._id == "5bd8065277b8a9b5c800008e" });
+
+	if(mgr != undefined){
+		
+	}
+}
+
+dashboard.sendRequest2 = function(){
+	valpr = []
+	
+}
+	</script>

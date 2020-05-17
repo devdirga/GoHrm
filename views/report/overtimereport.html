@@ -1,0 +1,166 @@
+<style>
+    .table-td-report{
+        width: 25%;text-align:left !important;
+    }
+    .table-th-report{
+        font-weight: normal;
+        font-size: 11px
+    }
+    </style>
+    <div class="tab-content" style="padding-top: 10px;">
+        <div id="chart" class="tab-pane fade in active">
+            <div class="panel panel-custom" data-bind="with:report">
+                <div class="panel-body">
+                    <header class="panel-heading" style="background:#f5f5f5;">
+                        <div class="header-hide-pdf" style="height: 30px;">
+                            <div style="display: inline-block; margin-top: 5px;">
+                                <div style="display: inline-block; padding-right: 10px;" data-bind="css: { activeFilter: report.filterByMonth() == false}">
+                                    Yearly <span data-bind="text: report.annualYear"></span>
+                                </div>
+                                <div class="pretty p-switch p-slim">
+                                    <input type="checkbox" data-bind="checked: report.filterByMonth, value: report.filterByMonth"/>
+                                    <div class="state">
+                                        <label></label>
+                                    </div>
+                                </div>
+                                <div style="display: inline-block; padding-left: 10px;" data-bind="css: { activeFilter: report.filterByMonth() == true}">
+                                    Select Monthly
+                                </div>
+                                <div style="display: none; padding-left: 10px;" data-bind="css: { displayFilter: report.filterByMonth() == true}">
+                                    <input name="date" id="dateFilterOvertime" data-bind="kendoDatePicker:{value:report.dateFilter, start: 'year', depth: 'year',format: 'MMM-yyyy', change: function(){setTimeout(function(){report.changeData()}, 1)}}" style="width: 185px; font-size: 12px !important">
+                                </div>
+                            </div>
+                        </div>
+                    </header>
+                </div>
+                <div class="panel-body" style="padding: 0px 15px;">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <center>
+                                <div class="panel-height_100">
+                                    <div class="circle">
+                                        <div class="circle-text">
+                                            <div id="year_overtime_chart" class="donut-chart" style="margin-left:50px"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </center>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="panel-height_100">
+                                <div class="circle">
+                                    <div class="circle-text">
+    
+                                        <table class="table" id="sumLeave">
+                                            <thead>
+                                                <tr>
+                                                    <th class="table-td-report" data-bind="text: report.totalOvertimeData()">125</th>
+                                                    <th class="table-td-report"  data-bind="text: report.totalOvertimeApproved()" >76</th>
+                                                    <th class="table-td-report" data-bind="text: report.totalOvertimeDeclined()">200</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td class="table-td-report">Total Overtime</td>
+                                                    <td class="table-td-report">Approved Overtime</td>
+                                                    <td class="table-td-report">Declined Overtime</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="table-td-report">(Approved & Declined Overtime)</td>
+                                                    <td class="table-td-report">(Average)</td>
+                                                    <td class="table-td-report">(Average)</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="tab-content">
+        <div id="bar_div" class="tab-pane fade in active">
+            <section class="panel">
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <center>
+                                <div class="panel-height_100">
+                                    <div class="circle">
+                                        <div class="circle-text">
+                                            <div id="bar_chart_overtime" class="donut-chart"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </center>
+                        </div>
+                        <div class="col-md-6">
+                            <center>
+                                <div id="column_chart_overtime"></div>
+                            </center>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+    <div class="tab-content">
+        <div id="data" class="tab-pane fade in active">
+            <div data-bind="with:report">
+                <section class="panel">
+                    <div class="panel-body">
+                        <header class="panel-heading filter" style="background:#f5f5f5;">
+                            <div class="header-hide-pdf" style="height: 30px;">
+                                <div style="display: inline-block">
+                                    <div style="display: inline-block; padding-right: 10px;">
+                                        Search Name
+                                    </div>
+                                    <div style="display: inline-block; padding-left: 10px;">
+                                        <select class="k-textbox" type="text" data-bind="kendoMultiSelect: {value:filterUserOvertime, data: listFullName, dataTextField: 'text', dataValueField: 'value'}" style="width: 185px;" onchange="report.initOvertime()"></select>
+                                    </div>
+                                    <div style="display: inline-block; padding-left: 10px;">
+                                        <input data-bind="kendoDropDownList: { dataTextField: 'text', dataValueField: 'value', data: report.listProject, value: report.valueProjectOvertime, change: function(){setTimeout(function(){report.initOvertime()}, 1)}}" style="width: 185px"/>
+                                    </div>
+                                    <div style="display: inline-block; padding-left: 10px;">
+                                        <input data-bind="kendoDropDownList: { dataTextField: 'text', dataValueField: 'value', data: report.listLocation, value: report.valueLocationOvertime, change: function(){setTimeout(function(){report.initOvertime()}, 1)}}" style="width: 185px"/>
+                                    </div>
+                                    <div  style="display: none; padding-left: 10px;" data-bind="css: { displayFilter: report.filterByMonth() == true}">
+                                        <input name="date" id="overtimeDate" data-bind="kendoDatePicker:{value:report.dateFilterOvertime, start: 'day', depth: 'day',format: 'dd-MMM-yyyy', change: function(){setTimeout(function(){report.changeData()}, 1)}}"
+                                        style="width: 100%; font-size: 12px !important;">
+                                    </div>
+                                </div>
+                                <div style="display: inline-block;" class="pull-right">
+                                    <button type="button" class="btn btn-primary" style="background: #61DC72;" data-bind="click:exportExcelGridReport.bind(this, 'printLayoutOvertime')"><i class="fa fa-file-excel-o"></i>&nbsp&nbsp Export</button>
+                                    <button type="button" class="btn btn-primary" style="background: #FE0000;" data-bind="click:exportPDFGridReport.bind(this, 'printLayoutOvertime')"><i class="fa fa-file-pdf-o"></i>&nbsp&nbsp Export</button>
+                                </div>
+                            </div>
+                        </header>
+                        <div id="printLayoutOvertime" class="printPdf"></div>
+                        <div id="OvertimeGridReport" class="hideHeader"></div>
+    
+                        <script type="text/x-kendo-template" id="templateovertime">
+                            <div class="tabstrip">
+                                <ul>
+                                    <li class="k-state-active">Overtime Approved</li>
+                                    <li>Overtime Declined</li>
+                                </ul>
+                                <div>
+                                    <div class="totalovertimeapproved"></div>
+                                </div>
+                                <div>
+                                    <div class="totalovertimedeclined"></div>
+                                </div>
+                                
+                            </div>
+                        </script>
+                        
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>

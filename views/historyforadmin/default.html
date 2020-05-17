@@ -1,0 +1,91 @@
+<script type="text/javascript">
+    model.PageId("History");
+    model.BreadCrumbs.push(new BreadCrumb("History", "History", "#", "active", ""));
+    model.Access = ko.observable('{{.Menuid}}');
+    model.View = ko.observable('{{.View}}');
+    model.Create= ko.observable('{{.Create}}');
+    model.Delete= ko.observable('{{.Delete}}');
+    model.Process= ko.observable('{{.Process}}');
+    model.Edit= ko.observable('{{.Edit}}');
+    model.User= ko.observable('{{.Username}}');
+    model.UserId= ko.observable('{{.UserId}}'); 
+</script>
+<style>
+    .k-grid-header th.k-header{
+        text-align: center;
+        padding-right: 0px;
+        padding-left: 0px;
+        vertical-align: middle;
+    }
+</style>
+<!-- <script src="http://cdnjs.cloudflare.com/ajax/libs/jszip/2.4.0/jszip.js"></script> -->
+<!-- <script src="/static/kendoui/js/kendo.all.min.js"></script> -->
+<script src="/static/kendoui/js/jszip.min.js"></script>
+<script src="{{NoCacheUrl "/static/core/historyforadmin.js"}}"></script>
+<div>
+    <div class="col-md-12" style="padding: 0px;">
+        <section class="panel">
+            <div class="panel-body" style="margin-top: 5px;">
+                    <div class="col-sm-1"></div>
+                    <div class="col-sm-10">
+                        <div class="col-md-12" style="padding: 0px; padding-bottom: 10px;">
+                            <div style="float: left;">
+                                <button type="button" class="btn btn-sm btn-flat btn-default">Filter <i class="fa fa-filter" aria-hidden="true"></i></button>
+                            </div> 
+                            <div style="float: right">
+                                    <input type="text" class="form-control empty" id="filterText" placeholder="&#xF002;" style="font-family:Arial, FontAwesome"/>
+                            </div>
+                        </div>
+                        <div class="col-md-12" style="padding: 0px;">
+                            <div style="float: right;">
+                                <button type="button" class="btn btn-sm btn-flat btn-primary" onclick="hist.SaveExcel(hist.dataElement())"><i class="fa fa-file-excel-o" aria-hidden="true"></i> Export Excel</button>
+                                <button type="button" class="btn btn-sm btn-flat btn-danger" onclick="hist.SavePDF(hist.dataElement())"><i class="fa fa-file-pdf-o" aria-hidden="true"></i> Export pdf</button>
+                            </div>
+                            
+                        </div>
+                        <ul class="nav nav-tabs">
+                            <li class="active"><a data-toggle="tab" href="#historyLeave" onclick="hist.openLeave()">Leave</a></li>
+                            <li><a data-toggle="tab" href="#historyEmergency" onclick="hist.openEmergency()">Emergency</a></li>
+                            <li><a data-toggle="tab" href="#historyremote" onclick="hist.openRemote()">History Remote</a></li>
+                        </ul>
+                        <div class="tab-content" style="padding-top:10px;">
+                            <div id="historyLeave" class="tab-pane fade in active">
+                                <div class="col-md-12" style="padding: 0px;padding-bottom: 10px;">
+                                    <div style="float: right;">
+                                        <button type="button" class="btn btn-sm btn-flat btn-success" onclick="hist.approveAll('.checkLeave')">Approve All</button>
+                                        <button type="button" class="btn btn-sm btn-flat btn-danger" onclick="hist.declinedAll('.checkLeave')">Decline All</button>
+                                    </div>
+                                </div>
+                                <div class="col-md-12" style="max-height: 500px;overflow: auto; padding: 0px;">
+                                    <div id="idleave"></div>
+                                </div>
+                            </div>
+                            <div id="historyEmergency" class="tab-pane fade in ">
+                                <div class="col-md-12" style="padding: 0px;padding-bottom: 10px;">
+                                    <div style="float: right;">
+                                        <button type="button" class="btn btn-sm btn-flat btn-success" onclick="hist.approveAll('.checkEmergency')">Approve All</button>
+                                        <button type="button" class="btn btn-sm btn-flat btn-danger" onclick="hist.declinedAll('.checkEmergency')">Decline All</button>
+                                    </div>
+                                </div>
+                                <div class="col-md-12" style="max-height: 500px;overflow: auto;padding: 0px;">
+                                    <div id="idEmergency"></div>
+                                </div>
+                            </div>
+                            <div id="historyremote" class="tab-pane fade in ">
+                                <div class="col-md-12" style="padding: 0px;padding-bottom: 10px;">
+                                    <div style="float: right;">
+                                        <button type="button" class="btn btn-sm btn-flat btn-success" onclick="hist.remoteAproveAll()">Approve All</button>
+                                        <button type="button" class="btn btn-sm btn-flat btn-danger" onclick="hist.remoteDeclineAll()">Decline All</button>
+                                    </div>
+                                </div>
+                                <div class="col-md-12" style="max-height: 500px;overflow: auto;padding: 0px;">
+                                    <div id="idRemote"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-1"></div>
+            </div>
+        </section>
+    </div>
+</div>

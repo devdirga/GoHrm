@@ -1,0 +1,48 @@
+<div class="col-md-12">
+    <section class="panel" id="formLeave">
+        <div class="panel-body">
+            
+            <div class="col-md-12">
+                <p>You had been declined Remote Request Please give reason</p>
+            </div>
+            <div class="col-md-12">
+                <textarea class="form-control" data-bind="value:note"></textarea>
+            </div>
+            <div class="col-md-12" style="padding-top: 18px;">
+                    <button class="btn btn-sm btn-flat btn-success" onclick="declineReason()">Send Reason</button>
+            </div>
+            
+        </div>
+    </section>
+</div>
+
+<script>
+    var note = ko.observable("");
+
+    var declineReason = function() {
+        model.isLoading(true);
+        var urlParams = new URLSearchParams(window.location.search);
+        payload = {  
+            Param :urlParams.get('Param'),
+            Note  :note()
+        }
+        
+        ajaxPost("/remote/handledeclinenote", payload, function(res){
+            model.isLoading(false);
+            if (res.Status != "OK") {
+                swal("error!", res.Message, "error")
+                return
+            }
+
+            data = res.Data;
+            if(data.IsExpired == true){
+                swal("Info", "Request had been Expired", "info")
+            }else{
+                swal("success", "data has been send", "success")
+            }
+            
+            
+            // setTimeout(function(){window.close()}, 2000)            
+        });
+    }
+</script>

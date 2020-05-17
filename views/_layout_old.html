@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="creativelab">
+    <link rel="shortcut icon" href="#">
+
+    <title>creativelab Recruitment Application</title>
+
+    <script src="/static/js/jquery-2.1.0.min.js"></script>
+    <script src="/static/js/jquery-ui.min.js"></script>
+
+    <script src="/static/js/knockout-3.1.0.js"></script>
+    <script src="/static/js/knockout-3.3.0.js"></script>
+    <script src="/static/js/knockout.mapping-latest.js"></script>
+    <script src="/static/js/knockout.validation.js"></script>
+    <script src="/static/js/w3data.js"></script>
+
+
+    <script src="/static/js/jszip.min.js"></script>
+    <script src="/static/kendoui/js/kendo.all.min.js"></script>
+
+    <script src="/static/js/knockout-kendo.min.js"></script>
+
+    <link rel="stylesheet" href="/static/flatlab/assets/bootstrap-fileupload/bootstrap-fileupload.css"></link>
+
+    <!-- Tooltipster -->
+    <link rel="stylesheet" href="/static/tooltipster/css/tooltipster.css" />
+    <link rel="stylesheet" href="/static/tooltipster/css/tooltipster-val.css" />
+    <script src="/static/tooltipster/js/jquery.tooltipster.min.js"></script>
+    <!-- Tooltipster -->
+
+    <!-- Sweetalert -->
+    <script src="/static/sweetalert/sweetalert.min.js"></script>
+    <link href="/static/sweetalert/sweetalert.css" type="text/css" rel="stylesheet" />
+    <!-- Sweetalert -->
+
+    <script src="/static/core/app.js"></script>
+
+    <!--  Js switch  -->
+    <script src="/static/switch-js/bootstrap-switch.js"></script>
+    <!-- <script src="/static/switch-js/highlight.js"></script> -->
+    <!-- <script src="/static/switch-js/main.js"></script> -->
+    <!-- Js switch  -->
+
+    <script src="/static/js/bootstrap.min.js"></script>
+    <script src="/static/js/underscore.min.js"></script>
+    <script src="/static/js/moment.min.js"></script>
+    <script src="/static/js/color.js"></script>
+    <script src="/static/js/tools.js"></script>
+    <script src="/static/js/linq.js"></script>
+   	<script src="/static/js/custom.js"></script>
+
+
+
+    <!-- switch Bootstrap CSS  -->
+    <link href="/static/switch-css/bootstrap-switch.min.css" rel="stylesheet">
+    <!-- switch Bootstrap CSS -->
+
+    <link href="/static/css/bootstrap.css" type="text/css" rel="stylesheet" />
+    <link href="/static/css/bootstrap-theme.css" type="text/css" rel="stylesheet" />
+
+    <link rel="stylesheet" href="/static/kendoui/styles/kendo.uniform.min.css" />
+    <link rel="stylesheet" href="/static/kendoui/styles/kendo.common-bootstrap.min.css" />
+    <link rel="stylesheet" href="/static/kendoui/styles/kendo.dataviz.min.css" />
+    <link rel="stylesheet" href="/static/kendoui/styles/kendo.dataviz.bootstrap.min.css" />
+    <link rel="stylesheet" href="/static/loader/style.css" />
+
+    <script src="/static/js/underscore.min.js"></script>
+    <script src="/static/js/linq.js"></script>
+    <script src="/static/js/ecis_config.js"></script>
+    <script src="/static/js/main.js"></script>
+    <script src="/static/js/ecis_start.js"></script>
+    <script src="/static/js/jquery.fullscreen.min.js"></script>
+    <!-- <script src="/static/core/authentication.js"></script> -->
+
+    <!-- START ASSET FROM ORIGINAL -->
+    <link rel="stylesheet" href="/static/css/font-awesome.css" />
+    <link rel="stylesheet" href="/static/css/fonts.css" />
+    <!-- <link rel="stylesheet" href="/static/css/site.css" /> -->
+    <!-- END ASSET FROM ORIGINAL -->
+
+    <!-- =================START ASSET FROM FLAT UI============== -->
+    <!-- Bootstrap core CSS -->
+    <link href="/static/flatlab/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/flatlab/css/bootstrap-reset.css" rel="stylesheet">
+    <!--external css-->
+    <link href="/static/flatlab/assets/font-awesome/css/font-awesome.css" rel="stylesheet" />
+    <!-- <link href="css/navbar-fixed-top.css" rel="stylesheet"> -->
+
+      <!-- Custom styles for this template -->
+    <link href="/static/flatlab/css/style.css" rel="stylesheet">
+    <link href="/static/flatlab/css/style-responsive.css" rel="stylesheet" />
+    <style type="text/css">
+      .navsecond a {
+        color: white;
+      }
+    </style>
+
+    
+    <!-- ==============END ASSET FROM FLAT UI================= -->
+
+    <script>
+      var model = {
+        PageTabID: ko.observable(""),
+        Loading: ko.observable(false)
+      };
+      Notification = ko.observableArray([]);
+      var gbLastProcessDate;
+      $.ajax({
+        url: "/processlog/getpaymentreceiptmindate",
+        type: "POST",
+        success: function (res) {
+          gbLastProcessDate = res.Data;
+        },
+        async: false
+      });
+    </script>
+
+    <script id="navbarTemplate" type="text/html">
+      <li data-bind="if: Submenus().length==0">
+        <a data-bind="text: Title, attr:{href:Url}"></a>
+      </li>
+
+      <li data-bind="if: Submenus().length>0" class="dropdown">
+        <a data-bind="html: Title() + '&nbsp;&nbsp;<i></i>'" style="cursor:pointer" class="dropdown-toggle" data-toggle="dropdown"></a>
+        <ul class="dropdown-menu" role="menu" data-bind="template:{name:'navbarSubTemplate', foreach:Submenus}"></ul>
+      </li>
+    </script>
+
+<!--     <script id="navbarSubTemplate" type="text/html">
+      <li data-bind="if: Submenus().length==0">
+        <a data-bind="text: Title, attr:{href:Url}"></a>
+      </li>
+
+      <li data-bind="if: Submenus().length>0" class="dropdown-submenu">
+        <a data-bind="html: Title() + '&nbsp;&nbsp;<i></i>'" style="cursor:pointer" class="dropdown-toggle" data-toggle="dropdown"></a>
+        <ul class="dropdown-menu" role="menu" data-bind="template:{name:'navbarSubTemplate', foreach:Submenus}"></ul>
+      </li>
+    </script> -->
+
+    <script id="navbarSubTemplate" type="text/html">
+        
+        <li data-bind="if: Submenus().length==0, css:{'active': ($root.PageSubId() == Id())}">
+            <a data-bind="text: Title, attr:{href:Url}"></a>
+        </li>
+        
+        <li data-bind="if: Submenus().length>0, css:{'active': ($root.PageSubId() == Id())}" class="dropdown-submenu">
+            <a data-bind="text: Title" style="cursor:pointer" class="dropdown-toggle" data-toggle="dropdown"></a>
+            <ul class="dropdown-menu" role="menu" data-bind="template:{name:'navbarSubTemplate', foreach:Submenus}"></ul>
+        </li>
+        
+    </script>
+
+    <script id="breadcrumbTemplate" type="text/html">
+      <li data-bind="attr:{class:CssClass}"><a data-bind="text: Title, attr:{href:Url, class:CssClass, onclick: (Action!=undefined?Action:'')}"></a></li>
+    </script>
+</head>
+<body class="full-width">
+<section id="container" class="">
+    <div>
+      <!--header start-->
+      <header class="header white-bg">
+          <div class="navbar-header">
+              <!--logo start-->
+              <a href="#" class="logo" >creativelab <span>LEAVE</span></a>
+              <!--logo end-->
+              <div class="top-nav ">
+                  <ul class="nav pull-right top-menu">
+                      <li>
+                          <input type="text" class="form-control search" placeholder=" Search">
+                      </li>
+                      <!-- user login dropdown start-->
+                      <li class="dropdown">
+                          <a data-toggle="dropdown" class="dropdown-toggle" href="#" style="margin-top: 5px;">
+                              <b class="fa fa-user" style="padding: 0 5px;"></b>
+                          </a>
+                          <ul class="dropdown-menu extended notification">
+                              <div class="log-arrow-up"></div>
+                              <li>
+                                <a href="">
+                                  <i class="fa fa-user"></i>
+                                    User Setting
+                                </a>
+                              </li>
+                              <li>
+                                <a onClick="Logout()">
+                                    <i class="fa fa-sign-out"></i>
+                                    Logout
+                                </a>
+                              </li>
+                          </ul>
+                      </li>
+                      <!-- user login dropdown end -->
+                  </ul>
+              </div>
+          </div>
+      </header>
+      <div class="header2">
+          <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                  <span class="fa fa-bars" style="color:#fff;"></span>
+              </button>
+              <div class="horizontal-menu navbar-collapse collapse ">
+                  
+                  <ul class="nav navbar-nav navsecond" data-bind="template:{name:'navbarTemplate', foreach:MainMenus}"></ul>
+                  
+                  <!-- <ul class="nav navbar-nav navsecond">
+                      <li class="active"><a href="index-2.html">Dashboard </a></li>
+                      <li><a href="#">Aplicant Profile </a></li>
+                      <li class="dropdown">
+                          <a data-toggle="dropdown" data-hover="dropdown" class="dropdown-toggle" href="#">Administrator <b class=" fa fa-angle-down"></b></a>
+                          <ul class="dropdown-menu">
+                              <li><a href="general.html">User</a></li>
+                              <li><a href="buttons.html">Role</a></li>
+                              <li><a href="widget.html">Menu</a></li>
+                          </ul>
+                      </li>
+                      <li><a href="basic_table.html">Report</a></li>
+                  </ul> -->
+              </div>
+          </div>
+      </div>
+      <!--header end-->
+      <script>
+        function GridColumn(id, userId, gridId) {
+          this.Name = id + "_" + userId + "_" + gridId;
+          this.GridId = gridId;
+          this.Init = function () {
+            var grid = $('#' + this.GridId).data('kendoGrid');
+
+            var gridCols = grid.columns;
+            var datas = readCookie(this.Name);
+            if (datas == null) {
+              var visibleCols = [];
+              jQuery.each(gridCols, function (index) {
+                if (!this.hidden) {
+                  visibleCols.push(this.field);
+                }
+              });
+              createCookie(this.Name, visibleCols.join('|'));
+            } else {
+              var showColumns = datas.split('|');
+              jQuery.each(gridCols, function (index) {
+                if (showColumns.indexOf(this.field) < 0) {
+                  grid.hideColumn(this.field);
+                }
+              });
+            }
+          };
+          this.GetColumns = function () {
+            return readCookie(this.Name);
+          };
+          this.AddColumn = function (columnName) {
+            var datas = this.GetColumns();
+            var cols = [];
+            if (datas != null) {
+              cols = datas.split('|');
+              if (cols.indexOf(columnName) < 0) {
+                cols.push(columnName);
+              }
+            }
+
+            eraseCookie(this.Name);
+            createCookie(this.Name, cols.join('|'));
+          };
+          this.RemoveColumn = function (columnName) {
+            var datas = this.GetColumns();
+            var cols = [];
+            if (datas != null) {
+              cols = datas.split('|');
+              if (cols.indexOf(columnName) > -1) {
+                jQuery.each(cols, function (index) {
+                  if (cols[index] == columnName) {
+                    cols.splice(index, 1);
+                  }
+                });
+              }
+            }
+
+            eraseCookie(this.Name);
+            createCookie(this.Name, cols.join('|'));
+          };
+        }
+
+        function createCookie(name, value, days) {
+          days = days || 365;
+          if (days) {
+            var date = new Date();
+            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+            var expires = "; expires=" + date.toGMTString();
+          } else
+            var expires = "";
+          document.cookie = name + "=" + value + expires + "; path=/";
+        }
+
+        function readCookie(name) {
+          var nameEQ = name + "=";
+          var ca = document.cookie.split(';');
+          for (var i = 0; i < ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0) == ' ')
+              c = c.substring(1, c.length);
+            if (c.indexOf(nameEQ) == 0)
+              return c.substring(nameEQ.length, c.length);
+          }
+          return null;
+        }
+
+        function eraseCookie(name) {
+          createCookie(name, "", -1);
+        }
+
+        function getDefaultDatetimepicker() {
+          var d = new Date();
+          var DefaultDate = new Date();
+          var day = moment(d).format("ddd");
+          if (day != "Mon") {
+            DefaultDate.setDate(DefaultDate.getDate() - 1);
+          } else {
+            DefaultDate.setDate(DefaultDate.getDate() - 3);
+          }
+          return moment(DefaultDate).format("YYYY-MM-DD");
+        }
+
+        function getUTCDate(strdate) {
+          var d = moment.utc(strdate);
+          return new Date(d.year(), d.month(), d.date(), 0, 0, 0);
+        }
+        function getUTCDateFull(strdate) {
+          var d = moment.utc(strdate);
+          return new Date(d.year(), d.month(), d.date(), d.hours(), d.minutes(), d.seconds());
+        }
+
+        function toUTC(d) {
+          var year = d.getFullYear();
+          var month = d.getMonth();
+          var date = d.getDate();
+          var hours = d.getHours();
+          var minutes = d.getMinutes();
+          var seconds = d.getSeconds();
+          return moment(Date.UTC(year, month, date, hours, minutes, seconds)).toISOString();
+        }
+
+        function Logout() {
+          localStorage.clear();
+          window.location.href = "/logout/do";
+        }
+
+        function BreadCrumb(id, title, url, cssClass, action) {
+          var obj = {
+            _id: ko.observable(id),
+            Title: ko.observable(title == undefined ? id : title),
+            Url: url,
+            Action: action,
+            CssClass: cssClass
+          };
+
+          return obj;
+        }
+
+
+        model.ParentId = ko.observableArray([]);
+        model.PageId = ko.observable("");
+        model.MainMenus = ko.observableArray([]);
+        model.RoleGroup = ko.observable("");
+        model.BreadCrumbs = ko.observableArray([]);
+        model.VisibleDropdown = ko.observableArray([]);
+        model.menu = ko.observable('');
+        model.PageSubId = ko.observable('');
+        model.dateMenu = ko.observable(new Date(getDefaultDatetimepicker()));
+
+
+        function convert(array) {
+          var map = {};
+          for (var i = 0; i < array.length; i++) {
+            var obj = array[i];
+            obj.Submenus = [];
+
+            map[obj.Id] = obj;
+
+            var parent = obj.Parent || '-';
+            if (!map[parent]) {
+              map[parent] = {
+                Submenus: []
+              };
+            }
+            map[parent].Submenus.push(obj);
+          }
+          return map['-'].Submenus;
+        }
+
+        function MenuItem(Id, Url, Title, Submenus, baseURL) {
+          var obj = {
+            Id: ko.observable(Id),
+            Title: ko.observable(Title == undefined ? Id : Title),
+            Url: ko.observable(baseURL + Url),
+            Submenus: ko.observableArray([])
+          };
+          var arr = Submenus;
+          for (var i in arr) {
+            obj.Submenus.push(
+                    new MenuItem(
+                            arr[i]._id,
+                            arr[i].Url,
+                            arr[i].Title,
+                            arr[i].Submenus,
+                            baseURL
+                            )
+                    );
+          }
+          return obj;
+        }
+        ;
+
+        // function MenuItem(id, url, title, submenus, baseURL) {
+        //   var obj = {
+        //     _id: ko.observable(id),
+        //     Title: ko.observable(title == undefined ? id : title),
+        //     Url: ko.observable(url.replace("~/", baseURL)),
+        //     Submenus: ko.observableArray([])
+        //   };
+
+        //   var arr = submenus;
+        //   for (var i in arr) {
+        //     obj.Submenus.push(
+        //             new MenuItem(
+        //                     arr[i]._id,
+        //                     arr[i].Url,
+        //                     arr[i].Title,
+        //                     arr[i].Submenus,
+        //                     baseURL
+        //                     )
+        //             );
+        //   }
+        //   return obj;
+        // }
+        // ;
+
+        model.getDataMenu = function () {
+          var url = "/menusetting/getmenutop";
+          var param = {
+          };
+          ajaxPost(url, param, function (data) {
+            var arrData = [];
+            var baseURL = "";
+            var dataMenu = data.Data.Records;
+            for (var i in dataMenu) {
+              arrData.push({
+                "Id": dataMenu[i].Id,
+                "Parent": dataMenu[i].Parent,
+                "_id": dataMenu[i].PageId,
+                "Url": dataMenu[i].Url,
+                "Title": dataMenu[i].Title,
+                "IndexMenu": dataMenu[i].IndexMenu,
+              });
+            }
+            var sortMenu = Enumerable.From(arrData).OrderBy("$.Parent").ThenBy("$.IndexMenu").ToArray();
+                  var dataTree = convert(sortMenu);
+                  var arr = dataTree;
+                  for(var i in arr){
+                      model.MainMenus.push(
+                          new MenuItem(
+                              arr[i]._id,
+                              arr[i].Url,
+                              arr[i].Title,
+                              arr[i].Submenus,
+                              baseURL
+                          )
+                      );
+                  }
+              });
+          }
+
+          model.GetPageTitle = function(PageId,MenuList,ParentId){
+              var Title = "";
+               for(var i in MenuList){
+                  if(MenuList[i].Title()==PageId){
+                      Title = MenuList[i].Title
+                      ParentId.push(MenuList[i].Title());
+                      break;
+                  }
+                  if(Title=="" && MenuList[i].Submenus.length > 0){
+                      Title = model.GetPageTitle(PageId,MenuList[i].Submenus,ParentId)
+
+                      if(Title !== ""){
+                          ParentId.push(MenuList[i].Title());
+                      }
+                  }
+              }
+              return Title;
+          };
+
+          model.PageTitle = ko.computed(function(){
+              var PageId = model.PageId();
+              var MenuList = model.MainMenus();
+              var Title = "";
+              var ParentId = [];
+              Title = model.GetPageTitle(PageId,MenuList,ParentId);
+              model.ParentId(ParentId);
+
+              if (typeof Title == 'function') {
+                return Title()
+              }
+
+              return Title;
+          },model);
+
+          model.AppHomeButtonLoad = function(obj){
+              var id = obj._id;
+              var url = obj.Url;
+              var title = obj.Title;
+              window.location.href = url;
+          }
+
+      </script>
+
+      <!-- This is START for create breadcrumb -->
+      <!-- <script>
+          model.BreadCrumbs.push(new BreadCrumb("youare", "You are here : ", "#", "youare"));
+      </script>
+      <section class="breadcrumb-section">
+        <ol class="breadcrumb" data-bind="template:{name:'breadcrumbTemplate', foreach:BreadCrumbs}"></ol>
+      </section> -->
+      <!-- This is END for create breadcrumb -->
+    </div>
+    <div data-bind="visible:Loading()"><div w3-include-html="/static/_loader.html"></div></div>
+    <div style="display:none" data-bind="visible:!Loading()">
+      <!--main content start-->
+      <section id="main-content">
+          <section class="wrapper">
+              <!-- page start-->
+              <div class="row">
+                  <div class="col-lg-12">
+                    <!--breadcrumbs start -->
+                    <!-- <ul class="breadcrumb">
+                      <li><span style="font-size:18px; font-weight:600;">Dashboard</span></li>
+                      <li><a href="#"><i class="fa fa-home"></i> Home</a></li>
+                      <li><a href="#">Library</a></li>
+                      <li class="active">Data</li>
+                    </ul> -->
+                    <!--breadcrumbs end -->
+                    <!-- <h3><span data-bind="html:PageTitle"></span></h3> -->
+                    <h3><span data-bind=""></span></h3>
+                  </div>
+              </div>
+              <!-- Main content start here -->
+              {{.Content}}
+              <!-- page end-->
+          </section>
+      </section>
+      <!--main content end-->
+    </div>
+      <!--footer start-->
+      <!-- <footer class="site-footer">
+          <div class="text-center">
+              2016 &copy; powered by creativelab
+              <a href="#" class="go-top">
+                  <i class="fa fa-angle-up"></i>
+              </a>
+          </div>
+      </footer> -->
+      <!--footer end-->
+  </section>
+  <!-- wrapper ends here -->
+
+  <!-- START FLATLAB -->
+  <!-- js placed at the end of the document so the pages load faster -->
+    <!-- <script src="/static/flatlab/js/jquery.js"></script> -->
+    <!-- <script src="/static/flatlab/js/bootstrap.min.js"></script> -->
+    <script class="include" type="text/javascript" src="/static/flatlab/js/jquery.dcjqaccordion.2.7.js"></script>
+    <script type="text/javascript" src="/static/flatlab/js/hover-dropdown.js"></script>
+    <script src="/static/flatlab/js/jquery.scrollTo.min.js"></script>
+    <script src="/static/flatlab/js/jquery.nicescroll.js" type="text/javascript"></script>
+    <script src="/static/flatlab/js/respond.min.js"></script>
+    <script src="/static/flatlab/assets/fuelux/js/spinner.min.js"></script>
+    <script type="text/javascript" src="/static/flatlab/assets/gritter/js/jquery.gritter.js"></script>
+    <script type="text/javascript" src="/static/flatlab/js/jquery.pulsate.min.js"></script>
+    <script type="text/javascript" src="/static/flatlab/assets/bootstrap-fileupload/bootstrap-fileupload.js"></script>
+    <!-- <script type="text/javascript" src="/static/flatlab/js/bootstrap-switch.js"></script> -->
+    
+
+    <!--right slidebar-->
+    <script src="/static/flatlab/js/slidebars.min.js"></script>
+
+    <!--common script for all pages-->
+    <script src="/static/flatlab/js/common-scripts.js"></script>
+    
+  <!-- END FLATLAB -->
+
+
+  <script>
+      $(function(){
+          $('#logo-link').on('click', function() {
+              $('body').fullscreen({ overflow: 'auto' });
+              return false;
+          });
+      });
+
+      ko.applyBindings(model);
+
+      function addIconDropdown() {
+        $("ul.navsecond a.dropdown-toggle").append("<i class='fa  fa-angle-double-down'></i>");
+      }
+
+      function loadingOK(){
+      //     setTimeout(function(){ 
+              model.Loading(true)
+      //     }, 10);
+      }
+
+      function loadingNOK(){
+          setTimeout(function(){ 
+              model.Loading(false)
+          }, 100);
+      }
+
+      $(document).ready(function () {
+          // w3IncludeHTML();
+          model.Loading(true);
+          model.getDataMenu();
+          model.menu(model.PageId());
+          setTimeout(addIconDropdown, 300);
+      });
+  </script>
+</body>
+</html>

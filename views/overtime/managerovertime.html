@@ -1,0 +1,91 @@
+<script src="/static/lodash/lodash.js"></script>
+<script src="{{NoCacheUrl "/static/core/managerovertime.js"}}"></script>
+<style type="text/css">
+    .center {
+     margin: auto;
+     width: 65%;
+     padding: 0;
+   }
+   .dht{
+       height: auto;
+       background-color: white;
+       margin-top: 20px;
+   }
+   
+    .form-mo{
+        padding: 5px 25px 5px 25px;
+    }  
+    
+	.option-dev{
+		padding-left: 18px;
+        margin-bottom: 3px;
+	}
+	.checkbox-dev{
+		position: absolute !important;
+		top: -1px;
+	}
+    .gleft{
+        left: -19px;
+    }
+    .cg{
+        bottom:  -6px;
+        top: 2px;
+    }
+    .form-group {
+       margin-bottom: 25px !important;
+    }
+    .box-cus{
+        width: 60% !important;
+    }
+   </style>
+  <div data-bind="visible : vermanager.vismanager" style="text-align: center; font-weight: bold; font-size: 16px;">Request already <span data-bind="text: vermanager.status"></span> by <span data-bind="text: vermanager.approvedby"></span>.</div>
+  <div data-bind="visible : vermanager.vismanagerform" class="center dht form-mo" >
+        <div class="row" id="vman">
+            <div class="col-md-12" style="margin-top: 20px; margin-bottom: 20px">
+                 <h4>ECleave</h4>  
+            </div>
+
+           <form>
+               <div class="col-md-6" style="min-height: 350px">
+                <div class="form-group">
+                    <label for="usr">Date</label>
+                   <div data-bind="foreach : vermanager.date">
+                       <li data-bind="text : moment($data.date,'YYYY-MM-DD').format('DD-MM-YYYY');"></li>
+                   </div>
+                </div>
+                <div class="form-group">
+                    <label for="pwd">Leader</label>
+                    <div data-bind="text : vermanager.leader"></div>
+                </div>
+                <div class="form-group">
+                        <label for="sdf">Developers</label> / <input name="sdf" onclick="vermanager.checkall(this)" type="checkbox" >Check All
+                        <div class="row" id="cbxs" data-bind="foreach : vermanager.dev">
+                            <div class="col-md-6 cg">
+                                <div class="checkbox gleft">
+                                    <label><input data-bind="checked: vermanager.checkedDev, value : $data" class="checkbox-dev" type="checkbox" ><span class="option-dev" data-bind="text : name" >name</span></label>
+                                </div>
+                            </div>        
+                        </div>
+                    </div>
+              </div>
+
+              <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="usr">Decline Reason</label>
+                        <textarea class="form-control" id="dcr" required validationMessage="Add Reason" data-bind="value : vermanager.declineReason, enable : vermanager.visreason "></textarea>
+                    </div>
+                    <span class="k-invalid-msg" data-for="otype"></span>  
+                  </div>
+           </form>
+        </div>
+        <div style="margin-bottom: 8px; text-align: right">
+           <!-- <button type="button" class="btn btn-sm btn-danger " ><i class="fa fa-times"></i> Cancel</button> -->
+           <button type="button" class="btn btn-sm btn-success " data-bind="visible: vermanager.vismover, click : vermanager.getParam" ><i class="fa fa-floppy-o"></i> Submit Form</button>
+        </div>
+     </div>
+    
+   <script>
+   $(function(){
+       vermanager.getDev()
+   });
+   </script>

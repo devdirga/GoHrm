@@ -1,0 +1,509 @@
+<script type="text/javascript">
+    model.PageId("User Setting");
+    model.BreadCrumbs.push(new BreadCrumb('{{.Menuname}}', '{{.Menuname}}', "#", "active", ""));
+    model.Access = ko.observable('{{.Menuid}}');
+    model.View = ko.observable('{{.View}}');
+    model.Create= ko.observable('{{.Create}}');
+    model.Delete= ko.observable('{{.Delete}}');
+    model.Process= ko.observable('{{.Process}}');
+    model.Edit= ko.observable('{{.Edit}}');
+    model.User= ko.observable('{{.Username}}');
+</script>
+<style>
+    .menu-user{
+        background-color: white;
+        padding-top: 12px;
+        padding: lef;
+        padding-left: 12px;
+    }
+      .label-active{
+        border-radius: 10%;
+        color:white;
+        padding: 6px;
+        font-weight: 600;
+    }
+    .file-hidden {
+        opacity: 0;
+        display: none !important;
+    }
+    .file-hidden {
+        opacity: 0;
+        display: none !important;
+    }
+    .topbot{
+       padding-top: 15px;
+       padding-bottom: 15px;
+    }
+    .k-link.k-header{
+      font-size: 15px;
+      font-weight: bold;
+    }
+    .k-icon.k-panelbar-expand.k-i-arrow-60-down{
+      font-size: 25px;
+    }
+    .k-icon.k-i-arrow-60-up.k-panelbar-collapse{
+      font-size: 25px;
+    }
+    .k-panelbar>li.k-state-default>.k-link.k-state-hover{
+       background-color: #0e9aa7;
+       color:#fff;
+    }
+    .k-panelbar>li.k-state-default>.k-link{
+       background-color: #3da4ab;
+    }
+   .k-panelbar>li.k-state-default>.k-link {
+      color: #fff;
+   }
+   .k-panelbar>li.k-state-default>.k-link.k-state-selected, .k-panelbar>li>.k-state-selected, .k-state-selected>.k-link {
+      color: #fff;
+   }
+</style>
+<script src="/static/kendoui/js/jszip.min.js"></script>
+<script src="{{NoCacheUrl "/static/core/usersetting.js"}}"></script>
+<script src="{{NoCacheUrl "/static/core/registeruser.js"}}"></script>
+<script src="{{NoCacheUrl "/static/core/projectrule.js"}}"></script>
+<!-- <script src="/static/core/authentication.js"></script> -->
+<div class="container" style="padding: 0;">
+<header class="panel-heading" style="height: 100px;border-bottom: 0; background-color:white;">
+                        <div class="header-img">
+                                <span style="color:white;font-size: x-large;font-weight: bolder;">User</span><br>
+                                <span style="color: white;font-weight: bolder;">List</span>
+                        </div>
+                    </header>
+   <ul class="nav nav-tabs menu-user">
+      <li class="active"><a data-toggle="tab" href="#home">User</a></li>
+      <li><a data-toggle="tab" href="#menu1">Register User</a></li>
+      <li><a data-toggle="tab" href="#menu2">Project Rule</a></li>
+   </ul>
+   <div class="tab-content">
+      <div id="home" class="tab-pane fade in active">
+         <div data-bind="with:usersett">
+            <div class="">
+               <section class="panel">
+                  <header class="panel-heading">
+                     Filter User
+                     <span class="tools pull-right">
+                        <a class="fa fa-chevron-down" href="javascript:;"></a>
+                        <!-- <a class="fa fa-times" href="javascript:;"></a> -->
+                     </span>
+                  </header>
+                  <div class="panel-body">
+                     <form class="form-inline" role="form">
+                        <div class="col-md-4">
+                           <div class="col-md-3">
+                              <label style="padding-top:8px;">Username </label>
+                           </div>
+                           <div class="col-md-9">
+                              <select style="width:100%;" type="text" class="form-control" data-bind="kendoMultiSelect: {value:filterUser, data: listUserName, filter: 'startswith', dataTextField: 'text', dataValueField: 'value'}" ></select>
+                           </div>
+                        </div>
+                        <div class="col-md-4">
+                           <div class="col-md-2">
+                              <label style="padding-top:8px;">Role </label>
+                           </div>
+                           <div class="col-md-10">
+                              <select style="width:100%;" class="form-control" type="text" data-bind="kendoMultiSelect: {value:filterRole, data: listRole, filter: 'startswith', dataTextField: 'text', dataValueField: 'value'}" ></select>
+                           </div>
+                        </div>
+                        <div class="col-md-4">
+                           <div class="col-md-2">
+                              <label style="padding-top:8px;">Status </label>
+                           </div>
+                           <div class="col-md-7">
+                              <input id="StatusFilter" class="switch-mini" type="checkbox"  data-off-text="Inactive" data-on-text="Active" data-bind="click: FilterStatus">
+                           </div>
+                           <div class="col-md-3">
+                              <button  type="button" class="btn btn-sm btn-danger btn-flat" data-bind="click:Reset"><i class="fa fa-refresh"></i> Reset</button>
+                           </div>
+                        </div>
+                        <!-- <div class="col-md-3"> -->
+                        <!-- <button  type="button" btn-sm class="btn btn-sm btn-primary btn-flat" data-bind="click:Search"><i class="fa fa-search"></i> Search</button> -->
+                        <!-- </div> -->
+                     </form>
+                  </div>
+               </section>
+            </div>
+            <div class="">
+               <section class="panel">
+                  <header class="panel-heading">
+                     Data User
+                     <span class="tools pull-right" style="margin-top: -4px;">
+                        <!-- <a class="fa fa-chevron-down" href="javascript:;"></a> -->
+                        <!-- <a class="fa fa-times" href="javascript:;"></a> -->
+                        <button type="button" class="btn btn-sm btn-info" style="background: #61DC72;" data-bind="click:exportExcelUsers.bind(this, 'printLayoutUsers')"><i class="fa fa-file-excel-o"></i>&nbsp&nbsp Export</button>
+                        <button class="btn btn-sm btn-info"  onclick='$(".button-excel-uploaduser").click()'>
+                                                    <i class="fa fa-upload"></i>&nbsp; Import
+                        </button>
+                        <input type="file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel,text/comma-separated-values, text/csv, application/csv" class="file-hidden button-excel-uploaduser"  onchange="usersett.uploadExcel(this)">
+                        <button class="btn btn-sm btn-success" data-bind="click:addNew"><i class="fa fa-plus"></i> Add New</button>
+                        <button class="btn btn-sm btn-warning" data-bind="click:OpenAllUserOption"><i class="fa fa-plus"></i> Option All User </button>
+                     </span>
+                  </header>
+                  <div class="panel-body">
+                     <div id="printLayoutUsers" class="printPdf"></div>
+                     <div id="MasterGridUser"></div>
+                  </div>
+               </section>
+            </div>
+            <div class="modal fade" id="userModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
+               <div class="modal-dialog">
+                  <div class="modal-content">
+                     <!-- Modal Header -->
+                     <div class="modal-header">
+                        <button type="button" class="close" 
+                           data-dismiss="modal">
+                        <span aria-hidden="true">&times;</span>
+                        <span class="sr-only">Close</span>
+                        </button>
+                        <h4 class="modal-title" id="myModalLabel" data-bind="text:titleModel"></h4>
+                     </div>
+                     <!-- Modal Body -->
+                     <div class="modal-body">
+                        <form class="form-horizontal" id ="AddUserSetting">
+                           <div class="form-group">
+                              <label for="inputPassword3" class="col-sm-3 form-control-label">Employee ID<span class="mandatory">*</span></label>
+                              <div class="col-sm-8">
+                                 <input type="text" class="form-control" name="empid" id="empid" validationMessage="Employee ID required" required data-bind="value:empId"/>
+                              </div>
+                           </div>
+                           <div class="form-group">
+                              <label for="inputPassword3" class="col-sm-3 form-control-label">Joint Date<span class="mandatory">*</span></label>
+                              <div class="col-sm-8">
+                                 <input type="text" style="width:100%;" name="jointdate" id="jointdate" validationMessage="Joint Date required" required
+                                 data-bind="kendoDatePicker:{value:jointdate,format: 'dd-MM-yyyy'}" />
+                              </div>
+                           </div>
+                           <div class="form-group">
+                              <label for="inputEmail3" class="col-sm-3 form-control-label">User Name<span class="mandatory">*</span></label>
+                              <div class="col-sm-8">
+                                 <input type="text" class="form-control" name="userName" id="userName" validationMessage="User Name required" required data-bind="value:userName"/>
+                              </div>
+                           </div>
+                           <div class="form-group">
+                              <label for="inputPassword3" class="col-sm-3 form-control-label">Full Name<span class="mandatory">*</span></label>
+                              <div class="col-sm-8">
+                                 <input type="text" class="form-control" name="fullName" id="fullName" validationMessage="Full Name required" required data-bind="value:fullName"/>
+                              </div>
+                           </div>
+
+                           <!-- <div class="form-group">
+                              <label for="inputPassword3" class="col-sm-3 form-control-label">Designation<span class="mandatory">*</span></label>
+                              <div class="col-sm-8">
+                                 <input type="text" class="form-control" name="designation" id="designation" validationMessage="Designation required" required data-bind="value:designation"/>
+                              </div>
+                           </div> -->
+
+                           <div class="form-group">
+                              <label for="inputPassword3" class="col-sm-3 form-control-label">Designation<span class="mandatory">*</span></label>
+                              <div class="col-sm-8">
+                                 <input type="text" class="form-control" name="designation" id="designation" validationMessage="Designation required" required data-bind="kendoDropDownList: {value:designation, data: designationList,dataTextField: 'Designation', dataValueField: 'Code', optionLabel: 'Select one'}" />
+                              </div>
+                           </div>
+
+                           <div class="form-group">
+                              <label for="inputPassword3" class="col-sm-3 form-control-label">Phone Number<span class="mandatory">*</span></label>
+                              <div class="col-sm-8">
+                                 <input type="text" class="form-control" name="phoneNumber" id="phoneNumber" validationMessage="Phone Number required" required data-bind="value:phoneNumber"/>
+                              </div>
+                           </div>
+                           <div class="form-group">
+                              <label for="inputPassword3" class="col-sm-3 form-control-label">Email<span class="mandatory">*</span></label>
+                              <div class="col-sm-8">
+                                 <input type="email" class="form-control" data-type="email" name="email" id="email" validationMessage="Email required" required data-bind="value:email"/>
+                              </div>
+                           </div>
+                           <div class="form-group">
+                              <label for="inputEmail3" class="col-sm-3 form-control-label">Location</label>
+                              <div class="col-sm-8">
+                                 <input type="location" name="role" id="location" data-bind="kendoDropDownList: {data:locationList, value:location, dataTextField: 'Location', dataValueField: 'Location', optionLabel: 'select location'}"  >
+                              </div>
+                           </div>
+                           <div class="form-group">
+                              <label for="inputPassword3" class="col-sm-3 form-control-label">Year Leave<span class="mandatory">*</span></label>
+                              <div class="col-sm-8">
+                                 <input type="number" class="form-control" name="yearLeave" id="yearLeave" validationMessage="Year Leave required" required data-bind="value:yearLeave"/>
+                              </div>
+                           </div>
+                           <div class="form-group">
+                              <label for="inputPassword3" class="col-sm-3 form-control-label">Public Leave<span class="mandatory">*</span></label>
+                              <div class="col-sm-8">
+                                 <input type="number" class="form-control" name="publicLeave" id="publicLeave" validationMessage="Public Leave required" required data-bind="value:publicLeave"/>
+                              </div>
+                           </div>
+                           <div class="form-group">
+                              <label for="inputPassword3" class="col-sm-3 form-control-label">Password<span class="mandatory">*</span></label>
+                              <div class="col-sm-8">
+                                 <input type="password" class="form-control" data-type="password" name="password" id="password" validationMessage="Password required" required data-bind="value:password"/>
+                              </div>
+                           </div>
+                           <div  class="form-group" id ="confirmPass">
+                              <label for="inputPassword3" class="col-sm-3 form-control-label">Confirm Password<span class="mandatory">*</span></label>
+                              <div class="col-sm-8">
+                                 <input type="password" class="form-control" data-type="confirmPassword" name="confirmPassword" id="confirmPassword" validationMessage="Password required" required="" data-bind="value:confirmPassword"/>
+                              </div>
+                           </div>
+                           <div class="form-group">
+                              <label for="inputPassword3" class="col-sm-3 form-control-label">Status</label>
+                              <div class="col-sm-8">
+                                 <input id="Status" class="switch-mini" type="checkbox"  data-off-text="Inactive" data-on-text="Active">
+                              </div>
+                           </div>
+                            <div class="form-group">
+                                <label for="inputEmail3" class="col-sm-3 form-control-label">Job Role</label>
+                                <div class="col-sm-8">
+                                    <input type="location" name="role" id="projrole" data-bind="kendoDropDownList: {data:listProjectRule, value:projectruleid, dataTextField: 'Name', dataValueField: 'Id', optionLabel: 'select project role'}"  >
+                                </div>
+                            </div>
+                           <div class="form-group">
+                              <label for="inputEmail3" class="col-sm-3 form-control-label">Role</label>
+                              <div class="col-sm-8">
+                                 <input type="text" name="role" id="role" data-bind="kendoDropDownList: {data:listRole, value: roles, dataTextField: 'text', dataValueField: 'value', optionLabel: 'select roles'}"  >
+                              </div>
+                           </div>
+                        </form>
+                     </div>
+                     <div class="modal-footer">
+                        <button type="button" class="btn btn-sm btn-default btn-flat" data-dismiss="modal" data-bind="click:Cancel"><i class="fa fa-times"></i> Close</button>
+                        <button type="button" class="btn btn-sm btn-primary btn-flat" data-bind="click:(edit() != true)? SaveData : UpdateData"><i class="fa fa-floppy-o"></i> Save</button>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <div class="modal fade" id="OptionUser" tabindex="-1" role="dialog" aria-labelledby="OptionUser" aria-hidden="true" data-backdrop="static">
+               <div class="modal-dialog">
+                  <div class="modal-content modal-md">
+                     <!-- Modal Header -->
+                     <div class="modal-header">
+                        <button type="button" class="close" 
+                           data-dismiss="modal">
+                        <span aria-hidden="true">&times;</span>
+                        <span class="sr-only">Close</span>
+                        </button>
+                        <h4 class="modal-title" id="myModalLabel" data-bind="text:usersett.textOptionModal"></h4>
+                     </div>
+                     <!-- Modal Body -->
+                     <div class="modal-body">
+                        <ul class="nav nav-tabs">
+                           <li class="active"><a data-toggle="tab" href="#OptionRemote">Remote</a></li>
+                           <!-- <li><a data-toggle="tab" href="#OptionLeave">Leave</a></li>
+                           <li><a data-toggle="tab" href="#OptionOvertime">Overtime</a></li> -->
+                        </ul>
+                        <div class="tab-content" style="padding-top:10px;">
+                           <div id="OptionRemote" class="tab-pane fade in active">
+                              <form role="form">
+                                 <div class="form-group row">
+                                    <div class="col-md-3">
+                                       <label style="padding-top:8px;">Remote Active </label>
+                                    </div>
+                                    <div class="col-md-9">
+                                       <input id="RemoteActive" class="switch-mini" type="checkbox"  data-off-text="Inactive" data-on-text="Active">
+                                    </div>
+                                 </div>
+                                 <div class="form-group row">
+                                    <div class="col-md-3">
+                                       <label style="padding-top:8px;">Monthly Active </label>
+                                    </div>
+                                    <div class="col-md-9">
+                                       <input id="MonthlyRemote" class="switch-mini" type="checkbox"  data-off-text="Inactive" data-on-text="Active">
+                                    </div>
+                                 </div>
+                                 <div class="form-group row">
+                                    <div class="col-md-3">
+                                       <label style="padding-top:8px;">FullMonthly Active </label>
+                                    </div>
+                                    <div class="col-md-9">
+                                       <input id="FullmonthActive" class="switch-mini" type="checkbox"  data-off-text="Inactive" data-on-text="Active">
+                                    </div>
+                                 </div>
+                                 <div class="form-group row">
+                                    <div class="col-md-3">
+                                       <label style="padding-top:8px;">Conditional day</label>
+                                    </div>
+                                    <div class="col-md-9">
+                                          <input class="form-control" type="number" class="" data-bind="value:usersett.CondDay, attr : {'readonly' : usersett.disableCond()}"/>
+                                    </div>
+                                 </div>
+                                 
+                                 <!-- <div class="col-md-3"> -->
+                                 <!-- <button  type="button" btn-sm class="btn btn-sm btn-primary btn-flat" data-bind="click:Search"><i class="fa fa-search"></i> Search</button> -->
+                                 <!-- </div> -->
+                              </form>
+                           </div>
+                           <!-- <div id="OptionLeave" class="tab-pane fade in ">Leave</div>
+                           <div id="OptionOvertime" class="tab-pane fade in ">Overtimes</div> -->
+                        </div>
+                     </div>
+                     <div class="modal-footer">
+                        <button type="button" class="btn btn-sm btn-default btn-flat" data-dismiss="modal" ><i class="fa fa-times"></i> Close</button>
+                        <button type="button" class="btn btn-sm btn-primary btn-flat" data-bind="visible: usersett.AllUser() == false,click:usersett.SaveRemoteOption "><i class="fa fa-floppy-o"></i> Save</button>
+                        <button type="button" class="btn btn-sm btn-primary btn-flat" data-bind="visible: usersett.AllUser() == true, click:SaveAllRemoteOption"><i class="fa fa-floppy-o"></i> Save</button>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+      <div id="menu1" class="tab-pane fade">
+         <div  data-bind="with:reguser">
+            <div>
+               <section class="panel">
+        
+                  <div class="panel-body">
+                  
+                     <div class="col-md-12">
+                        <div class="col-md-6">
+                            <header class="panel-heading" style="overflow: auto;padding: 6px;">
+                            Registered User
+                                <span class="tools pull-right" style="margin-top: -4px;">
+                                    
+
+                                    <input type="file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel,text/comma-separated-values, text/csv, application/csv" class="file-hidden button-excel-upload"  onchange="reguser.uploadExcel(this)">    
+                                    <button class="btn btn-sm btn-info" onclick='$(".button-excel-upload").click()'><i class="fa fa-upload"></i> Upload</button>
+                                    <button class="btn btn-sm btn-success" onclick="reguser.newData(); $('#modalRegisterUser').modal('show'); "><i class="fa fa-plus"></i> Add New</button>
+                                </span>
+                            </header>
+                            <div id="RegisterUserTrue"></div>
+                           
+                        </div>
+                        <div class="col-md-6" style="padding-top: 2px;">
+                         <header class="panel-heading" style="overflow: auto;padding: 6px;">
+                         Unregistered User
+                                <span class="tools pull-right" style="margin-top: -4px;">
+                                    
+                                    
+                                    
+                                </span>
+                            </header>
+                            <div id="RegisterUserFalse"></div>
+                            <button type="button" class="btn btn-sm btn-success btn-flat" style="margin-top: 11px; float: right;" onclick="reguser.chgStsUnregistered()"><i class="fa fa-floppy-o"></i> Register</button>
+                            <button type="button" class="btn btn-sm btn-warning btn-flat" style="margin-top: 11px; float: right;margin-right: 4px;" onclick="reguser.clearUnregisterdChecked()"><i class="fa fa-times"></i> Clear selected</button>
+                        </div>
+                     </div>
+                     
+                  </div>
+               </section>
+            </div>
+            <!-- Modal -->
+              <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="modalRegisterUser" class="modal fade">
+                  <div class="modal-dialog">
+                      <div class="modal-content">
+                          <div class="modal-header">
+                              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                              <h4 class="modal-title" >Register User</h4>
+                          </div>
+                          <div class="panel-body">
+                            <div class="col-md-12">
+                              <div id="resetPasswordForm">
+                                <div class="row" >
+                                  <p>Enter your e-mail address below </p>
+                                  <input type="text" placeholder="Email"  class="form-control" required data-email-msg="Email format is not valid" data-bind="value:newRegisteredUser">
+                                </div>
+                                <div >
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="modal-footer">
+                              <button data-dismiss="modal" class="btn btn-default" type="button">Cancel</button>
+                              <button class="btn btn-success" type="button" onclick="reguser.saveRegisteredUser();">Submit</button>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              <!-- modal -->
+         </div>
+      </div>
+      <div id="menu2" class="tab-pane fade">
+         <section class="panel">
+            <div class="panel-body">
+               <div class="col-md-12">
+                  <div class="row">
+                     <ul id="panelbar">
+                        <li>Project Manager
+                           <div class="row">
+                              <div class="col-sm-12">
+                                 <div class="control-group">
+                                    <div class="col-md-12 topbot" >
+                                       <button class="btn btn-sm btn-flat btn-success" style="float: left;" onclick="rule.ModalRule('Project Manager')"><i class="fa fa-plus" aria-hidden="true"></i> Project Manager</button>
+                                    </div>
+                                    <div class="col-md-12 topbot" style="width:96%;">
+                                       <div id="gridPM"></div>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                        </li>
+                        <li>Project Coordinator
+                           <div class="row">
+                              <div class="col-sm-12">
+                                    <div class="col-md-12 topbot" >
+                                       <button class="btn btn-sm btn-flat btn-success" style="float: left;" onclick="rule.ModalRule('Project Coordinator')"><i class="fa fa-plus" aria-hidden="true"></i> Project Coordinator</button>
+                                    </div>
+                                    <div class="col-md-12 topbot" style="width:96%;">
+                                       <div id="gridPC"></div>
+                                    </div>
+                              </div>
+                           </div>
+                        </li>
+                        <li>Project Leader
+                           <div class="row">
+                                 <div class="col-sm-12">
+                                    <div class="col-md-12 topbot" >
+                                       <button class="btn btn-sm btn-flat btn-success" style="float: left;" onclick="rule.ModalRule('Project Leader')"><i class="fa fa-plus" aria-hidden="true"></i> Project Leader</button>
+                                    </div>
+                                    <div class="col-md-12 topbot" style="width:96%;">
+                                       <div id="gridLD"></div>
+                                    </div>
+                              </div>
+                           </div>
+                        </li>
+                     </ul>
+                  </div>
+               </div>
+            </div>
+         </section>
+      </div>
+   </div>
+</div>
+
+<div class="modal fade" id="mdlProjectRule" role="dialog" aria-labelledby="ProjectRuleLabel" aria-hidden="true" data-backdrop="static">
+   <div class="modal-dialog">
+      <div class="modal-content">
+         <!-- Modal Header -->
+         <!-- Modal Body -->
+         <div>
+            <div class="col-md-12 body-panel"  style=' padding-left: 0; padding-bottom: 0px; padding-top: 35px;'>
+               <form class="form-custom" id="formProjectProfileView" method="POST">
+                  <div class="row" style="margin-top: -15px;">
+                     <div class="col-md-1"></div>
+                     <div class="col-md-10" id="formProjectContentOnly" style="margin-bottom: 46px;">
+                        <div class="form-group">
+                           <div class="col-md-12 form-wrapper">
+                              <div class="form-label">
+                                 <label>Employee</label>
+                              </div>
+                              <div class="form-input-wrapper">
+                                 <select type="text" class="form-control" name="emp" id="employee-list" data-bind="kendoMultiSelect: {value:rule.employeeInputValue, data: rule.employeeList, dataValueField:'Id', dataTextField:'Fullname', optionLabel: 'Select Employee'}" validationMessage="Staff required" required></select>
+                              <div class="bar"></div>
+                              </div>
+                           </div>
+                           <!-- <div class="col-sm-6"></div> -->
+                           
+                        </div>
+                     <div class="col-md-1"></div>
+                     <div class="col-md-12" style="padding-top:10px;">
+                        <div class="form-group">
+                           <div class="col-sm-6"></div>
+                           <div class="col-sm-6">
+                              <button type="button" class="btn btn-flat btn-sm btn-danger pull-right btn-footer" onclick="rule.saveRule()"></i>Save</button>
+                              <button type="button" class="btn btn-flat btn-sm btn-success pull-right btn-footer" data-dismiss="modal" onclick="rule.clearInput()">Close</button>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </form>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>

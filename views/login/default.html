@@ -1,0 +1,401 @@
+<html>
+  <head>
+    <title>creativelab | HR</title>
+    <link rel="shortcut icon" type="image/x-icon" href="/static/img/favicon.ico" />
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- <link rel="shortcut icon" href="/static/faviconvale.ico" type="image/x-icon" />
+    <link rel="icon" href="/static/faviconvale.ico" type="image/x-icon" /> -->
+
+    <script src="/static/js/jquery-2.1.0.min.js"></script>
+    <script src="/static/js/knockout-3.1.0.js"></script>
+    <script src="/static/js/knockout.mapping-latest.js"></script>
+    <script src="/static/kendoui/js/kendo.all.min.js"></script>
+    <script src="/static/js/bootstrap.min.js"></script>
+
+    <!-- <link href="/static/css/bootstrap.css" type="text/css" rel="stylesheet" /> -->
+    <!-- <link href="/static/css/bootstrap-theme.css" type="text/css" rel="stylesheet" /> -->
+
+    <link rel="stylesheet" href="/static/kendoui/styles/kendo.material.min.css" />
+    <link rel="stylesheet" href="/static/kendoui/styles/kendo.common-bootstrap.min.css" />
+    <link rel="stylesheet" href="/static/kendoui/styles/kendo.dataviz.min.css" />
+    <link rel="stylesheet" href="/static/kendoui/styles/kendo.dataviz.bootstrap.min.css" />
+
+    <!-- Sweetalert -->
+    <script src="/static/sweetalert/sweetalert.min.js"></script>
+    <link href="/static/sweetalert/sweetalert.css" type="text/css" rel="stylesheet" />
+    <!-- Sweetalert -->
+
+    <script src="/static/js/linq.js"></script>
+    <script src="/static/js/ecis_config.js"></script>
+    <script src="/static/js/main.js"></script>
+    <script src="/static/js/ecis_start.js"></script>
+    <script src="/static/js/modernizr-2.6.2.js"></script>
+    <!-- <link rel="stylesheet" href="/static/css/site.css" /> -->
+    <!-- <link rel="stylesheet" href="/static/css/font-awesome.css" /> -->
+
+    <!-- START FLAT ASSETS -->
+    <link href="/static/flatlab/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/flatlab/css/bootstrap-reset.css" rel="stylesheet">
+    <!--external css-->
+    <link href="/static/flatlab/assets/font-awesome/css/font-awesome.css" rel="stylesheet" />
+    <!-- Custom styles for this template -->
+    <!-- <link href="/static/flatlab/css/style.css" rel="stylesheet"> -->
+    <!-- <link href="/static/flatlab/css/style-responsive.css" rel="stylesheet" /> -->
+    <link href="/static/loader/style.css" rel="stylesheet" />
+    <script src="/static/izitoast/iziToast.min.js"></script>
+    <link rel="stylesheet" href="/static/izitoast/iziToast.min.css">
+    <!-- END FLAT ASSETS -->
+    <style type="text/css">
+      #Error{
+        display: none;
+      }
+      .wrapper {
+        margin-top: 8% !important;
+        margin-bottom: 80px !important;
+        overflow: hidden;
+      }
+      #loginForm {
+        max-width: 316px;
+        /* padding: 15px 35px 45px; */
+        /* margin: 0 auto; */
+        /* background-color: #fff;
+        border: 1px solid rgba(0, 0, 0, 0.1); */
+      }
+      .login-body {
+        /* background-color: #666 !important; */
+        background: url(/static/admin/layout/img/bg-login.png) no-repeat center center fixed;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+        overflow: hidden;
+        
+      }
+      .login-body .wrapper {
+        background: url(/static/admin/layout/img/bg-form-login.png) no-repeat;
+        border-radius: 63px 5px 132px !important;
+        width: 302px;
+        height:459px;
+        margin: 0 auto;
+        margin-bottom: 0px;
+        padding: 15px;
+        padding-top: 20px;
+        padding-bottom: 15px;
+        /* box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); */
+        overflow: hidden;
+      }
+
+      .login-body .wrapper #loginForm {
+        background-color: transparent;
+        clear: both;
+        border: 0px;
+        padding: 0px 52px 25px 35px;
+        margin-left: -30px;
+        margin-right: -30px;
+      }
+      .login-wrap{
+        padding-left: 13px;
+        padding-top: 86px;
+        margin-bottom: 21px;
+      }
+      .form-signin-heading{
+        margin-bottom: 14px;
+      }
+      .footer-login{
+        border-top-color: #667fa073;
+        border-top-style: solid;
+        margin-top: 33px;
+        border-top-width: 1px;
+        width: 118%;
+        margin-left: -13px;
+      }
+      .label-signup{
+        font-weight: 500;
+        color: #667fa0;
+        margin-top: -17px;
+        margin-left: 96px;
+        background-color: #f9f6f4;
+        padding: 8px;
+        font-size: 12px;
+      }
+      .pointer {cursor: pointer;}
+      .register{
+        font-weight: 600;
+        color: #3fa9f5;
+        font-size: 13px;
+      }
+
+     
+    </style>
+    <script type="text/javascript">
+      var model = {
+        Processing: ko.observable(true)
+      }
+    </script>
+  </head>
+  <body class="login-body">
+    <!-- wrapper starts here -->
+    <div class="container" data-bind="visible:Processing()==false">
+      
+        <!-- Main panel starts here -->
+
+            <div class="wrapper">
+              <form  id="loginForm">
+              <!-- <div style="background: #f1f2f7; text-align:center;"><img style="    margin-top: -50px; margin-bottom: -74px; width: 80%;" src="/static/img/ppl.png" /></div> -->
+              <h3 class="form-signin-heading">Sign In</h3>
+              <p style="color:#667fa0;margin-top: -9px;font-size: 12px;">Please Login <br>with your email</p>
+              <!-- <p> username</p> -->
+              <!-- Loader -->
+              <div data-bind="visible:Mode()=='Process'" style="text-align: center;" id="Loader">
+                <img src="/static/img/loader.svg" alt="Loading..." />
+                
+              </div>
+
+              <div class="login-wrap" data-bind="visible:Mode()==''">
+
+                  <div class="row" id="Error">
+                    <div class="alert alert-danger" role="alert">
+                      <b><span class="fa fa-exclamation-triangle"></span>&nbsp;LOGIN FAILED</b><br/>
+                      Wrong Login ID or Password.
+                    </div>
+                  </div>
+                  <div id="login-action">
+                    <input id="UserName" name="UserName" required type="text" class="form-control" placeholder="Email">
+                  
+                    <input id="Password" name="Password" required type="password" class="form-control" placeholder="Password">
+                  </div>
+
+                  
+                  <label class="checkbox">
+                      <!-- <input type="checkbox" value="remember-me"> Remember me -->
+                      <span class="pull-right">
+                          <button type="submit" class="btn bt-md btn-flat btn-block" onclick="LoginDo()" style="background-color: #ea5827;color:#fff;font-size: 12px;padding-top: 3px;height: 23px;width: 68px;">Sign in</button>
+                          <!-- <a onclick="openModalFP()"> Forgot Password?</a> -->
+                      </span>
+                      <br>
+                  </label>
+                  
+                  
+                  <!-- <div class="btn bt-md btn-flat btn-block btn-primary" onclick="openSignUp()" id="btnLogin" >Sign up</div> -->
+                  <!-- Message -->
+                  <div class="row" data-bind="visible:Message()!=''">
+                    <div class="col-sm-12">
+                      <label class="label label-danger" data-bind="text:Message"></label>
+                    </div>
+                  </div>
+              </div>
+              <a class="pointer" onclick="openModalFP()"> Forgot Password?</a>
+              
+              
+              <div class="footer-login">
+                <div>
+                    <label class="label-signup">Sign Up</label>
+                </div>
+                <p style="text-align: center;font-size: smaller;color: #667fa0;">Haven't registered yet? <a class="register pointer" onclick="openSignUp()" id="btnLogin" >Click Here</a></p>
+              </div>
+              <!-- Modal -->
+              <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="modalForgetPassword" class="modal fade">
+                  <div class="modal-dialog">
+                      <div class="modal-content">
+                          <div class="modal-header">
+                              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                              <h4 class="modal-title" data-bind="text:(model.signUp())? 'Sign Up' : 'Forgot Password ?'"></h4>
+                          </div>
+                          <div class="panel-body">
+                            <div class="col-md-12">
+                              <div id="resetPasswordForm">
+                                <div class="row" data-bind="visible:!model.modalProcessing()">
+                                  <p>Enter your e-mail address below </p>
+                                  <input type="text" placeholder="Email"  class="form-control" required data-email-msg="Email format is not valid" data-bind="value: model.emailFP">
+                                </div>
+                                <div data-bind="visible:model.modalProcessing()">
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="modal-footer">
+                              <button data-dismiss="modal" class="btn btn-default" type="button">Cancel</button>
+                              <button class="btn btn-success" type="button" onclick="(model.signUp())? signUp() : resetPassword();">Submit</button>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              <!-- modal -->
+              </form>
+            </div>
+    </div>
+
+
+
+              
+    <script>
+      $(window).resize(resizeIt);
+
+      function resizeIt() {
+        $(".fh").height($(window).innerHeight());
+      }
+
+
+      model.Mode = ko.observable("");
+      model.Status = ko.observable("");
+      model.Message = ko.observable("");
+      model.Processing = ko.observable(false);
+      model.modalProcessing = ko.observable(false);
+      model.emailFP = ko.observable('');
+      model.signUp = ko.observable(false);
+
+      // var login = {
+      //   emailFP = ko.observable(""),
+      // }
+    model.setLoadDevice = function(desktop,mobile){
+        if ( Modernizr.touch ) { 
+            console.log("mobile")
+            setTimeout(function(){ location.href = mobile; }, 1500); 
+        }else{
+            console.log("desktop")
+            setTimeout(function(){ location.href = desktop; }, 1500);
+        }
+    }
+
+      function focusUsername() {
+        $("input#Username").focus();
+      }
+      function LoginDo() {
+        $("#Error").hide();
+        var url = "/login/do";
+        var param = {
+          UserName: $("#UserName").val(),
+          Password: $("#Password").val(),
+          rememberMe: false
+        }
+
+        var validator = $("#login-action").data("kendoValidator");
+        if (validator == undefined) {
+          validator = $("#login-action").kendoValidator().data("kendoValidator");
+        }
+        if (validator.validate() == true) {
+
+          model.Mode("Process");
+
+          ajaxPost(url, param, function (data) {
+            console.log("ajaxlogin")
+            console.log(data)
+            if (!data.IsError) {
+              iziToast.success({ message: 'Login success', timeout: 1000});
+             setTimeout(function(){ location.href = "/dashboard/default"; }, 1500);
+            //  model.setLoadDevice("/dashboard/default", "/dashboard/defaultmobile")
+            } else {
+              $("#UserName").val("");
+              $("#Password").val("");
+              iziToast.error({ message: '<b><span class="fa fa-exclamation-triangle"></span>&nbsp;LOGIN FAILED</b> &nbsp; Wrong Login ID or Password.', timeout: 2000});
+              // setTimeout(focusUsername(), 3000);   
+              // focusUsername();   
+            }
+            model.Mode("");
+
+          });
+        } else {
+           iziToast.error({ message: 'Unable to validate process', timeout: 2000});
+        }
+      }
+
+      openModalFP = function(){
+        model.signUp(false)
+        model.emailFP("");
+        $("#modalForgetPassword").modal({
+          backdrop: 'static',
+          keyboard: false,
+          show: true,
+        })
+      }
+
+      openSignUp = function(){
+        model.signUp(true)
+        model.emailFP("");
+        $("#modalForgetPassword").modal({
+          backdrop: 'static',
+          keyboard: false,
+          show: true,
+        })
+      }
+
+      signUp = function(){
+        var validator = coalesce($("#resetPasswordForm").data("kendoValidator"), $("#resetPasswordForm").kendoValidator().data("kendoValidator"));
+        param ={
+          Email:model.emailFP(),
+        }
+        url = "/login/signupsendemail"
+        if (validator.validate()) {
+          model.Mode("Process");
+          $('#modalForgetPassword').modal("hide");
+          ajaxPost(url, param,function (data) {
+            model.Mode("");
+            switch (data.IsError) {
+              case false:
+                alert("Please kindly check your email!");
+                
+                break;
+              case true:
+                alert(data.Message);
+                break;
+            }
+          });
+        }
+      }
+
+      function resetPassword() {
+        var validator = coalesce($("#resetPasswordForm").data("kendoValidator"), $("#resetPasswordForm").kendoValidator().data("kendoValidator"));
+        param ={
+          Email:model.emailFP(),
+        }
+        url = "/login/forgotpswsendemail"
+        if (validator.validate()) {
+          model.Mode("Process");
+          $('#modalForgetPassword').modal("hide");
+          ajaxPost(url, param,function (data) {
+            model.Mode("");
+            switch (data.IsError) {
+              case false:
+                alert("Please kindly check your email!");
+                
+                break;
+              case true:
+                alert(data.Message);
+                break;
+            }
+          });
+        }
+      }
+      ko.applyBindings(model);
+
+      $(document).ready(function () {
+        var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+        if(isMobile){
+            setTimeout(function(){ location.href = "https://hrcreativelab-mb.creativelabapp.com/login/default"; }, 50); 
+        }else{
+          resizeIt();
+          $('#forgetPassword').click(function () {
+            $("#email").val("");
+            $('#modalForgetPassword').modal("show");
+          });
+          // $("#btnLogin").click(LoginDo);
+          var validator = $("#login-action").kendoValidator().data("kendoValidator");
+          $("#Password").keyup(function (event) {
+            if (event.keyCode == 13) {
+              $("#btnLogin").click();
+            }
+          });
+
+          model.Processing(false);
+          if (typeof PageUpdate == "function") {
+            PageUpdate();
+          }
+        }
+        
+      });
+    </script>
+  </body>
+</html>

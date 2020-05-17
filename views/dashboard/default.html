@@ -1,0 +1,456 @@
+<script type="text/javascript">
+    model.PageId("Dashboard");
+    model.BreadCrumbs.push(new BreadCrumb("Dashboard", "Dashboard", "#", "active", ""));
+    model.Access = ko.observable('{{.Menuid}}');
+    model.View = ko.observable('{{.View}}');
+    model.Create= ko.observable('{{.Create}}');
+    model.Delete= ko.observable('{{.Delete}}');
+    model.Process= ko.observable('{{.Process}}');
+    model.Edit= ko.observable('{{.Edit}}')
+    model.User= ko.observable('{{.Username}}');
+    model.UserId= ko.observable('{{.UserId}}');
+    model.JobRoleName= ko.observable('{{.JobRoleName}}');
+    model.JobRoleLevel= ko.observable('{{.JobRoleLevel}}');
+    model.UserId= ko.observable('{{.UserId}}');
+    model.RemoteActive= ko.observable('{{.RemoteActive}}');
+    model.ConditionalRemote= ko.observable('{{.ConditionalRemote}}');
+    model.FullMonth= ko.observable('{{.FullMonth}}');
+    model.Monthly= ko.observable('{{.Monthly}}');   
+    model.VisibleBtnRemote = ko.observable(false) 
+</script>
+<script src="{{NoCacheUrl "/static/core/dashboard.js"}}"></script>
+<script src="{{NoCacheUrl "/static/core/overtime.js"}}"></script>
+<link rel="stylesheet" href="{{NoCacheUrl "/static/core/css/dashboard.css"}}">
+<style>
+    .err-msg>.k-invalid-msg {
+        border:none;
+        padding: 0px;
+        background-color: #fff;
+        color:#ED5628;
+    }
+    input[type=number]::-webkit-inner-spin-button, 
+    input[type=number]::-webkit-outer-spin-button { 
+        -webkit-appearance: none; 
+        margin: 0; 
+    }
+    .signup{
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        width: 100%;
+        /* height: 100%; */
+        /* padding-top: 61px; */
+        
+    }
+    .margin-sidezero{
+        margin-left:0 !important;
+        margin-right:0 !important;
+        height:100%;
+    }
+    .height-full{
+        height:100%;
+    }
+    @media (max-width: 768px){
+        .k-event-template{
+            font-size: 10px;       
+        }
+    }
+    @media (max-width: 576px){
+        .k-header.k-scheduler-toolbar .btn-currentuser{
+            position: relative !important;
+            left: 0px !important;
+            line-height: 13px;
+        }
+    }
+
+    
+    .k-scheduler-dayview .k-scheduler-table td,.k-scheduler-weekview tr:nth-child(2) .k-scheduler-table td,.k-scheduler-monthview .k-scheduler-table td {
+        height: 180px !important;
+      
+    }
+
+    .k-scheduler-content{
+        overflow: hidden !important;
+    }
+
+</style>
+
+<script id="event-template" type="text/x-kendo-template">
+    <div class="on-template">
+        <table class="tbl-template">
+            <tr>
+                <td>dev</td>
+                <td>:</td>
+                <td>7</td>
+            </tr>
+            <tr>
+                <td>office</td>
+                <td>:</td>
+                <td>6</td>
+            </tr>
+        </table>
+    </div>
+</script>
+<div data-bind="with:dashboard">
+    <div id="main" data-bind="visible:main_page">
+        <div class="row">
+            <div class="col-md-2 panel-left">
+                <section class="panel">
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="iconic-input">
+                                    <i class="fa fa-searchsearch"></i>
+                                    <input type="text" id="searchByContainName" class="form-control" placeholder="Search">
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div id="sidebar-left" class="nav-collapse ">
+                                    <ul class="sidebar-menu">
+                                        <li class="sub-menu">
+                                            <a href="#menu1" class="caret-parent" data-toggle="collapse" data-parent="#sidebar-left">
+                                                <i class="fa fa-angle-down"></i>
+                                                <span class="black-text">Groups</span>
+                                            </a>
+                                            <ul id="menu1" class="collapse sub" data-bind="foreach: _.orderBy(dashboard.ProjectListFilter(),'ProjectName')">
+                                                <li>
+                                                    <div class="icon-navbar">
+                                                        <div>
+                                                            <span data-bind="text: dashboard.formatMenuIconDesignation($index, ProjectName)"></span>
+                                                        </div>
+                                                    </div>
+                                                    <a  href="#" data-bind="text: ProjectName, click: dashboard.filterByDes($data,  $element)" class="sdbar" style="display:table"></a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <!-- <li class="sub-menu">
+                                            <a href="javascript:;" class="caret-parent">
+                                                <i class="fa fa-angle-down"></i>
+                                                <span>Project</span>
+                                            </a>
+                                            <ul class="sub" data-bind="foreach: dashboard.projectsByLoc">
+                                                <li class="sub-menu">
+                                                    <a  href="javascript:;" class="caret-parent">
+                                                        <i class="fa fa-angle-down"></i>
+                                                        <span data-bind="text: Location"></span>
+                                                    </a>
+                                                    <ul class="sub" data-bind="foreach: Projects">
+                                                        <li>
+                                                            <div class="icon-navbar">
+                                                                <div>
+                                                                    <span data-bind="text: dashboard.formatMenuIconProject($data)"></span>
+                                                                </div>
+                                                            </div>
+                                                            <a  href="#" data-bind="text: ProjectName, click: dashboard.filterByProj($data)"></a>
+                                                        </li>
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                        </li> -->
+                                        <li class="sub-menu">
+                                            <a href="#menu2" class="caret-parent" data-toggle="collapse" data-parent="#sidebar-left">
+                                                <i class="fa fa-angle-down"></i>
+                                                <span class="black-text">Location</span>
+                                            </a>
+                                            <ul id="menu2" class="collapse sub" data-bind="foreach: dashboard.LocationListFilter">
+                                                <li>
+                                                    <div class="icon-navbar">
+                                                        <div>
+                                                            <span data-bind="text: dashboard.formatMenuIconLocation($data)"></span>
+                                                        </div>
+                                                    </div>
+                                                    <a  href="#" data-bind="text: $data, click: dashboard.filterByLocation($data, $element)" class="sdbarloc"></a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </div>
+                    
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+            <div class="col-md-8 panel-middle">
+                <section >
+                    <div class="col-md-12 padding0" style="margin-top: 10px;padding: 10px;">
+                        <button class="btn btn-sm btn-success" style="background: #02BBC6;" onclick="dashboard.createLeave()"><i class="fa fa-plus" ></i> Request Leave</button>
+                        <button class="btn btn-sm btn-warning" style="background: #ED5628;" onclick="dashboard.createEmergency()"><i class="fa fa-plus"></i> Request Emergency Leave</button>
+                        <button class="btn btn-sm btn-warning" data-bind="visible : model.JobRoleLevel() == 1 || model.JobRoleLevel() == 2 || model.JobRoleLevel() == 5 || model.JobRoleLevel() == 6" style="background: #928FDE;" onclick="overtime.createOvertime()"><i class="fa fa-plus"></i> Request Overtime</button>
+                        <button class="btn btn-sm btn-warning" style="background: #ED5628;display:none;" onclick="dashboard.modalLeave2()"><i class="fa fa-plus"></i> Request Leave2</button>
+                        <button data-bind="visible : model.VisibleBtnRemote" class="btn btn-sm btn-warning pull-right" style="background: #039BE5;" onclick="dashboard.showModalRemote()"><i class="fa fa-plus"></i> Request Remote</button>
+                        <button class="btn btn-sm btn-primary" data-bind="visible: false;" onclick="dashboard.setViewWeekly()"><i class="fa fa-calendar-o"></i> view Weekly</button>
+                        <button class="btn btn-sm btn-primary" data-bind="visible : model.JobRoleLevel() == 1 || model.JobRoleLevel() == 5 || model.JobRoleLevel() == 6" style="background: #efc034;" onclick="dashboard.nadminRequest()"><i class="fa fa-plus"></i> Admin request</button>
+                        <div class="clearfix"></div>
+                    </div>
+                </section>
+               <section class="panel col-md-12 padding0">
+                    <div class="panel-body">
+                        <div id="scheduler-leave"></div>
+                        <!-- <div id="messageNullData" style="text-align: center; display: none;">Data None</div> -->
+                    </div>
+                </section>
+            </div>
+            <div class="col-md-2 panel-right">
+                <section class="panel">
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <span data-bind="text: dashboard.currentDate"></span>
+                            </div>
+                            <div class="col-md-12 boxresume-wrapper">
+                                <table>
+                                    <tr>
+                                        <td>Total Leave</td>
+                                        <td>:</td>
+                                        <td>&nbsp <span data-bind="text: dashboard.countEmployeeLeave"></span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Total Remote</td>
+                                        <td>:</td>
+                                        <td>&nbsp <span data-bind="text: dashboard.countEmployeeRemote"></span></td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="col-md-12 boxproject-wrapper"> 
+                            </div>   
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+    <div id="weekly" data-bind="visible:viewWeekly">
+        <div class="row">
+            <div class="col-md-12">
+                <section class="panel">
+                    <header class="panel-heading">
+                        Applicant Data
+                        <span class="tools pull-right" style="margin-top: -4px;">
+                            
+                            <button class="btn btn-sm btn-success" onclick="dashboard.createLeave()"><i class="fa fa-plus" ></i> Add Leave</button>
+                            <button class="btn btn-sm btn-warning" onclick="dashboard.createEmergency()"><i class="fa fa-plus"></i> Emergency Leave</button>
+                            <button class="btn btn-sm btn-primary" onclick="dashboard.createDefaultPage()"><i class="fa fa-calendar-o"></i> view Calendar</button>
+                        </span>
+                    </header>
+                    <div class="panel-body">
+                        <div class="col-md-12 body-panel">
+                            <table id="setViewWeek" width="100%"></table>
+                        </div>
+                       
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="Profile" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content" style="border-radius:0px !important">
+            <!-- Modal Header -->
+            <!-- Modal Body -->
+            <div>
+                <form class="form-horizontal form-custom" style="background-color: #fff; color:#ccc">
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div style="background-color: #61DC73">
+                                    <img src="/static/img/signup2.jpg" class="img-fluid signup">
+                                </div>
+                            </div>
+                            <div class="col-md-9" style="padding-left:0px;" id="AddUserSetting">
+                                <div class="col-md-12">
+                                    <div class="col-md-4 form-wrapper">
+                                        <div class="form-label">
+                                            <label class="err-msg">First name <span class="k-invalid-msg" data-for="fname"></span></label>
+                                        </div>
+                                        <div class="form-input-wrapper">
+                                            <input type="text" class="form-control" name="fname" id="fname" data-bind="value:user.fname" validationMessage=" " required />
+                                            <div class="bar"></div>
+                                            
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 form-wrapper">
+                                        <div class="form-label">
+                                            <label class="err-msg">Employee ID <span class="k-invalid-msg" data-for="empId"></span></label>
+                                        </div>
+                                        <div class="form-input-wrapper">
+                                            <input type="text" class="form-control" name="empId" id="empId" data-bind="value:user.empid" validationMessage=" " required />
+                                            <div class="bar"></div>
+                                            
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 form-wrapper">
+                                        <div class="form-label">
+                                            <label class="err-msg">Password <span class="k-invalid-msg" data-for="password"></span></label>
+                                        </div>
+                                        <div class="form-input-wrapper">
+                                            <input type="password" class="form-control" name="password" id="password" data-bind="value:user.pass" validationMessage=" " required />
+                                            <div class="bar"></div>
+                                            
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="col-md-4 form-wrapper">
+                                        <div class="form-label">
+                                            <label class="err-msg">Last name <span class="k-invalid-msg" data-for="lname"></span></label>
+                                        </div>
+                                        <div class="form-input-wrapper">
+                                            <input type="text" class="form-control" name="lname" id="lname" data-bind="value:user.lname" validationMessage=" " required />
+                                            <div class="bar"></div>
+                                            
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 form-wrapper">
+                                        <div class="form-label">
+                                            <label class="err-msg">Departement <span class="k-invalid-msg" data-for="departement"></span></label>
+                                        </div>
+                                        <div class="form-input-wrapper">
+                                            <select style="width:100%;" class="form-control" name="departement" id="departement"  type="text" data-bind="kendoDropDownList: {value:user.departement, data:user.departementList,dataTextField: 'Departement', dataValueField: 'Id', optionLabel: 'Select one'}" validationMessage=" " required ></select>
+                                            <div class="bar"></div>
+                                            
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 form-wrapper">
+                                        <div class="form-label">
+                                            <label class="err-msg">Confirm Password <span class="k-invalid-msg" data-for="confirmPass"></span>
+                                            </label>
+                                        </div>
+                                        <div class="form-input-wrapper">
+                                            <input type="password" class="form-control" name="confirmPass" id="confirmPass" data-bind="value:user.cPass" validationMessage=" " required />
+                                            <div class="bar"></div>
+                                        </div>
+                         
+                                    </div>
+                                    
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="col-md-4 form-wrapper">
+                                        <div class="form-label">
+                                            <label class="err-msg">Telephone <span class="k-invalid-msg" data-for="phone"></span></label>
+                                        </div>
+                                        <div class="form-input-wrapper">
+                                            <input type="number" class="form-control" name="phone" id="phone" data-bind="value:user.phone" validationMessage=" " required />
+                                            <div class="bar"></div>
+                                            
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 form-wrapper">
+                                        <div class="form-label">
+                                            <label class="err-msg">Designation <span class="k-invalid-msg" data-for="designation" style="border: none; background-color: #fff;padding: 0px;"></span></label>
+                                        </div>
+                                        <div class="form-input-wrapper">
+                                            <select style="width:100%;" class="form-control" name="designation" id="designation"  type="text" data-bind="kendoDropDownList: {value:user.designation, data: user.designationList,dataTextField: 'text', dataValueField: 'id', optionLabel: 'Select one'}" validationMessage=" " required ></select>
+                                            <div class="bar"></div>
+                                            
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 form-wrapper">
+                                        <div class="form-label">
+                                            <label class="err-msg">Username <span class="k-invalid-msg" data-for="username" style="border: none; background-color: #fff;padding: 0px;"></span></label>
+                                        </div>
+                                        <div class="form-input-wrapper">
+                                            <input type="text" class="form-control" name="username" id="username" data-bind="value:user.username" validationMessage=" " required />
+                                            <div class="bar"></div>
+                                            
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- <div class="col-md-4"></div>
+                                    <div class="col-md-6 form-wrapper">
+                                        <div class="form-label">
+                                            <label>Age<span class="mandatory">*</span></label>
+                                        </div>
+                                        <div class="form-input-wrapper">
+                                            <input type="text" class="form-control" name="age" id="age" data-bind="value:user.age" validationMessage="Age required" required />
+                                            <div class="bar"></div>
+                                            <span class="k-invalid-msg" data-for="age"></span>
+                                        </div>
+                                    </div> -->
+                                </div> 
+                                <div class="col-md-12">
+                                    <div class="col-md-4 form-wrapper">
+                                        <div class="form-label">
+                                            <label class="err-msg">Email <span class="k-invalid-msg" data-for="usremail"></span></label>
+                                        </div>
+                                        <div class="form-input-wrapper">
+                                            <input type="email" class="form-control" name="usremail" id="usremail" data-bind="value:user.email" validationMessage=" " required />
+                                            <div class="bar"></div>
+                                            
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 form-wrapper">
+                                        <div class="form-label">
+                                            <label class="err-msg">Location <span class="k-invalid-msg" data-for="location"></span></label>
+                                        </div>
+                                        <div class="form-input-wrapper">
+                                            <select style="width:100%;" class="form-control" name="location" id="location" type="text" data-bind="kendoDropDownList: {value:user.location, data: dashboard.locationList,dataTextField: 'Location', dataValueField: 'Location', optionLabel: 'Select one'}" validationMessage=" " required></select>
+                                            <div class="bar"></div>
+                                            
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4"></div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="col-md-4 form-wrapper">
+                                        <div class="form-label">
+                                            <label class="err-msg">Gender <span class="k-invalid-msg" data-for="genderM" ></span></label>
+                                        </div>
+                                        <div class="form-input-wrapper">
+                                            <select style="width:100%;" class="form-control" id="genderM" name="genderM" type="text" data-bind="kendoDropDownList: {value:user.gender, data: dashboard.genderList,dataTextField: 'text', dataValueField: 'value',optionLabel: 'Select one'}" validationMessage=" " required ></select>
+                                            <div class="bar"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 form-wrapper">
+                                        <div class="form-label">
+                                            <label class="err-msg">Address <span class="k-invalid-msg" data-for="usraddress"></span></label>
+                                        </div>
+                                        <div class="form-input-wrapper">
+                                            <input type="text" class="form-control" name="usraddress" id="usraddress" data-bind="value:user.address" validationMessage=" " required />
+                                            <div class="bar"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4"></div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="col-md-4"></div>
+                                    <div class="col-md-4"></div>
+                                    <div class="col-md-4" style="padding-top: 24px;">
+                                            <button style="float:right;" type="button" class="btn btn-sm btn-primary btn-flat" onclick="dashboard.saveUserProfile()"><i class="fa fa-floppy-o"></i> Save</button>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="usersByDateModal" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close"
+                    data-dismiss="modal">
+                    <span aria-hidden="true">&times;</span>
+                    <span class="sr-only">Close</span>
+                </button>
+                <h4 class="modal-title">List User On Date <span class="datemodalheader"></span></h4>
+            </div>
+            <div class="modal-body">
+                <div class="wrapper" style="margin-top: 0px;"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-default btn-flat" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+{{template "_modal.html"}}
+<script>
+    dashboard.userTemplateObject({{.UserTemplate}})
+</script>

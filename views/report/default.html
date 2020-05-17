@@ -1,0 +1,326 @@
+<script type="text/javascript">
+    model.PageId("ADMINISTRATOR");
+    model.PageSubId();
+    model.BreadCrumbs.push(new BreadCrumb('{{.Menuname}}', '{{.Menuname}}', "#", "active", ""));
+    model.Access = ko.observable('{{.Menuid}}');
+    model.View = ko.observable('{{.View}}');
+    model.Create= ko.observable('{{.Create}}');
+    model.Delete= ko.observable('{{.Delete}}');
+    model.Process= ko.observable('{{.Process}}');
+    model.Edit= ko.observable('{{.Edit}}')
+    model.User= ko.observable('{{.Username}}');
+    model.JobRoleName= ko.observable('{{.JobRoleName}}');
+    model.JobRoleLevel= ko.observable('{{.JobRoleLevel}}');
+</script>
+<script src="/static/kendoui/js/jszip.min.js"></script>
+<script src="{{NoCacheUrl "/static/core/report.js"}}"></script>
+<script src="{{NoCacheUrl "/static/core/ssleave.js"}}"></script>
+<link rel="stylesheet" href="/static/css/pretty-checkbox.min.css">
+<style>
+    .menu-report{
+        background-color: white;
+        padding-top: 12px;
+        padding: lef;
+        padding-left: 12px;
+    }
+    .hideHeader .k-grid-header{
+        display: none;
+    }
+    #sumLeave thead tr th{
+        text-align: center;
+        border-bottom: 0px;
+        padding-bottom: 0px;
+        padding-top: 50px;
+        font-size: 22px;
+        color: #000;
+    }
+    #sumLeave tbody tr td{
+        text-align: center;
+        border-top: 0px;
+        padding-top: 0px;
+    }
+    .square {
+        width: 20px;
+        height: 20px;
+    }
+    .Leave-Approve {
+        background: #03BBC7;
+        color: #fff;
+    }
+    .Eleave-Approve {
+        background: #ED5629;
+        color: #fff;
+    }
+    .Remote-Approve {
+        background: #039BE6;
+        color: #fff;
+    }
+    .Overtime-Approve {
+        background: #928fde;
+        color: #fff;
+    }
+    .tdBottom td{
+        padding-top: 50px !important;
+        text-align: left !important;
+    }
+    .box {
+        border-right: 1px solid #d8d8d8;
+    }
+    .printPdf{
+        display: none;
+    }
+    .panel-heading.filter{
+        font-size: 9px !important;
+    }
+    .activeFilter {
+        font-weight:bold;
+    }
+    .displayFilter {
+        display: inline-block !important;
+    }
+    .table-td-report{
+        width: 25%;text-align:left !important;
+    }
+    .table-th-report{
+        font-weight: normal;
+        font-size: 11px
+    }
+    li.k-item.k-state-default{
+        background-color: #ebebeb !important;
+    }
+    li.k-item.k-state-default>span.k-link{
+        color: #000000 !important;
+    }
+    li.k-item.k-state-default.k-state-active{
+        background-color: #00b0ff !important;
+    }
+    
+</style>
+<div class="container" style="padding: 10px;">
+    <header class="panel-heading" style="height: 100px;border-bottom: 0; background-color:white;">
+        <div class="header-img">
+            <span style="color:white;font-size: x-large;font-weight: bolder;">Report</span><br>
+        </div>
+    </header>
+    <ul class="nav nav-tabs menu-report">
+        <li class="active"><a data-toggle="tab" href="#home">Annual</a></li>
+        <li><a data-toggle="tab" href="#menu1">Leave</a></li>
+        <li><a data-toggle="tab" href="#menu2">Remote</a></li>
+        <li><a data-toggle="tab" href="#menu3">Overtime</a></li>
+    </ul>
+    <div class="tab-content">
+        <div id="home" class="tab-pane fade in active">
+            <div class="tab-content" style="padding-top: 10px;">
+                <div id="chart" class="tab-pane fade in active">
+                    <div class="panel panel-custom" data-bind="with:report">
+                        <div class="panel-body">
+                            <header class="panel-heading" style="background:#f5f5f5;">
+                                <div class="header-hide-pdf" style="height: 30px;">
+                                    <div style="display: inline-block; margin-top: 5px;">
+                                        <div style="display: inline-block; padding-right: 10px;" data-bind="css: { activeFilter: report.filterByMonth() == false}">
+                                            Yearly <span data-bind="text: report.annualYear"></span>
+                                        </div>
+                                        <div class="pretty p-switch p-slim">
+                                            <input type="checkbox" data-bind="checked: report.filterByMonth, value: report.filterByMonth"/>
+                                            <div class="state">
+                                                <label></label>
+                                            </div>
+                                        </div>
+                                        <div style="display: inline-block; padding-left: 10px;" data-bind="css: { activeFilter: report.filterByMonth() == true}">
+                                            Select Monthly
+                                        </div>
+                                        <div style="display: none; padding-left: 10px;" data-bind="css: { displayFilter: report.filterByMonth() == true}">
+                                            <input name="date" id="dateFilter" data-bind="kendoDatePicker:{value:report.dateFilter, start: 'year', depth: 'year',format: 'MMM-yyyy', change: function(){setTimeout(function(){report.changeData()}, 1)}}" style="width: 185px; font-size: 12px !important">
+                                        </div>
+                                    </div>
+                                </div>
+                            </header>
+                        </div>
+                        <div class="panel-body" style="padding: 0px 5px;">
+                            <div class="row">
+
+                                <div class="col-md-6">
+                                    <div class="panel-height_100">
+                                        <div class="circle">
+                                            <div class="circle-text">
+                                                <center>
+                                                    <div id="year_leave_chart" class="donut-chart"></div>
+                                                </center>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="panel-height_100">
+                                        <div class="circle">
+                                            <div class="circle-text">
+                                                <center>
+                                                    <table class="table" id="sumLeave">
+                                                        <thead>
+                                                            <tr>
+                                                                <th class="table-td-report" data-bind="text: report.totalLeave()" >125</th>
+                                                                <th class="table-td-report" data-bind="text: report.totalELeave()">76</th>
+                                                                <th class="table-td-report" data-bind="text: report.totalRemote()">200</th>
+                                                                <th class="table-td-report" data-bind="text: report.totalOvertime()">200</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td class="table-td-report">Total Leave</td>
+                                                                <td class="table-td-report">Total Emergency Leave</td>
+                                                                <td class="table-td-report">Total Remote</td>
+                                                                <td class="table-td-report">Total Overtime</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                    <table  style="float:left">
+                                                        <thead>
+                                                            <tr>
+                                                                <th >
+                                                                    <div class="col-xs-1 padding0">
+                                                                        <div class="square Leave-Approve" id="sq-LApp"></div>
+                                                                    </div>
+                                                                    <div class="col-xs-10">
+                                                                        <div class="table-th-report">Leave</div>
+                                                                    </div>
+                                                                </th>
+                                                                <th>
+                                                                    <div class="col-xs-1 padding0">
+                                                                        <div class="square Eleave-Approve" id="sq-LApp"></div>
+                                                                    </div>
+                                                                    <div class="col-xs-10">
+                                                                        <div class="table-th-report">EmergencyLeave</div>
+                                                                    </div>
+                                                                </th>
+                                                                <th >
+                                                                    <div class="col-xs-1 padding0">
+                                                                        <div class="square Remote-Approve" id="sq-LApp"></div>
+                                                                    </div>
+                                                                    <div class="col-xs-10">
+                                                                        <div class="table-th-report">Remote</div>
+                                                                    </div>
+                                                                </th>
+                                                                <th >
+                                                                    <div class="col-xs-1 padding0">
+                                                                        <div class="square Overtime-Approve" id="sq-LApp"></div>
+                                                                    </div>
+                                                                    <div class="col-xs-10">
+                                                                        <div class="table-th-report">Overtime</div>
+                                                                    </div>
+                                                                </th>
+                                                            </tr>
+                                                        </thead>
+                                                    </table>
+                                                </center>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-content">
+                <div id="bar_div" class="tab-pane fade in active">
+                    <section class="panel">
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <center>
+                                        <div id="bar_chart" class="donut-chart"></div>
+                                    </center>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <!-- <center> -->
+                                        <div id="column_chart"></div>
+                                    <!-- </center> -->
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+
+            <div class="tab-content">
+                <div id="data" class="tab-pane fade in active">
+                    <div data-bind="with:report">
+                        <section class="panel">
+                            <div class="panel-body">
+                                <header class="panel-heading filter" style="background:#f5f5f5;">
+                                    <div class="header-hide-pdf" style="height: 30px;">
+                                        <div style="display: inline-block">
+                                            <div style="display: inline-block; padding-right: 10px;">
+                                                Search Name
+                                            </div>
+                                            <div style="display: inline-block; padding-left: 10px;">
+                                                <select class="k-textbox" type="text" data-bind="kendoMultiSelect: {value:filterUser, data: listFullName, dataTextField: 'text', dataValueField: 'value'}" style="width: 185px;" onchange="report.init()"></select>
+                                            </div>
+                                            <div style="display: inline-block; padding-left: 10px;">
+                                                <input data-bind="kendoDropDownList: { dataTextField: 'text', dataValueField: 'value', data: report.listProject, value: report.valueProject, change: function(){setTimeout(function(){report.init()}, 1)}}" style="width: 185px"/>
+                                            </div>
+                                            <div style="display: inline-block; padding-left: 10px;">
+                                                <input data-bind="kendoDropDownList: { dataTextField: 'text', dataValueField: 'value', data: report.listLocation, value: report.valueLocation, change: function(){setTimeout(function(){report.init()}, 1)}}" style="width: 185px"/>
+                                            </div>
+                                            <div  style="display: none; padding-left: 10px;" data-bind="css: { displayFilter: report.filterByMonth() == true}">
+                                                <input name="date" id="annualDate" data-bind="kendoDatePicker:{value:report.dateFilterAnnual, start: 'day', depth: 'day',format: 'dd-MMM-yyyy', change: function(){setTimeout(function(){report.changeData()}, 1)}}"
+                                                style="width: 100%; font-size: 12px !important;">
+                                            </div>
+                                        </div>
+                                        <div style="display: inline-block;" class="pull-right">
+                                            <button type="button" class="btn btn-primary" style="background: #61DC72;" data-bind="click:exportExcelGridReport.bind(this, 'printLayout')"><i class="fa fa-file-excel-o"></i>&nbsp&nbsp Export</button>
+                                            <button type="button" class="btn btn-primary" style="background: #FE0000;" data-bind="click:exportPDFGridReport.bind(this, 'printLayout')"><i class="fa fa-file-pdf-o"></i>&nbsp&nbsp Export</button>
+                                        </div>
+                                    </div>
+                                </header>
+                                <div id="printLayout" class="printPdf"></div>
+                                <div id="MasterGridReport" class="hideHeader"></div>
+                                
+                                <script type="text/x-kendo-template" id="template">
+                                    <div class="tabstrip">
+                                        <ul>
+                                            <li class="k-state-active">Leave</li>
+                                            <li>E-Leave</li>
+                                            <li>Remote</li>
+                                            <li>Overtime</li>
+                                            <li>Decline</li>
+                                        </ul>
+                                        <div>
+                                            <div class="leave"></div>
+                                        </div>
+                                        <div>
+                                            <div class="eleave"></div>
+                                        </div>
+                                        <div>
+                                            <div class="remote"></div>
+                                        </div>
+                                        <div>
+                                            <div class="overtime"></div>
+                                        </div>
+                                        <div>
+                                            <div class="decline"></div>
+                                        </div>
+                                    </div>
+                                </script>
+                                
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="menu1" class="tab-pane fade">
+            {{template "leavereport.html"}}
+        </div>
+        <div id="menu2" class="tab-pane fade">
+            {{template "remotereport.html"}}
+        </div>
+        <div id="menu3" class="tab-pane fade">
+            {{template "overtimereport.html"}}
+        </div>
+    </div>
+</div>

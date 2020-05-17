@@ -1,0 +1,33 @@
+{ 
+    "_id" : "5be4d599251497044493931f", 
+    "managingdirector" : {
+        "idemp" : "ECSBY-0814-0001", 
+        "name" : "ANDIEK SUNCAHYO", 
+        "location" : "Indonesia", 
+        "email" : "andiek.suncahyo@creativelab.com", 
+        "contact" : ""
+    }, 
+    "accountmanager" : {
+        "idemp" : "ECSBY-0417-0060", 
+        "name" : "RUDI ERWANTO", 
+        "location" : "5b90acd87ead163250405e83", 
+        "email" : "rudy.erwanto@creativelab.com", 
+        "contact" : ""
+    }, 
+    "staf" : [
+        {
+            "idemp" : "ECSBY-0914-0015", 
+            "name" : "INDRAWATI Susiana", 
+            "location" : "Indonesia", 
+            "email" : "indrawati.susiana@creativelab.com", 
+            "contact" : ""
+        }, 
+        {
+            "idemp" : "ECSBY-0115-0040", 
+            "name" : "HERNA NIKEN DAMAYANTI", 
+            "location" : "Indonesia", 
+            "email" : "herna.damayanti@creativelab.com", 
+            "contact" : ""
+        }
+    ]
+}

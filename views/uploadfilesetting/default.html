@@ -1,0 +1,307 @@
+
+<script type="text/javascript">
+    model.PageId("UploadFileSetting");
+    model.BreadCrumbs.push(new BreadCrumb("DataMaster", "Data Master", "/datamaster/default", "", ""));
+    model.BreadCrumbs.push(new BreadCrumb('{{.Menuname}}', '{{.Menuname}}', "#", "active", ""));
+    model.Access = ko.observable('{{.Menuid}}');
+    model.View = ko.observable('{{.View}}');
+    model.Create= ko.observable('{{.Create}}');
+    model.Delete= ko.observable('{{.Delete}}');
+    model.Process= ko.observable('{{.Process}}');
+    model.Edit= ko.observable('{{.Edit}}');
+    model.User= ko.observable('{{.Username}}');
+
+</script>
+<script src="/static/core/uploadfilesetting.js"></script>
+<script src="/static/core/authentication.js"></script>
+<style type="text/css">
+    .k-numeric-wrap .k-select  {
+        margin-top: 1px;    
+    }
+    .k-numerictextbox,.k-datepicker{
+        width: 100%;
+    }
+    #fileType,.k-dropdown{
+        width: 100%;
+    }
+    .k-dropdown{
+        border: 1px solid #efefef;
+    }
+    .k-widget .k-numerictextbox .k-input {
+        padding: 0px;
+    }
+    .modal.modal-wide .modal-dialog {
+        width: 90%;
+    }
+    .modal-wide .modal-body {
+        overflow-y: auto;
+    }
+    .tab{
+        margin-bottom: 1%;
+    }
+    .line{
+        border-bottom: 1px solid #DDD;
+    }
+</style>
+<div  data-bind="with:uploadsett">
+    <div  data-bind="visible: (uploadsett.formUpl() == false)">
+            <!-- Filter -->    
+        <div  class="panel panel-default" >
+            <div class="panel-heading">
+                <label>Filter</label>
+                <a class="align-right showhide-filter" id="showHideFilter" data-toggle="collapse" href="#filter" aria-controls="filter">show / hide</a>
+            </div>
+            <div class="panel-body collapse in"  id="filter">
+                <div class="row">
+                    <form class="navbar-form">
+                        <!-- <div class="col-md-12 mgrTitile"> -->
+                            <div class="col-md-3">
+                                <div class="col-md-4">
+                                    <label class="filter-label">File type</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <input type="text" id="FilterSourceType" name="FilterSourceType"  data-bind="kendoDropDownList: {value: uploadsett.filterType, data: uploadsett.uplFileType, dataValueField: 'id', dataTextField: 'title', optionLabel: 'Select File Type'}"/>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="col-md-4">
+                                    <label class="filter-label">Description</label>
+                                </div>
+                                <div class="col-md-5">
+                                    <input type="text" id="FilterSourceType" name="FilterSourceType" class="form-control input-sm" data-bind="value: uploadsett.description, valueUpdate: 'afterkeydown', event: {'keyup': uploadsett.search}"/>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="col-md-12" style="float:right;">
+                                    <button  type="button" btn-sm class="btn btn-sm btn-primary btn-flat" data-bind="click: uploadsett.getUploadFile"><i class="fa fa-search"></i> Search</button>
+                                    <button  type="button" class="btn btn-sm btn-danger btn-flat" data-bind="click: uploadsett.resetFilter"><i class="fa fa-refresh"></i> Reset</button>
+                                    <button  type="button" class="btn btn-sm btn-success btn-flat"  data-bind="click: uploadsett.newSetting"><i class="fa fa-plus"></i> Add New</button>
+                                </div>
+                            </div>                        
+                       <!--  </div> -->
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div  class="panel panel-default" >
+            <div class="panel-body collapse in" >
+                <div class="row">
+                    <!-- <div class="col-sm-12" data-bind="visible:Processing()||ProcessingOnMap()">
+                        <div class="align-center">
+                            <h5>Please wait while processing your request</h5>
+                            <img src="/static/img/loader.gif" alt="Loading..." />
+                        </div>
+                    </div> -->
+                    <div class="col-md-12">
+                        <div id="UploadFileSetting"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div data-bind="visible: (uploadsett.formUpl() == true)">
+        <div  class="panel panel-default" >
+            <div class="panel-body collapse in" >
+                <div class="row">
+                    <div class="col-md-12">
+                        <form class="form-horizontal " id="formuploadsetting" style="padding-top: 20px;" novalidate>
+                            <div class="form-group col-md-12">
+                                <div class="col-sm-6">
+                                    <label for="fileType" class="col-sm-3 form-connovalidatetrol-label required">File Type :</label>
+                                    <div class="col-md-5">
+                                        <select name="fileType" id="fileType" required data-bind="kendoDropDownList: {value: UploadSettingConfig.filetype, data: uplFileType, dataValueField: 'id', dataTextField: 'title', optionLabel: 'Select File Type', select: uploadsett.getField, change: uploadsett.getField}"></select>
+                                        <span class="k-invalid-msg" data-for="fileType"></span>
+
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <label for="Description" class="col-sm-3 form-control-label required">Description :</label>
+                                    <div class="col-md-5">
+                                        <input type="text" name="description" class="form-control input-sm" data-bind="value: uploadsett.UploadSettingConfig.description" required validationMessage="Description is required"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group col-md-12">
+                                <div class="col-sm-6">
+                                    <label for="uploadfile" class="col-sm-3 form-control-label required">Contains :</label>
+                                    <div class="col-md-5">
+                                        <input type="text" name="contains" class="form-control input-sm" data-bind="value: uploadsett.UploadSettingConfig.contains" validationMessage="Contain required" required/>
+                                        <span class="k-invalid-msg" data-for="contains"></span>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <label for="dateFormat"  class="col-sm-3 form-control-label">Date Format :</label>
+                                    <div class="col-md-5">
+                                        <select name="dateFormat" id="dateFormat" data-required-msg='Select Date Format' required data-bind="kendoDropDownList: {value: uploadsett.UploadSettingConfig.dateformat, data: uploadsett.uplDateFormat, dataValueField: 'id', dataTextField: 'title', optionLabel: 'Select Date Format'}"></select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group col-md-12">
+                                <div class="col-sm-6">
+                                    <label for="datePosition" class="col-sm-3 form-control-label">Position :</label>
+                                    <div class="col-md-5">
+                                        <select name="datePosition" id="datePosition" data-required-msg='Select Date Position' data-bind="kendoDropDownList: {value: uploadsett.UploadSettingConfig.dateposition, data: uploadsett.DatePosition, dataValueField: 'value', dataTextField: 'title', optionLabel: 'Select Date Position'}" validationMessage="Date position required" required></select>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6" data-bind="visible: (uploadsett.UploadSettingConfig.dateposition() == 'center')">
+                                    <label for="indexCharacter" class="col-sm-3 form-control-label">Index :</label>
+                                    <div class="col-md-5">
+                                        <!-- <input id="indexCharacter" name="indexCharacter" data-bind="value: uploadsett.UploadSettingConfig.indexcharacter" min="0" max="10" value="1" required data-max-msg="Enter value between 1 and 10" validationMessage="Split By required" required/> -->
+                                        <input id = "indexCharacter" name="indexCharacter" data-bind="kendoNumericTextBox:{ min:0, value:uploadsett.UploadSettingConfig.indexcharacter, format :'n0'}" validationMessage="Split By required" required/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group col-md-12">
+                                <div class="col-sm-6">
+                                    <label for="startline" class="col-sm-3 form-control-label">Start line :</label>
+                                    <div class="col-md-5">
+                                        <!-- <input id="startline" name="startline" data-bind="value: uploadsett.UploadSettingConfig.startline" min="0" max="10" value="1" required data-max-msg="Enter value between 1 and 10" validationMessage="Start line required" required> -->
+                                        <input id = "startline" name="startline" required="" data-bind=" kendoNumericTextBox:{ min:0, value:uploadsett.UploadSettingConfig.startline, format :'n0'}" validationMessage="Start line required" required/>
+                                        <span class="k-invalid-msg" data-for="startline"></span>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <label for="splitBy" class="col-sm-3 form-control-label">Split By :</label>
+                                    <div class="col-md-5">
+                                        <select name="splitBy" id="splitBy" data-required-msg='Select Split By' data-bind="kendoDropDownList: {value: uploadsett.UploadSettingConfig.splitby, data: uploadsett.uplSplitBy, dataValueField: 'value', dataTextField: 'title', optionLabel: 'Select Split By Format'}" validationMessage="Split By required" required></select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group col-md-12">
+                                <div class="col-sm-6">
+                                    <label for="Totalcolumn" class="col-sm-3 form-control-label required">Total Column :</label>
+                                    <div class="col-md-5">
+                                        <!-- <input id="Totalcolumn" name="Totalcolumn" min="0" max="10" value="1" required data-max-msg="Enter value between 1 and 10" data-bind="value: uploadsett.UploadSettingConfig.totalcolumn"> -->
+                                        <input id = "Totalcolumn" name="Totalcolumn" data-bind=" kendoNumericTextBox:{ min:0, value:uploadsett.UploadSettingConfig.totalcolumn, format :'n0' }" validationMessage="Start line required" required/>
+                                        <span class="k-invalid-msg" data-for="Totalcolumn"></span>
+                                    </div>
+                                    <button class="btn btn-success btn-sm" data-bind="click: uploadsett.setColumn" data-toggle="modal" data-target="#colomModal" data-backdrop="static" data-keyboard="false">Set</button>
+                                </div>
+                                <div class="col-sm-8">
+                                    <label for="joinColumn"  class="col-sm-2 form-control-label" >Join Column : </label>
+                                    <div class="col-md-12">
+                                        <table width="75%" class="table table-stripted">
+                                            <tr>
+                                                <td>Coloumn 1 :</td>
+                                                <td>Coloumn 2 :</td>
+                                                <td>Coloumn Type :</td>
+                                                <td data-bind="visible: (uploadsett.JoinColumnConfig.destinationtype() == 'date')">Date Format :</td>
+                                                <td>Field :</td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <select style="width:70%;" name="joinCol1" id="joinCol1" data-bind="kendoDropDownList: {value: uploadsett.JoinColumnConfig.column1, data: uploadsett.DetailColumn, dataValueField: 'value', dataTextField: 'title', optionLabel: 'Select col1'}"></select>
+                                                </td>
+                                                <td>
+                                                    <select style="width:70%;" name="joinCol2" id="joinCol2" data-bind="kendoDropDownList: { value:uploadsett.JoinColumnConfig.column2, data: uploadsett.DetailColumn, dataValueField: 'value', dataTextField: 'title', optionLabel: 'Select col2'}"></select>
+                                                </td>
+                                                <td>
+                                                    <select style="width:70%;" data-bind=" kendoDropDownList:{value:uploadsett.JoinColumnConfig.destinationtype, data: uploadsett.typeColumn, optionLabel: 'Select type column'}">
+                                                </td>
+                                                <td data-bind="visible: (uploadsett.JoinColumnConfig.destinationtype() == 'date')">
+                                                    <select style="width:70%;" name="joinCol2" id="joinCol2" data-bind="kendoDropDownList: { value:uploadsett.JoinColumnConfig.condition, data: uploadsett.uplDateFormat, dataValueField: 'value', dataTextField: 'title', optionLabel: 'Select date'}" validationMessage="Join Column required" required></select>
+                                                </td>
+                                                <td>
+                                                    <select style="width:70%;" class="form-control input-sm" data-bind="kendoDropDownList:{value:uploadsett.JoinColumnConfig.field, data: uploadsett.inField, optionLabel: 'Select field'}"></select>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                        
+                                        
+                                        
+                                        </select>
+                                        <span >
+                                           
+                                        </span>
+                                        
+                                            
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-12 tab">
+                                <div id="colgrid"></div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-sm btn-default btn-flat" data-bind="click: uploadsett.back"> Cancel</button>
+                                </div>
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-sm btn-primary btn-flat" data-bind="click: uploadsett.saveGroupSetting"> Save</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="colomModal" class="modal modal-wide fade">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Reset Column</h4>
+      </div>
+      <div class="modal-body">
+        <div id="detForm" >
+            
+           <!--  <div><hr/></div> -->
+            <div id="formModal">
+                    <div class="form-group col-md-12">
+                        <table class="table table-stripted" width="100%; margin-top: -2%;" >
+                             <thead>
+                                <th>Column</th>
+                                <th>Name Column</th>
+                                <th>Type Column</th>
+                                <th>Condition</th>
+                                <th>Field</th>
+                            </thead>
+                            <tbody data-bind="foreach: uploadsett.columnDetails()">
+
+                            <tr style="padding: 10px;">
+                                <td >
+                                    <div data-bind="text: 'column '+[$index()]"></div>
+                                </td>
+                                <td style=" padding: 10px;">
+                                    <label class="control-label">Name : </label>
+                                    <input validationMessage="Name column required" data-bind="value:  uploadsett.columnDetails()[$index()].name, attr:{id:'name'+$index(), name:'name'+$index()}" required/>
+                                </td>
+                                <td>
+                                    <label class="control-label">Type : </label>
+                                    <select style="width: 50%;" validationMessage="Type column required" data-bind=" kendoDropDownList:{value: uploadsett.columnDetails()[$index()].type, data: uploadsett.typeColumn, optionLabel: 'Select type column'}, attr:{id:'type'+$index(), name:'type'+$index()}" required>
+                                 </select>
+                                </td>
+                                <td>
+                                    <div data-bind="visible: (uploadsett.columnDetails()[$index()].type() == 'date') ">
+                                        <label class="control-label">Format : </label>
+                                        <select style="width:50%;" name="dateFormat" data-bind="kendoDropDownList: {value: uploadsett.columnDetails()[$index()].condition1, data: uploadsett.uplDateFormat, dataValueField: 'id', dataTextField: 'title', optionLabel: 'Select Date Format'}"></select>
+                                    </div>
+                                    <div data-bind="visible: (uploadsett.columnDetails()[$index()].type() == 'float64')">
+                                        <label class="control-label">Is price : </label>
+                                        <input type="checkbox" class="control-input" data-bind="checked: uploadsett.columnDetails()[$index()].condition2, attr:{id:'price'+$index()}"/>
+                                    </div>
+                                </td>
+                                <td>
+                                    <label class="control-label">Field : &nbsp</label><span data-bind="text: uploadsett.columnDetails()[$index()].field"></span>
+                                    <select  style="width: 50%;" data-bind="kendoDropDownList:{value: uploadsett.columnDetails()[$index()].field, data: uploadsett.tempInsetField, optionLabel:'Select type column', open: uploadsett.open}, attr:{id:'field'+$index(), name:'field'+$index()}"></select>
+                                    <input data-bind="value: uploadsett.columnDetails()[$index()].id($index())" hidden/>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+            </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-sm btn-primary" data-bind="click: uploadsett.makeColumn"><i class="fa fa-floppy-o"></i> Save Column</button>
+      </div>
+    </div>
+  </div>
+</div>

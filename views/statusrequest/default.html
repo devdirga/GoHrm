@@ -1,0 +1,1886 @@
+<script type="text/javascript">
+   model.PageId("Status Request");
+   model.BreadCrumbs.push(new BreadCrumb("Status Request", "Status Request", "#", "active", ""));
+   model.Access = ko.observable('{{.Menuid}}');
+   model.View = ko.observable('{{.View}}');
+   model.Create= ko.observable('{{.Create}}');
+   model.Delete= ko.observable('{{.Delete}}');
+   model.Process= ko.observable('{{.Process}}');
+   model.Edit= ko.observable('{{.Edit}}')
+   model.User= ko.observable('{{.Username}}');
+   model.JobRoleName= ko.observable('{{.JobRoleName}}');
+   model.JobRoleLevel= ko.observable('{{.JobRoleLevel}}');
+   model.UserId= ko.observable('{{.UserId}}');
+   model.UserId= ko.observable('{{.UserId}}');
+   model.RemoteActive= ko.observable('{{.RemoteActive}}');
+   model.ConditionalRemote= ko.observable('{{.ConditionalRemote}}');
+   model.FullMonth= ko.observable('{{.FullMonth}}');
+   model.Monthly= ko.observable('{{.Monthly}}');
+   model.VisibleBtnRemote = ko.observable(false) 
+</script>
+<!-- <script src="http://cdn.kendostatic.com/2013.2.918/js/kendo.all.min.js"></script> -->
+<script src="{{NoCacheUrl "/static/core/statusrequest.js"}}"></script>
+<script src="{{NoCacheUrl "/static/core/deskaproval.js"}}"></script>
+<link rel="stylesheet" href="{{NoCacheUrl "/static/core/css/statusrequest.css"}}">
+<script src="{{NoCacheUrl "/static/core/share.js"}}"></script>
+<link rel="stylesheet" href="{{NoCacheUrl "/static/core/css/dashboard.css"}}">
+<link rel="stylesheet" href="{{NoCacheUrl "/static/indicator-master/css/style.css"}}">
+<script src="{{NoCacheUrl "/static/indicator-master/js/modernizr.js"}}"></script>
+<script src="{{NoCacheUrl "/static/core/managerovertime.js"}}"></script>
+<script src="{{NoCacheUrl "/static/core/overtime.js"}}"></script>
+<style>
+   .no-padding {
+   padding-left: 0;
+   padding-right: 0;
+   }
+   .err-msg>.k-invalid-msg {
+   border:none;
+   padding: 0px;
+   background-color: #fff;
+   color:#ED5628;
+   }
+   input[type=number]::-webkit-inner-spin-button, 
+   input[type=number]::-webkit-outer-spin-button { 
+   -webkit-appearance: none; 
+   margin: 0; 
+   }
+   .signup{
+   display: block;
+   margin-left: auto;
+   margin-right: auto;
+   width: 100%;
+   /* height: 100%; */
+   /* padding-top: 61px; */
+   }
+   .margin-sidezero{
+   margin-left:0 !important;
+   margin-right:0 !important;
+   height:100%;
+   }
+   .height-full{
+   height:100%;
+   }
+   .box-donut-title{
+   height: 40px;
+   }
+   .box-donut-title>h4{
+   font-size: 18px;
+   color: #000;
+   font-weight: 600;
+   margin-top: 0px;
+   margin-bottom: 0px;
+   }
+   #grid1 .k-grid-header,
+   #gridEmergency .k-grid-header,
+   #remote .k-grid-header,
+   #grid-overtime .k-grid-header{
+   display: none;
+   }
+   .k-upload-files {
+      padding-bottom: 0px;
+   }
+   .k-file-name{
+      padding-bottom: 1px;
+   }
+   .dtl-grid-leader{
+      font-size:12px; font-weight: 600; color: black
+   }
+   .k-detail-row{
+      background-color: #ebebeb !important;
+   }
+   .k-icon.k-i-expand{
+      font-size: 40px;
+   }
+   .k-icon.k-i-collapse{
+      font-size: 40px;
+   }
+   .min5{
+      padding: 5px;
+   }
+   .txtar{
+      width: 100%;
+   }
+   .bts{
+      float: right;
+      /* padding-left: 1px; */
+      margin-right: 10px;
+   }
+   .padpdf{
+      padding-left: 15px;
+   }
+   /* #trackcalendar_cell_selected{
+      background-color: #cccccc
+   } */
+</style>
+<div>
+   <div>
+      <div>
+         <div class="col-md-1"></div>
+         <div class="col-md-10 padding0">
+            <div class="col-md-12 padding0">
+               <div class="col-md-2 padding5">
+                  <section class="panel">
+                     <div class="panel-body top-panels">
+                        <div class="col-md-12">
+                           <center>
+                              <div class="box-donut-title">
+                                 <h4>LEAVE</h4>
+                              </div>
+                           </center>
+                        </div>
+                        <div class="col-md-12 no-padding">
+                           <div class="donut-wrapper">
+                              <div id="year_leave_chart" class="donut-chart"></div>
+                              <div class="inner-content" id="leave-txt"></div>
+                           </div>
+                        </div>
+                        <div class="row padding-legend">
+                           <div class="col-xs-1 padding0">
+                              <div class="square Leave-Approve" id="sq-LApp"></div>
+                           </div>
+                           <div class="col-xs-10">
+                              <div>Approved</div>
+                           </div>
+                           <div class="col-xs-1 padding0" data-bind="text: statreq.leaveApproved()">34</div>
+                        </div>
+                        <div class="row padding-legend">
+                           <div class="col-xs-1 padding0">
+                              <div class="square Leave-Declined" id="sq-LApp"></div>
+                           </div>
+                           <div class="col-xs-10">
+                              <div>Declined</div>
+                           </div>
+                           <div class="col-xs-1 padding0" data-bind="text: statreq.leaveDeclined()">34</div>
+                        </div>
+                        <div class="row padding-legend">
+                           <div class="col-xs-1 padding0">
+                              <div class="square total" id="sq-LApp"></div>
+                           </div>
+                           <div class="col-xs-10">
+                              <div>Total Request</div>
+                           </div>
+                           <div class="col-xs-1 padding0" data-bind="text: statreq.leaveDeclined() + statreq.leaveApproved()">34</div>
+                        </div>
+                     </div>
+                  </section>
+               </div>
+               <div class="col-md-2 padding5">
+                  <section class="panel">
+                     <div class="panel-body top-panels">
+                        <center>
+                           <div class="box-donut-title">
+                              <h4>EMERGENCY LEAVE</h4>
+                           </div>
+                        </center>
+                        <div class="col-md-12 no-padding">
+                           <!-- <div id="year_leave_chart"></div> -->
+                           <div class="donut-wrapper">
+                              <div id="year_EMleave_chart" class="donut-chart"></div>
+                              <div class="inner-content" id="emergency-txt"></div>
+                           </div>
+                        </div>
+                        <div class="row padding-legend">
+                           <div class="col-xs-1 padding0">
+                              <div class="square Em-Approved" id="sq-LApp"></div>
+                           </div>
+                           <div class="col-xs-10">
+                              <div>Approved</div>
+                           </div>
+                           <div class="col-xs-1 padding0" data-bind="text:statreq.EmerApproved()">34</div>
+                        </div>
+                        <div class="row padding-legend">
+                           <div class="col-xs-1 padding0">
+                              <div class="square Em-Declined" id="sq-LApp"></div>
+                           </div>
+                           <div class="col-xs-10">
+                              <div>Declined</div>
+                           </div>
+                           <div class="col-xs-1 padding0" data-bind="text:statreq.EmerDeclined()">34</div>
+                        </div>
+                        <div class="row padding-legend">
+                           <div class="col-xs-1 padding0">
+                              <div class="square total" id="sq-LApp"></div>
+                           </div>
+                           <div class="col-xs-10">
+                              <div>Total Request</div>
+                           </div>
+                           <div class="col-xs-1 padding0" data-bind="text: statreq.EmerApproved() + statreq.EmerDeclined()">34</div>
+                        </div>
+                     </div>
+                  </section>
+               </div>
+               <div class="col-md-2 padding5">
+                  <section class="panel">
+                     <div class="panel-body top-panels">
+                        <center>
+                           <div class="box-donut-title">
+                              <h4>REMOTE</h4>
+                           </div>
+                        </center>
+                        <div class="col-md-12 no-padding">
+                           <!-- <div id="year_leave_chart"></div> -->
+                           <div class="donut-wrapper">
+                              <div id="remote_chart" class="donut-chart"></div>
+                              <div class="inner-content" id="remote-txt"></div>
+                           </div>
+                        </div>
+                        <div class="row padding-legend">
+                           <div class="col-xs-1 padding0">
+                              <div class="square Rem-Approved" id="sq-LApp"></div>
+                           </div>
+                           <div class="col-xs-10">
+                              <div>Approved</div>
+                           </div>
+                           <div class="col-xs-1 padding0" data-bind="text: statreq.remoteApproved()" >34</div>
+                        </div>
+                        <div class="row padding-legend">
+                           <div class="col-xs-1 padding0">
+                              <div class="square Rem-Declined" id="sq-LApp"></div>
+                           </div>
+                           <div class="col-xs-10">
+                              <div>Declined</div>
+                           </div>
+                           <div class="col-xs-1 padding0" data-bind="text: statreq.remoteDeclined()" >34</div>
+                        </div>
+                        <div class="row padding-legend">
+                           <div class="col-xs-1 padding0">
+                              <div class="square total" id="sq-LApp"></div>
+                           </div>
+                           <div class="col-xs-10">
+                              <div>Total Request</div>
+                           </div>
+                           <div class="col-xs-1 padding0" data-bind="text: statreq.remoteDeclined() + statreq.remoteApproved()">34</div>
+                        </div>
+                     </div>
+                  </section>
+               </div>
+
+               <div class="col-md-2 padding5">
+                  <section class="panel">
+                     <div class="panel-body top-panels">
+                        <center>
+                           <div class="box-donut-title">
+                              <h4>OVERTIME</h4>
+                           </div>
+                        </center>
+                        <div class="col-md-12 no-padding">
+                           <!-- <div id="year_leave_chart"></div> -->
+                           <div class="donut-wrapper">
+                              <div id="overtime_chart" class="donut-chart"></div>
+                              <div class="inner-content" id="overtime-txt"></div>
+                           </div>
+                        </div>
+                        <div class="row padding-legend">
+                           <div class="col-xs-1 padding0">
+                              <div class="square Over-Approve" id="sq-LApp"></div>
+                           </div>
+                           <div class="col-xs-10">
+                              <div>Approved</div>
+                           </div>
+                           <div class="col-xs-1 padding0" data-bind="text: statreq.overtimeApproved()">0</div>
+                        </div>
+                        <div class="row padding-legend">
+                           <div class="col-xs-1 padding0">
+                              <div class="square Over-Declined" id="sq-LApp"></div>
+                           </div>
+                           <div class="col-xs-10">
+                              <div>Decline</div>
+                           </div>
+                           <div class="col-xs-1 padding0" data-bind="text: statreq.overtimeDeclined()">0</div>
+                        </div>
+                        <div class="row padding-legend">
+                           <div class="col-xs-1 padding0">
+                              <div class="square total" id="sq-LApp"></div>
+                           </div>
+                           <div class="col-xs-10">
+                              <div>Total Request</div>
+                           </div>
+                           <div class="col-xs-1 padding0" data-bind="text: statreq.overtimeApproved() + statreq.overtimeDeclined()">0</div>
+                        </div>
+                     </div>
+                  </section>
+               </div>
+
+               <div class="col-md-4 padding5">
+                  <section class="panel">
+                     <div class="panel-body top-panels" style="background: #f1f2f7; padding: 0px;">
+                        <!-- <div class="col-md-12" style="padding-top: 50px;">
+                           <div class="col-md-3 padding0"></div>  
+                           <div class="col-md-2 padding0">
+                               <a href="#" onclick="dashboard.createLeave()">
+                                   <img src="/static/img/Asset 6.png" class="img-fluid">
+                               </a>
+                           </div>
+                           <div class="col-md-2 padding0">
+                               <a href="#" onclick="dashboard.createEmergency()">
+                                   <img src="/static/img/Asset 9.png" class="img-fluid">
+                               </a>
+                           </div>
+                           <div class="col-md-2 padding0">
+                               <a href="#" onclick="dashboard.showModalRemote()">
+                                   <img src="/static/img/Asset 10.png" class="img-fluid">
+                               </a>
+                           </div>
+                           <div class="col-md-3 padding0"></div>
+                           </div>     -->
+                        <div class="col-xs-3 container-fluid">
+                           <div class="row">
+                              <a href="#" onclick="dashboard.createLeave()">
+                              <img src="/static/img/Asset_leave.png" class="img-responsive image">
+                              </a>
+                           </div>
+                        </div>
+                        <div class="col-xs-3 container-fluid">
+                           <div class="row">
+                              <a href="#" onclick="dashboard.createEmergency()">
+                              <img src="/static/img/Asset 9.png" class="img-responsive image">
+                              </a>
+                           </div>
+                        </div>
+                        <div class="col-xs-3 container-fluid">
+                           <div class="row">
+                              <a href="#" onclick="dashboard.showModalRemote()">
+                              <img src="/static/img/Asset 6.png" class="img-responsive image">
+                              </a>
+                           </div>
+                        </div>
+                        <div class="col-xs-3 container-fluid">
+                           <div class="row">
+                              <a href="#" onclick="overtime.createOvertime()">
+                              <img src="/static/img/Asset 11.png" class="img-responsive image">
+                              </a>
+                           </div>
+                        </div>
+                     </div>
+                  </section>
+               </div>
+               <div class="col-md-12 padding5" style="margin-top: -4px;">
+                  <section class="panel">
+                     <div class="panel-body">
+                        <ul class="nav nav-tabs">
+                           <li class="active"><a data-toggle="tab" href="#historyLeave">Leave</a></li>
+                           <li><a data-toggle="tab" href="#historyEmergency" aria-controls="1" >Emergency</a></li>
+                           <li data-bind="visible: model.JobRoleLevel() == '6' || model.JobRoleLevel() == '1'|| model.JobRoleLevel() == '5'|| model.JobRoleLevel() == '2'"><a data-toggle="tab" href="#approvement" aria-controls="3" onclick="desk.getDataRequest()">Approvement Request</a></li>
+                           <!-- <li><a data-toggle="tab" href="#historyOvertime" onclick="vermanager.getovtime()" aria-controls="1" >Overtime</a></li> -->
+                           
+                           <li data-bind="visible: model.JobRoleLevel() == '5' ||model.JobRoleLevel() == '1' || model.JobRoleLevel() == '6'"><a data-toggle="tab" href="#historyOvertime" aria-controls="1" onclick="vermanager.getovtime()">Overtime admin</a></li>
+                           <li data-bind="visible: model.JobRoleLevel() == '2' || model.JobRoleLevel() == '3' || model.JobRoleLevel() == '1' || model.JobRoleLevel() == '6'"><a data-toggle="tab" href="#historyovertimeleader" onclick="vermanager.getovtime()" aria-controls="1" >Overtime</a></li>
+
+                           <li><a data-toggle="tab" href="#manageremote" aria-controls="4" onclick="statreq.getRemoteAlreadyApproved()">Manage Remote</a></li>
+                           <li data-bind="visible: model.JobRoleLevel() == '6' || model.JobRoleLevel() == '1'|| model.JobRoleLevel() == '5'|| model.JobRoleLevel() == '2'"><a data-toggle="tab" href="#approvalremote">Approval Remote</a></li>
+                           <li data-bind="visible: model.JobRoleLevel() == '6' || model.JobRoleLevel() == '5' || model.JobRoleLevel() == '1'"><a data-toggle="tab" href="#cancelbydate" onclick="statreq.CancelRequest()">Cancel Request by date</a></li>
+                          <!--  <li><a data-toggle="tab" href="#historyremote" aria-controls="2" onclick="statreq.getRemoteData()">History Remote</a></li> -->
+                           <li><a data-toggle="tab" href="#trackingnotificationrequest" onclick="statreq.clicktabTacking()">Tracking Notification Request</a></li>
+                        </ul>
+                        <div class="tab-content" style="padding-top:10px;">
+                           <div id="historyLeave" class="tab-pane fade in active">
+                              <div class="col-md-12" style="padding: 0px 20px 11px 0px;">
+                                 <div class="col-md-12" style="padding: 0px;text-align:right">
+                                    <label class= "marginright20">From :</label>
+                                    <input type="text" id="dateStart" data-bind="kendoDatePicker:{value:statreq.startdate,format:'dd-MMM-yyyy'}" class="filter-space" />
+                                    <label class="marginright20" >To :</label>
+                                    <input type="text" id="dateEnd" data-bind="kendoDatePicker:{value:statreq.enddate,format:'dd-MMM-yyyy'}" class="filter-space marginright20" /> 
+                                    <input type="text" class="form-controltwo marginright20" id="filterLeave" placeholder="&#xF002;" style="font-family:Arial, FontAwesome"/>
+                                    <button type="button" onclick="statreq.filterDataLeave()" class="btn btn-sm btn-refresh"><i class="fa fa-refresh"></i> Refresh</button>
+                                 </div>
+                              </div>
+                              <div class="col-md-12" style="max-height: 500px;overflow: auto;padding: 0px 0px 0px 0px;">
+                                 <!--  <table class="table" id="grid1" style="border-bottom: 1px solid #ccc; border-top:1px solid #ccc;">
+                                    </table> -->
+                                 <div id="grid1"></div>
+                              </div>
+                           </div>
+                           <div id="historyEmergency" class="tab-pane fade in">
+                              <div class="col-md-12" style="padding: 0px 0px 11px 0px;">
+                                 <!--  <div class="col-md-8" ></div>
+                                    <div class="col-md-4" style="padding: 0px;">
+                                        <input type="text" class="form-control empty" id="filterEleave" placeholder="&#xF002;" style="font-family:Arial, FontAwesome"/>
+                                    </div> -->
+                                 <div class="col-md-12" style="padding: 0px;text-align:right">
+                                    <label class="marginright20">From :</label>
+                                    <input type="text" id="dateStart" data-bind="kendoDatePicker:{value:statreq.startdateemergency,format:'dd-MMM-yyyy'}" class="filter-space" />
+                                    <label class="marginright20" >To :</label>
+                                    <input type="text" id="dateEnd" data-bind="kendoDatePicker:{value:statreq.enddateemergency,format:'dd-MMM-yyyy'}" class="filter-space marginright20" /> 
+                                    <input type="text" class="form-controltwo marginright20" id="filterLeaveEmergency" placeholder="&#xF002;" style="font-family:Arial, FontAwesome"/>
+                                    <button type="button" onclick="statreq.filterDataLeaveEmergency()" class="btn btn-sm btn-refresh"><i class="fa fa-refresh"></i> Refresh</button>
+                                 </div>
+                              </div>
+                              <div class="col-md-12" style="max-height: 500px;overflow: auto;padding: 0px;">
+                                 <!-- <table class="table" id="gridEmergency" style="border-bottom: 1px solid #ccc; border-top:1px solid #ccc;">
+                                    </table> -->
+                                 <div id="gridEmergency"></div>
+                              </div>
+                           </div>
+                           <div id="historyremote" class="tab-pane fade in">
+                              <div class="col-md-12" style="padding: 0px 0px 11px 0px;">
+                                 <div class="col-md-8" ></div>
+                                 <div class="col-md-4" style="padding: 0px;">
+                                    <input type="text" class="form-control empty" id="filterHistoryRemote" placeholder="&#xF002;" style="font-family:Arial, FontAwesome"/>
+                                 </div>
+                              </div>
+                              <div class="col-md-12" style="padding: 0px;s">
+                                 <!-- <table id="remote" class="table" style="border-bottom: 1px solid #ccc; border-top:0px;">
+                                    <tbody>
+                                    
+                                    </tbody>
+                                    </table> -->
+                                 <div id="remote"></div>
+                              </div>
+                           </div>
+                           <div id="approvement" class="tab-pane fade">
+                              <div>
+                                 <div>
+                                    <!-- <div class="col-md-12"> -->
+                                    <!-- <section class="panel"> -->
+                                    <div style="padding-bottom:20px;padding-top:15px;">
+                                       <span style="color:#464646;"></span>
+                                       <span class="pull-right" style="margin-top: -4px;">
+                                       <button class="btn btn-sm btn-warning" onclick="desk.approveAll()"><i class="fa fa-check" ></i> Approve All </button>
+                                       <button class="btn btn-sm btn-danger"  onClick="desk.checkAll(this)"><i class="fa fa-times"></i> Cancel</button>
+                                       </span>
+                                    </div>
+                                    <div style="margin-top:15px;">
+                                       <div id="grid2"></div>
+                                       <!-- <div id="messageNullData" style="text-align: center; display: none;">Data None</div> -->
+                                    </div>
+                                    <!-- </section> -->
+                                    <!-- </div> -->
+                                 </div>
+                              </div>
+                           </div>
+                           <div id="historyOvertime" class="tab-pane fade">
+                              <div>
+                                 <div>
+                                    <!-- <div class="col-md-12"> -->
+                                    <!-- <section class="panel"> -->
+                                       <div class="col-md-12" style="padding: 0px 20px 11px 0px;">
+                                          <div class="col-md-12" style="padding: 0px;text-align:right">
+                                             <label class= "marginright20">From :</label>
+                                             <input type="text" id="ovStart" data-bind="kendoDatePicker:{value:vermanager.startdate,format:'dd-MMM-yyyy'}" class="filter-space" />
+                                             <label class="marginright20" >To :</label>
+                                             <input type="text" id="ovEnd" data-bind="kendoDatePicker:{value:vermanager.enddate,format:'dd-MMM-yyyy'}" class="filter-space marginright20" /> 
+                                             <input type="text" class="form-controltwo marginright20" id="search-overtime" onkeyup="vermanager.ovtStatus(this)" data-bind="value : vermanager.searchStatus" placeholder="&#xF002;" style="font-family:Arial, FontAwesome"/>
+                                             <!-- <button type="button" onclick="statreq.filterDataLeave()" class="btn btn-sm btn-refresh"><i class="fa fa-refresh"></i> Refresh</button> -->
+                                          </div>
+                                       </div>
+                                       <div class="col-md-12" style="padding: 0px 0px 24px 0px;">
+                                          <ul class="nav nav-tabs">
+                                             <li class="active"><a data-toggle="tab" href="#confOvertime" onclick="vermanager.getovtime()">Input</a></li>
+                                             <li id="ssexcelovertime" data-bind="visible: model.JobRoleLevel() == '1' || model.JobRoleLevel() == '6'"><a data-toggle="tab" href="#appr" onclick="vermanager.getpendingOvt()">Approvement</a></li>
+                                             <li data-bind="visible: model.JobRoleLevel() == '1' || model.JobRoleLevel() == '6'"><a data-toggle="tab" href="#expOvertime" onclick="vermanager.getexpiredOvt()">Open Expired Overtime</a></li>
+                                          </ul>
+                                     </div>
+                                     <div class="tab-content">
+                                       <div id="confOvertime" class="tab-pane in active">
+                                             <div class="col-md-12">
+                                                <div class="row">
+                                                   <div id="grid-overtime"></div>
+                                                </div>
+                                             </div>
+                                       </div>
+                                       <div id="appr" class="tab-pane">
+                                             <div class="col-md-12" style="padding:0px;padding-bottom: 15px;">
+                                                <div style="float: right;">
+                                                   <button class="btn btn-sm btn-flat btn-warning" onclick="vermanager.checkAll(this)">Check All</button>
+                                                   <button class="btn btn-sm btn-flat btn-success" onclick="vermanager.ApproveAll()">Approve All</button>
+                                                </div>
+                                             </div>
+                                             <div class="col-md-12">
+                                                <div class="row">
+                                                   <div id="grid-overtimeapprove"></div>
+                                                </div>
+                                             </div>
+                                       </div>
+                                       <div id="expOvertime" class="tab-pane">
+                                          <div class="col-md-12">
+                                             <div class="row">
+                                                <div id="grid-expovertime"></div>
+                                             </div>
+                                          </div>
+                                    </div>
+                                    </div>
+                                    
+                                    <div class="col-md-12" id="content" style="padding-top:20px;display:none;">
+                                       <!-- <div class="col-md-1"></div> -->
+                                       <div class="col-md-1"></div>
+                                       <div class="col-md-10" style="padding-top:15px;">
+                                          <div class="col-md-12">
+                                             <center><div class="pHead" style="font-size: 25px;">
+                                                <bold>OVERTIME ORDER LETTER</bold>
+                                             </div></center>
+                                          </div>
+                                          <div class="col-md12">
+                                             <hr style="border:0;clear: both; display:block; width: 100%; background-color: #e2e2e2;height:1px;" />
+                                          </div>
+                                          <div class="col-md-12" style="padding-top:10px;">
+                                             <p>
+                                                The head of Unit <span data-bind="text:admOVer.overtimeDataPrint().project
+                                                ">ECLeave</span> is giving order to :
+                                             </p>
+                                          </div>
+                                          <div class="col-md-12">
+                                             
+                                          <div class="row padpdf">
+                                             <div class="col-md-3">Name</div>
+                                             <div class="col-md-1">:</div>
+                                             <div class="col-md-8" data-bind="text: admOVer.overtimeDataPrint().name">Budianto</div>
+                                          </div>
+                                          <div class="row padpdf">
+                                             <div class="col-md-3">Emp. ID</div>
+                                             <div class="col-md-1">:</div>
+                                             <div class="col-md-8" data-bind="text:admOVer.overtimeDataPrint().idemployee">DJDJDJMEDURJMMRK,</div>
+                                          </div>
+
+                                          </div>
+                                          <div class="col-md-12"  style="padding-top:10px;">
+                                             <p>
+                                                To take overtime work on :
+                                             </p>
+                                          </div>
+                                          <div class="col-md-12">
+                                             
+                                             <div class="row padpdf">
+                                                <div class="col-md-3">Date</div>
+                                                <div class="col-md-1">:</div>
+                                                <div class="col-md-8"  data-bind="text:kendo.toString(new Date(admOVer.overtimeDataPrint().dateovertime), 'dd MMM yyyy')">Budianto</div>
+                                             </div>  
+                                             <div class="row padpdf"> 
+                                                <div class="col-md-3" >Start Time</div>
+                                                <div class="col-md-1">:</div>
+                                                <div class="col-md-8" data-bind="text: admOVer.overtimeDataPrint().timestart != ''? admOVer.overtimeDataPrint().timestart : ' - '">DJDJDJMEDURJMMRK,</div>
+                                             </div> 
+                                             <div class="row padpdf"> 
+                                                <div class="col-md-3">End Time</div>
+                                                <div class="col-md-1">:</div>
+                                                <div class="col-md-8" data-bind="text:admOVer.overtimeDataPrint().timeend != ''? admOVer.overtimeDataPrint().timeend : ' - '">DJDJDJMEDURJMMRK,</div>
+                                             </div> 
+                                             <div class="row padpdf">
+                                                <div class="col-md-3">Deadline</div>
+                                                <div class="col-md-1">:</div>
+                                                <div class="col-md-8" data-bind="text: admOVer.overtimeDataPrint().deadline != ''? kendo.toString(new Date(admOVer.overtimeDataPrint().deadline), 'dd MMM yyyy') : ' - '">DJDJDJMEDURJMMRK,</div>
+                                             </div>  
+                                             <div class="row padpdf">
+                                                <div class="col-md-3">Project</div>
+                                                <div class="col-md-1">:</div>
+                                                <div class="col-md-8" data-bind="text: admOVer.overtimeDataPrint().project">DJDJDJMEDURJMMRK,</div>
+                                             </div> 
+
+                                             </div>
+                                             <div class="col-md-12"  style="padding-top:10px;">
+                                                <p>
+                                                   Tasks to do :
+                                                </p>
+                                             </div>
+                                             <div class="col-md-12"  style="padding-top:10px;">
+                                               <!-- <div class="col-md-12"> -->
+                                                <div class="col-md-12" id="task">
+
+                                                </div>
+                                               <!-- </div> -->
+                                             </div>
+                                             <div class="col-md-12"  style="padding-top:10px;">
+                                                <p>
+                                                      We do hope this order can be fulfill with fully responsibility
+                                                </p>
+                                             </div>
+
+                                             <div class="col-md-12"  style="padding-top:50px;">
+                                                <div class="col-md-12 no-padding">
+                                                   <div class="col-md-6">
+                                                      <center>
+                                                         <div>Leader</div>
+                                                         <div data-bind="text : vermanager.manlead().lead">-</div>
+                                                      </center>
+                                                   </div>
+                                                   <div class="col-md-6">
+                                                      <center>
+                                                         <div>Manager</div>
+                                                         <div data-bind="text : vermanager.manlead().manager">-</div>
+                                                      </center>
+                                                   </div>
+                                                </div>
+                                                
+                                                <div class="col-md-12" style="margin-top: 21px;">
+                                                   <center>
+                                                      <span data-bind="text: kendo.toString(new Date(admOVer.overtimeDataPrint().dateapprove), 'dd MMM yyyy')"></span>
+                                                      <br/>
+                                                      <img style="height: 50%;
+                                                      width: 50%;
+                                                      margin-right: 0;" src="/static/img/creativelab-email-logo.png"/>
+                                                   </center>
+                                                </div>
+                                             </div>
+                                             
+                                          
+                                       </div>
+                                       <div class="col-md-1"></div>
+                                       <!-- <div class="col-md-1"></div> -->
+                                    </div>
+                                    <!-- </section> -->
+                                    <!-- </div> -->
+                                 </div>
+                              </div>
+                           </div>
+
+                           <div id="historyovertimeleader" class="tab-pane fade">
+                              <div>
+                                 <div>
+                                       <div class="col-md-12" style="padding: 0px 20px 11px 0px;">
+                                          <div class="col-md-12" style="padding: 0px;text-align:right">
+                                             <label class= "marginright20">From :</label>
+                                             <input type="text" id="ovStart" data-bind="kendoDatePicker:{value:vermanager.startdate,format:'dd-MMM-yyyy'}" class="filter-space" />
+                                             <label class="marginright20" >To :</label>
+                                             <input type="text" id="ovEnd" data-bind="kendoDatePicker:{value:vermanager.enddate,format:'dd-MMM-yyyy'}" class="filter-space marginright20" /> 
+                                             <input type="text" class="form-controltwo marginright20" id="search-overtime" onkeyup="vermanager.ovtStatus(this)" data-bind="value : vermanager.searchStatus" placeholder="&#xF002;" style="font-family:Arial, FontAwesome"/>
+                                          </div>
+                                       </div>
+                                    <div class="col-md-12" style="padding: 0px 20px 11px 0px;">
+                                       <div id="grid-overtime-leader-user"></div>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+
+                           <div id="approvalremote" class="tab-pane fade">
+                              <div class="row">
+                                 <div class="col-md-12" data-bind="visible: statreq.leaderRemoteControlApproval">
+                                    <div class="col-md-12" style="margin-bottom: 10px;">
+                                       <div style="display: inline;font-size: 30px;">
+                                          Leader
+                                       </div>
+                                       <div style="display: inline; float: right;" data-bind='visible: (statreq.dataRemoteLeader().length > 0)'>
+                                          <button class='btn newbtn-approve' onclick='statreq.actionApproveRemoteAll("leader")'>Approve All</button>&nbsp
+                                          <!-- <button class='btn newbtn-decline'>Decline All</button> -->
+                                       </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                       <div class="remoteGridLeader"></div>
+                                    </div>
+                                    <div class="col-md-12">
+                                       <div><span data-bind="text: statreq.lenRemoteSelectedLeader"></span> Objects Selected</div>
+                                    </div>
+                                 </div>
+                                 <div class="col-md-12" data-bind="visible: statreq.managerRemoteControl">
+                                    <div class="col-md-12">
+                                       <div style="display: inline;font-size: 30px;">
+                                          Manager
+                                       </div>
+                                       <div style="display: inline; float: right;" data-bind='visible: (statreq.dataRemoteManager().length > 0)'>
+                                          <button class='btn newbtn-approve' onclick='statreq.actionApproveRemoteAll("manager")'>Approve All</button>&nbsp
+                                          <!-- <button class='btn newbtn-decline'>Decline All</button> -->
+                                       </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                       <div class="remoteGridManager"></div>
+                                    </div>
+                                 </div>
+                                 <div class="col-md-12" data-bind="visible: statreq.cancelRemoteControl" style="padding-top:35px;">
+                                    <div class="col-md-12">
+                                       <div style="display: inline;font-size: 30px;">
+                                          Cancel List
+                                       </div>
+                                       <div style="display: inline; float: right;" data-bind='visible: (statreq.dataRemoteCancel().length > 0)'>
+                                          <button class='btn newbtn-approve' onclick='statreq.actionApproveRemoteAll("cancel")'>Approve All</button>&nbsp
+                                          <!-- <button class='btn newbtn-decline'>Decline All</button> -->
+                                       </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                       <div class="remoteGridCancel"></div>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                           <div id="manageremote" class="tab-pane fade">
+                              <div class="row">
+                                 <div class="col-md-12" data-bind="visible: statreq.leaderRemoteControl">
+                                    <div class="col-md-12" style="margin-bottom: 10px;">
+                                       <div class="col-md-8" style="font-size: 30px;">
+                                          Remote 
+                                       </div>
+                                       <div class="col-md-4" style="padding: 0px; margin-top: 3px;">
+                                          <input type="text" class="form-control empty" id="filterManageRemote" placeholder="&#xF002;" style="font-family:Arial, FontAwesome"/>
+                                       </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                       <div class="manageGridUser"></div>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                           <div id="cancelbydate" class="tab-pane fade in">
+                              <div class="col-md-12" style="padding: 0px 20px 0px 0px;">
+                                 <div class="col-md-12" style="padding: 0px;text-align:right">
+                                    <label class="marginright20" >Date leave :</label>
+                                    <input type="text" id="dateEnd" data-bind="kendoDatePicker:{value:statreq.cancelDate,format:'dd-MMM-yyyy'}" class="filter-space marginright20" /> 
+                                    <button type="button" class="btn btn-flat btn-sm btn-success" onclick="statreq.RequestByDate()"><i class="fa fa-refresh" ></i> Refresh</button>
+                                 </div>
+                              </div>
+                              <div class="col-md-12" style="max-height: 500px;overflow: auto;padding: 0px;">
+                                 <ul class="nav nav-tabs">
+                                    <li class="active"><a data-toggle="tab" href="#cancelLeave" aria-controls="5" onclick="showtabscancel()">Cancel Leave</a></li>
+                                    <li><a data-toggle="tab" href="#cancelELeave" aria-controls="6" onclick = "showtabsEleave()">Cancel E-Leave</a></li>
+                                    <li><a data-toggle="tab" href="#cancelRemote" aria-controls="7" onclick="hideCancelleave()">Cancel Remote</a></li>
+                                 </ul>
+                                 <div class="tab-content" style="padding-top:10px;">
+                                    <div id="cancelLeave" class="tab-pane fade in" visible>
+                                       <div class="col-md-12" style="padding: 0px 0px 11px 0px;">
+                                          <div class="col-md-8" ></div>
+                                          <div class="col-md-4" style="padding: 0px;">
+                                             <button type="button" class="btn btn-sm btn-flat btn-warning" onclick="statreq.cancelAll('.check-child-leave', 'leave')" style="float: right;">Cancel All</button>
+                                          </div>
+                                       </div>
+                                       <div class="col-md-12" style="max-height: 500px;overflow: auto;padding: 0px;">
+                                          <div id="cancelgridLeave"></div>
+                                       </div>
+                                    </div>
+                                    <div id="cancelELeave" class="tab-pane fade in" visible>
+                                       <div class="col-md-12" style="padding: 0px 0px 11px 0px;">
+                                          <div class="col-md-8" ></div>
+                                          <div class="col-md-4" style="padding: 0px;">
+                                             <button type="button" class="btn btn-sm btn-flat btn-warning" onclick="statreq.cancelAll('.check-child-eleave', 'eleave')" style="float: right;">Cancel All</button>
+                                          </div>
+                                       </div>
+                                       <div class="col-md-12" style="max-height: 500px;overflow: auto;padding: 0px;">
+                                          <div id="cancelgridELeave"></div>
+                                       </div>
+                                    </div>
+                                    <div id="cancelRemote" class="tab-pane fade in" hidden>
+                                       <div class="col-md-12" style="padding: 0px 0px 11px 0px;">
+                                          <div class="col-md-8" ></div>
+                                          <div class="col-md-4" style="padding: 0px;">
+                                             <button type="button" class="btn btn-sm btn-flat btn-warning" style="float: right;" onclick="statreq.cancelAll('.check-child-Remote', 'remote')">Cancel All</button>
+                                          </div>
+                                       </div>
+                                       <div class="col-md-12" style="max-height: 500px;overflow: auto;padding: 0px;">
+                                          <!-- <table class="table" id="gridEmergency" style="border-bottom: 1px solid #ccc; border-top:1px solid #ccc;">
+                                             </table> -->
+                                          <div id="cancelgridRemote"></div>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                           <div id="trackingnotificationrequest" class="tab-pane fade in">
+                              <div class="col-md-12" style="padding: 0px 0px 11px 0px;">
+                                 <div style="display: inline;font-size: 30px;">
+                                    Tracking Notification Request
+                                 </div>
+                                 <div id="home" class="tab-pane fade in active">
+                                    <div style="padding-top:20px;padding-bottom:20px">
+                                       <form class="form-inline" role="form">
+                                          <div class="col-md-4">
+                                             <div class="col-md-3">
+                                                <label style="padding-top:8px;">Month </label>
+                                             </div>
+                                             <div class="col-md-9">
+                                                <input name="date" id="dateFilter" data-bind="kendoDatePicker:{value:logTracking.dateFilter, start: 'year', depth: 'year',format: 'MMM-yyyy'}" style="width: 185px">
+                                             </div>
+                                          </div>
+                                          <div class="col-md-3">
+                                             <div class="col-md-3">
+                                                <label style="padding-top:8px;">Type Request </label>
+                                             </div>
+                                             <div class="col-md-9">
+                                                <input data-bind="kendoDropDownList: { dataTextField: 'title', dataValueField: 'field', data: logTracking.dataTypeReq, value: logTracking.valueTypeReq}" />
+                                             </div>
+                                          </div>
+                                          <div class="col-md-4" data-bind="visible: model.JobRoleLevel() == '5'">
+                                             <div class="col-md-3">
+                                                <label style="padding-top:8px;">Name </label>
+                                             </div>
+                                             <div class="col-md-9">
+                                                <select type="text" data-bind="kendoMultiSelect: { dataTextField: 'title', dataValueField: 'field', data: logTracking.dataNameReq, value: logTracking.valueNameReq}"></select>
+                                             </div>
+                                          </div>
+                                       </form>
+                                       <button class="btn btn-sm btn-primary" onclick="statreq.getDataLog(function(){})"><i class="fa fa-refresh"></i> Refresh</button>
+                                    </div>
+                                 </div>
+                                 <!--     <div class="col-md-12" style="overflow-y:scroll;height:600px">
+                                    <div class="col-md-12">
+                                       <div class="col-md-12" style="padding-top:20px"><b>Leave | Hifi Sulton | Request Date : 6 September 2018</b></div>
+                                       <section>
+                                          <nav>
+                                             <ol class="cd-multi-steps text-top">
+                                                <li class="visited"><a href="#0">Employee :<br/> Hifi Sulton</a>
+                                                </li>
+                                                <li class="visited" ><a href="#0">Leader :<br/>Satria Syariful</a></li>
+                                                <li class="current"><a href="#0">Coordinator :<br/>Andiek Suncahyo</a></li>
+                                                <li class=""><a href="#0">Manager :<br/>Andiek Suncahyo</a></li>
+                                             </ol>
+                                             <ol class="cd-multi-stepsbottom text-bottom">
+                                                <li>Request Leave Send</li>
+                                                <li>Approve By Leader</li>
+                                                <li>Approve By Coordinator</li>
+                                                <li>Pending</li>
+                                             </ol>
+                                          </nav>
+                                       </section>
+                                    </div>
+                                    <div class="col-md-12" style="background:#cccccc;padding-top:20px; padding-bottom:20px">
+                                       <div class="col-md-12">
+                                          <div class="col-md-2">
+                                             06 September 2018 - 08:15
+                                          </div>
+                                          <div class="col-md-10">
+                                             <b>Approve by Leader</b>
+                                          </div>
+                                          <div class="col-md-2">
+                                             06 September 2018 - 07 :15
+                                          </div>
+                                          <div class="col-md-10">
+                                             <b>Send Request Remote</b>
+                                          </div>
+                                       </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                       <hr/>
+                                    </div>
+                                    </div> -->
+                                 <div class="col-md-12" style="overflow-y:scroll;height:600px" data-bind="foreach: statreq.RecordTracking">
+                                    <div class="col-md-12">
+                                       <div  class="col-md-12" style="padding-top:20px"><a onclick="statreq.dateRequesttrack1($(this).attr('id'))" data-bind="attr:{'id': IdRequest}" href="#0" ><span data-bind="text:TypeRequest"></span> | <span data-bind="text:Name"></span> | Create Date : <span data-bind="text:moment(DateLogCreated).format('DD MMMM YYYY')"></span></a></div>
+                                       <section>
+                                          <nav>
+                                             <ol class="cd-multi-steps text-top" data-bind="attr:{id:'step'+$index()}">
+                                                <li data-bind="css: LineEmployee"><a href="#0">Employee :<br/> <span data-bind="text:Name"></span><br/><span data-bind="text:EmailEmployee"></span></a>
+                                                </li>
+                                                <li data-bind="css: LineLeader,visible:$data.TypeRequest != 'EMERGENCY LEAVE'"><a href="#0">Leader :<br/><span data-bind="text:Leader"></span><br/><span data-bind="text:EmailLeader"></a></li>
+                                                <li data-bind="css: LineCoordinator"><a href="#0">Coordinator :<br/><span data-bind="text:Coordinator"></span><br/><span data-bind="text:EmailCoordinator"></span></a></li>
+                                                <li data-bind="css: LineManager"><a href="#0">Manager :<br/><span data-bind="text:Manager"></span><br/><span data-bind="text:EmailManager"></a></li>
+                                             </ol>
+                                             <ol class="cd-multi-stepsbottom text-bottom">
+                                                <li data-bind="text:StatusEmployee"></li>
+                                                <li data-bind="text:StatusLeader,visible:$data.TypeRequest != 'EMERGENCY LEAVE'"></li>
+                                                <li data-bind="text:StatusCoordinator"></li>
+                                                <li data-bind="text:StatusManager"></li>
+                                             </ol>
+                                          </nav>
+                                       </section>
+                                    </div>
+                                    <div class="col-md-12 col-xs-12" style="background:#cccccc;padding-top:20px; padding-bottom:20px">
+                                       <div class="col-md-12" data-bind="foreach: ListLog">
+                                          <div class="col-md-12">
+                                             <div class="col-md-3 col-xs-6">
+                                                <span data-bind="text:DateLog"></span>
+                                             </div>
+                                             <div class="col-md-9 col-xs-6">
+                                                <b><span data-bind="text:Description"></span></b>
+                                             </div>
+                                          </div>
+                                       </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                       <hr/>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </section>
+               </div>
+            </div>
+         </div>
+         <div class="col-md-1"></div>
+      </div>
+   </div>
+</div>
+{{template "_modal.html"}}
+<!-- <div class="modal fade" id="leaveModal" role="dialog" aria-labelledby="LeaveModalLabel" aria-hidden="true" data-backdrop="static">
+   <div class="modal-dialog modal-xl">
+       <div class="modal-content">
+           <div data-bind="with:dashboard">
+               <div class="col-md-12 body-panel"  style=' padding-left: 0; padding-bottom: 0px;'>
+                   <form class="form-custom" id="formRequestLeave" method="POST">
+                       <div class="row" style="    margin-top: -15px;"> 
+                           <div class="col-md-3">
+                                   <div style="background-color: #61DC73">
+                                       <img src="/static/img/ECLeave-25.jpg" class="img-fluid signup">
+                                   </div>
+                           </div>
+                           <div class="col-md-9">
+                                   <div class="col-md-12">
+                                           <div class="form-wrapper col-md-5">
+                                               <div class="form-label">
+                                                   <label for="inputPassword3" class="form-label err-msg">Reason Leave<span class="k-invalid-msg" data-for="reason"></label>
+                                               </div>
+                                               <div class="form-input-wrapper">
+                                                   <input type="text" class="form-control" data-bind="value:reason" name="reason" id="reason" validationMessage=" " required />
+                                                   <div class="bar"></div> 
+                                               </div>
+                                           </div>
+                                           <div class="form-wrapper col-md-7">
+                                                   <div class="col-md-6">
+                                                       <div class="form-label">
+                                                           <label class="err-msg">Leave From<span class="k-invalid-msg" data-for="leaveFrom"></span></label>
+                                                       </div>
+                                                       <div class="form-input-wrapper">
+                                                           <input type="text" class="form-control" name="leaveFrom" id="leaveFrom" validationMessage=" " required data-bind="kendoDatePicker:{value:leaveFrom, format: 'dd-MMM-yyyy', min: minDateFromLeave, disableDates: ['sa', 'su']}" onclick="return false;"/>
+                                                           <div class="bar"></div>
+                                                           
+                                                       </div>
+                                                   </div>
+                                                   <div class="col-md-6">
+                                                       <div class="form-label">
+                                                           <label class="err-msg">Leave To<span class="k-invalid-msg" data-for="leaveTo"></span></label>
+                                                       </div>
+                                                       <div class="form-input-wrapper">
+                                                           <input type="text" class="form-control" name="leaveTo" id="leaveTo" validationMessage=" " required data-bind="kendoDatePicker:{value:leaveTo, format: 'dd-MMM-yyyy', min: leaveFrom, disableDates: ['sa', 'su']}" />
+                                                           <div class="bar"></div>
+                                                           
+                                                       </div>
+                                                   </div>
+                                               </div>
+                                       </div>
+                                       <div class="col-md-12">
+                                           <div class="form-wrapper col-md-5">
+                                               <div class="form-label">
+                                                       <label class="err-msg">Address<span class="k-invalid-msg" data-for="address"></span></label>
+                                               </div>
+                                               <div class="form-input-wrapper">
+                                                   <input type="text" class="form-control" name="address" id="address" data-bind="value:address" validationMessage=" " required />
+                                                   <div class="bar"></div>
+                                                   
+                                               </div>
+                                           </div>
+                                           <div class="col-md-7 form-wrapper">
+                                                   <div class="col-md-6">
+                                                           <div class="form-label">
+                                                                   <label>No of days<span class="mandatory">*</span></label>
+                                                               </div>
+                                                               <div class="form-input-wrapper">
+                                                                   <input type="number" class="form-control" name="noOfDays" id="noOfDays" validationMessage="No of days required" required data-bind="value:countNoOfDays"/>
+                                                                   <div class="bar"></div>
+                                                                   <span class="k-invalid-msg" data-for="noOfDays"></span>
+                                                               </div>
+                                                       </div>
+                                                       <div class="col-md-6">
+                                                           <div class="form-label">
+                                                               <label>Year Leave<span class="mandatory">*</span></label>
+                                                           </div>
+                                                           <div class="form-input-wrapper">
+                                                               <input type="text" class="form-control" name="yearLeave" id="yearLeave" data-bind="value:yearLeave" validationMessage="Year Leave required" required readonly/>
+                                                               <div class="bar"></div>
+                                                               <span class="k-invalid-msg" data-for="yearLeave"></span>
+                                                           </div>
+                                                       </div>
+                                                   </div>
+                                       </div>
+                                       <div class="col-md-12">
+                                           <div class="form-wrapper col-md-5">
+                                               <div class="form-label">
+                                                   <label class="err-msg">Contact No<span class="k-invalid-msg" data-for="contact"></span></label>
+                                               </div>
+                                               <div class="form-input-wrapper">
+                                                       <input type="number" class="form-control" name="contact" id="contact" data-bind="value:contact" validationMessage=" " required />
+                                                   <div class="bar"></div>
+                                                   
+                                               </div>
+                                              
+                                           </div>
+                                           <div class="col-md-7 form-wrapper">
+                                                   <div class="col-md-6 field-leader" >
+                                                           <div class="form-label">
+                                                               <label class="err-msg">Leader<span class="k-invalid-msg" data-for="leader"></span></label>
+                                                           </div>
+                                                           <div class="form-input-wrapper">
+                                                               <input style="width:100%;" type="text" data-bind="kendoDropDownList:{value: leader, data: dashboard.tempLeader,  dataTextField: 'fullname', dataValueField: '_id', optionLabel: 'Select one', filter:'contains'}" name="leader" id="leader" validationMessage=" " required/>
+                                                               <div class="bar"></div>
+                                                               
+                                                           </div>
+                                                       </div>
+                                                       <div class="col-md-6">
+                                                           <div class="form-label">
+                                                               <label class="err-msg">Manager<span class="k-invalid-msg" data-for="manager"></span></label>
+                                                           </div>
+                                                           <div class="form-input-wrapper">
+                                                                   <select style="width:100%;" type="text" class="form-control" data-bind="kendoDropDownList:{value: manager, data: tempManager,  dataTextField: 'fullname', dataValueField: '_id', filter: 'contains',  optionLabel: 'Select one'}" name="manager" id="manager" validationMessage=" " required></select>
+                                                               <div class="bar"></div>
+                                                               
+                                                           </div>
+                                                       </div>
+                                           </div>
+                                       </div>
+                                       <div class="col-md-12 form-wrapper">
+                                               <div style="float: right">
+                                                   <button type="button" class="btn btn-sm btn-danger"  data-dismiss="modal" onclick="dashboard.cancelForm()"><i class="fa fa-times"></i> Cancel</button>
+                                                   <button type="button" class="btn btn-sm btn-success" onclick="dashboard.sendRequest()"><i class="fa fa-floppy-o"></i> Save</button>
+                                               </div>
+                                           </div>
+                           </div>
+                       </div>  
+                   </form>
+               </div>
+           </div>
+       </div>
+   </div>
+   </div>
+   -->
+<!-- modal Leave Emergency-->
+<!-- <div class="modal fade" id="leaveModalEmergency" role="dialog" aria-labelledby="LeaveModalLabel" aria-hidden="true" data-backdrop="static">
+   <div class="modal-dialog modal-lg">
+       <div class="modal-content">
+           <div data-bind="with:dashboard">
+               <div class="col-md-12 body-panel"   style=' padding-left: 0; padding-bottom: 0px;'>
+                   <form class="form-custom" method="POST">
+                       <div class="row" style="    margin-top: -15px;"> 
+                                   <div class="col-md-3">
+                                           <div style="background-color: #61DC73">
+                                               <img src="/static/img/ECLeave-26.jpg" class="img-fluid signup" style="width: 110%;">
+                                           </div>
+                                   </div>
+                                   <div class="col-md-9" id="formRequestLeaveEmergency">
+                                           <div class="col-md-12" style="padding:0px;">
+                                                   <div class="form-wrapper col-md-12">
+                                                       <div class="form-label">
+                                                           <label class="err-msg">Reason Leave<span class="k-invalid-msg" data-for="reasonEm" ></span></label>
+                                                       </div>
+                                                       <div class="form-input-wrapper">
+                                                           <input type="text" class="form-control" data-bind="value:reason" name="reasonEm" id="reasonEm" validationMessage=" " required/>
+                                                           <div class="bar"></div> 
+                                                       </div>
+                                                   </div>
+                                               </div>
+                                               <div class="col-md-12 form-wrapper">
+                                                       <div class="form-label ">
+                                                               <label class="err-msg">Leader<span class="k-invalid-msg" data-for="leaderEm" ></span></label>
+                                                           </div>
+                                                           <div class="form-input-wrapper">
+                                                               <input style="width:100%;" type="text" data-bind="kendoDropDownList:{value: leader, data: listUser,  dataTextField: 'fullname', dataValueField: '_id', optionLabel: 'Select one', filter:'contains'}" name="leaderEm" id="leaderEm" validationMessage=" " required/>
+                                                               <div class="bar"></div> 
+                                                           </div>
+                                               </div>
+                                               <div class="col-md-12 form-wrapper">
+                                                       <div class="form-label">
+                                                               <label class="err-msg">Manager<span class="k-invalid-msg" data-for="managerEm" ></span></label>
+                                                           </div>
+                                                           <div class="form-input-wrapper">
+                                                                   <select style="width:100%;" type="text" class="form-control" data-bind="kendoDropDownList:{value: manager, data: tempManager,  dataTextField: 'fullname', dataValueField: '_id', filter: 'contains',  optionLabel: 'Select one'}" name="managerEm" id="managerEm" validationMessage=" " required></select>
+                                                               <div class="bar"></div> 
+                                                           </div>
+                                                   </div>
+   
+                                   </div>
+                                   <div class="col-md-12" style="position: absolute;bottom: 12px; left: 80%;">
+                                           <button type="button" class="btn btn-sm btn-danger"  data-dismiss="modal" onclick="dashboard.cancelForm()"><i class="fa fa-times"></i> Cancel</button>
+                                           <button type="button" class="btn btn-sm btn-success" onclick="dashboard.sendRequest()"><i class="fa fa-floppy-o"></i> Save</button>
+                                   </div>
+                           
+                       </div>  
+                   </form>
+               </div>
+           </div>
+       </div>
+   </div>
+   </div> -->
+<!-- end modal leave Emergency-->
+<!-- modal remote-->
+<!-- <div class="modal fade" id="remoteModal" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
+   <div class="modal-dialog modal-xl">
+       <div class="modal-content" style="height : 700px;">
+           <div class="modal-body height-full" style="padding-top: 0;padding-bottom: 0px;">
+               <form class="form-horizontal form-custom height-full" id ="AddUserSetting">
+                   <div class="form-group margin-sidezero height-full" style="margin-bottom: 0;"> 
+                       <div class="row height-full">
+                           <div class="col-md-3 height-full" style="display: table;">
+                                   <div style="background-color: #039be6;vertical-align: middle;display: table-cell;">
+                                       <img src="/static/img/ECLeave-28.jpg" class="img-fluid signup" style="width: 100%;">
+                                   </div>
+                           </div>
+                           <div class="col-md-9">
+                               <div class="col-md-12">
+                                   <div class="form-wrapper col-md-6">
+                                       <div class="form-label">
+                                           <label>Reason</label>
+                                       </div>
+                                       <div class="form-input-wrapper">
+                                           <textarea name="" id="" cols="30" rows="10" data-bind="value: dashboard.remoteData.Reason" style="margin: 0px; height: 113px;"></textarea>
+                                       </div>  
+                                   </div>
+                                   <div class="form-wrapper col-md-6">
+                                       <div class="col-md-12 form-wrapper  field-leader" style="margin-top: 0px;">
+                                               <div class="form-label">
+                                                       <label>Leader<span class="mandatory">*</span></label>
+                                                   </div>
+                                                   <div class="form-input-wrapper">
+                                                       <input style="width:100%;" type="text" data-bind="kendoDropDownList:{value: dashboard.remoteTempLeader, data: dashboard.listUser,  dataTextField: 'fullname', dataValueField: '_id', optionLabel: 'Select one', filter:'contains'}" name="remotetempleader" id="remotetempleader" />
+                                                       <div class="bar"></div>
+                                                       <span class="k-invalid-msg" data-for="remotetempleader"></span>
+                                                   </div>
+                                           </div>
+                                           <div class="col-md-12 form-wrapper field-manager-remote">
+                                                <div class="form-label">
+                                                       <label>Manager<span class="mandatory">*</span></label>
+                                                   </div>
+                                                   <div class="form-input-wrapper">
+                                                           <select style="width:100%;" type="text" class="form-control" data-bind="kendoDropDownList:{value: dashboard.remoteTempManager, data: dashboard.tempManager,  dataTextField: 'fullname', dataValueField: '_id',  optionLabel: 'Select one'}" name="remotetempmanager" id="remotetempmanager" ></select>
+                                                       <div class="bar"></div>
+                                                       <span class="k-invalid-msg" data-for="remotetempmanager"></span>
+                                                   </div>
+                                           </div>
+                                   </div>
+                               </div>
+                               <div class="col-md-12">
+                                       <div class="form-wrapper col-md-6">
+                                               <div class="form-label">
+                                                   <label>Address</label>
+                                               </div>
+                                               <div class="form-input-wrapper">
+                                                   <input class="form-control" name="remoteaddress" data-bind="value:dashboard.remoteData.Address" validationMessage="Address required" required />
+                                                   <div class="bar"></div>
+                                                   <span class="k-invalid-msg" data-for="address"></span>
+                                               </div>
+                                       </div>
+                                       <div class="form-wrapper col-md-6">
+                                       <div class="form-label">
+                                           <label>Phone Number</label>
+                                       </div>
+                                       <div class="form-input-wrapper">
+                                           <input type="text" class="form-control" name="remotecontact" data-bind="value:dashboard.remoteData.Contact" validationMessage="Contact required" required></textarea>
+                                           <div class="bar"></div>
+                                           <span class="k-invalid-msg" data-for="remotecontact"></span>
+                                       </div>
+                                   </div>
+                                       
+                               </div>
+                               <div class="col-md-6">
+   
+                               <div class="form-wrapper col-md-4" style="padding: 0;">
+                                           <div class="form-label">
+                                               <label>Type Of Remote</label>
+                                           </div>
+                                           <div class="form-input-wrapper">
+                                               <select class="form-control" data-bind="kendoDropDownList:{value: dashboard.remoteData.Type, data: dashboard.remoteTypeList,  dataTextField: 'text', dataValueField: 'id', change: dashboard.changeTipeRemote}" name="remotetype" validationMessage="Project required" style="width: 100%;" required ></select>
+                                               <div class="bar"></div>
+                                               <span class="k-invalid-msg" data-for="remotetype"></span>
+                                           </div>
+                                       </div>
+                                       <div class="form-wrapper col-md-6" >
+                                               <div class="form-label">
+                                                   <label>Plan your Remote</label>
+                                               </div>
+                                               <div class="form-input-wrapper">
+                                                   <div id="dateCalendar"></div>
+                                               </div>  
+                                           </div>
+                                   
+   
+                               </div>
+                           </div>
+                           <div class="col-md-12" style="position: absolute;bottom: 21px;">
+                               <div style="float:right">
+                                   <button type="button" class="btn btn-sm btn-danger btn-flat" onclick="dashboard.hideModalRemote()"><i class="fa fa-times"></i> Cancel</button>
+                               <button type="button" class="btn btn-sm btn-success btn-flat" onclick="dashboard.saveRemote()"><i class="fa fa-floppy-o"></i> Save</button>
+                               </div>
+                               
+                           </div>
+                       </div>
+                   </div>
+               </form>
+           </div>
+       </div>
+   </div>
+   </div> -->
+<!-- end modal remote-->
+<!-- modal remote-->
+<div class="modal fade" id="noteModal" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
+   <div class="modal-dialog modal-xl">
+      <div class="modal-content">
+         <div class="modal-body" style="padding-top: 0;padding-bottom: 0px;">
+            <form class="form-horizontal form-custom">
+               <div class="form-group" style="margin-bottom: 0;">
+                  <div class="row">
+                     <div class="col-md-12">
+                        <div class="col-md-12">
+                           <div class="form-wrapper col-md-12">
+                              <div class="form-label">
+                                 <label>Note</label>
+                              </div>
+                              <div class="form-input-wrapper">
+                                 <textarea name="" id="" rows="10" data-bind="value: statreq.dataRemoteNote"></textarea>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="col-md-12">
+                        <div class="pull-right" style="margin-right: 30px;padding: 10px 0px;">
+                           <button type="button" class="btn btn-sm btn-danger btn-flat" onclick="statreq.hideModalRemote()"><i class="fa fa-times"></i> Cancel</button>
+                           <button type="button" class="btn btn-sm btn-success btn-flat" onclick="statreq.actionDeclineRemote()"><i class="fa fa-floppy-o"></i> Decline</button>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </form>
+         </div>
+      </div>
+   </div>
+</div>
+<!-- end modal remote-->
+<!-- modal leave -->
+<div class="modal fade" id="detailsLeaveModal1" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
+   <div class="modal-dialog modal-xl">
+      <div class="modal-content">
+         <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">
+            <span aria-hidden="true">×</span>
+            <span class="sr-only">Close</span>
+            </button>
+            <h4 class="modal-title">Details Leave</h4>
+         </div>
+         <div class="modal-body" style="padding-top: 0;padding-bottom: 0px;">
+            <div style="padding: 20px">
+               <div id="detailsLeave"></div>
+            </div>
+            <div class="modal-footer">
+               <button type="button" class="btn btn-warning btn-sm btn-flat" onclick="statreq.cancelLeaveByDate()">Cancel Request</button>
+               <button type="button" class="btn btn-danger btn-sm btn-flat" data-dismiss="modal">Close</button>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+<!-- end modal leave -->
+<!-- modal emergency leave -->
+<div class="modal fade" id="detailsEmergencyLeaveModal" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
+   <div class="modal-dialog">
+      <div class="modal-content">
+         <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">
+            <span aria-hidden="true">×</span>
+            <span class="sr-only">Close</span>
+            </button>
+            <h4 class="modal-title">Details Emergency Leave</h4>
+         </div>
+         <div class="modal-body" style="padding-top: 0;padding-bottom: 0px;">
+            <div style="padding: 20px">
+               <div id="detailsEmergencyLeave"></div>
+            </div>
+            <div class="modal-footer">
+               <button type="button" class="btn btn-danger btn-sm btn-flat" data-dismiss="modal">Close</button>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+<!-- end modal emergencyleave -->
+<!-- modal remote detail-->
+<div class="modal fade" id="detailsRemoteModal" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
+   <div class="modal-dialog modal-xl">
+      <div class="modal-content">
+         <div class="modal-header">
+            <button type="button" class="close"
+               data-dismiss="modal">
+            <span aria-hidden="true">&times;</span>
+            <span class="sr-only">Close</span>
+            </button>
+            <h4 class="modal-title">Detail Of Remote</h4>
+         </div>
+         <div class="modal-body" style="padding-top: 0;padding-bottom: 0px;">
+            <div class="row">
+               <div class="col-md-12">
+                  <table class="table table-bordered">
+                     <thead>
+                        <tr>
+                           <th>Name</th>
+                           <th>Date Remote</th>
+                           <th>Reason</th>
+                           <th>Status</th>
+                           <th>Note</th>
+                        </tr>
+                     </thead>
+                     <tbody data-bind="foreach: statreq.dataDetailsRemote">
+                        <tr>
+                           <td data-bind="text: Name"></td>
+                           <td data-bind="text: DateLeave"></td>
+                           <td data-bind="text: Reason"></td>
+                           <td> <input type="text" data-bind="kendoDropDownList: {value:Status, data:statreq.dataListStatus,dataTextField: 'text', dataValueField: 'id'}"> </td>
+                           <td><textarea class="form-control" rows="3" data-bind="value: Note"></textarea></td>
+                        </tr>
+                     </tbody>
+                  </table>
+               </div>
+               <div class="col-md-12">
+                  <div class="pull-right" style="margin-right: 30px;padding: 10px 0px;">
+                     <button type="button" class="btn btn-sm btn-danger btn-flat" onclick="statreq.hideModalDetailRemote()"><i class="fa fa-times"></i> Cancel</button>
+                     <button type="button" class="btn btn-sm btn-success btn-flat" onclick="statreq.actionForRemoteDetail()"><i class="fa fa-floppy-o"></i> Send Request</button>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+<!-- end modal remote-->
+<!-- modal detil leave-->
+<div class="modal fade" id="detailsLeaveModal" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
+   <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h4 class="modal-title">Detail Of Leave</h4>
+         </div>
+         <div class="modal-body" style="padding-top: 0;padding-bottom: 0px;">
+            <div class="row">
+               <div class="col-md-12">
+                  <div class="col-md-1">
+                     <h5>Name</h5>
+                  </div>
+                  <div class="col-md-9">
+                     <h5 data-bind="text: desk.textName"></h5>
+                  </div>
+               </div>
+               <div class="col-md-12">
+                  <div class="col-md-1">
+                     <h5>Reason</h5>
+                  </div>
+                  <div class="col-md-9">
+                     <h5 data-bind="text: desk.textReason"></h5>
+                  </div>
+               </div>
+               <div class="col-md-12">
+                  <table class="table table-bordered">
+                     <thead>
+                        <tr>
+                           <th>Date Leave</th>
+                           <th>Status</th>
+                           <th>Reason</th>
+                        </tr>
+                     </thead>
+                     <tbody data-bind="foreach: desk.detailLeave">
+                        <tr>
+                           <td data-bind="text: DateLeave"></td>
+                           <td > <span data-bind="if : model.JobRoleLevel() == '2'"><input type="text" data-bind="kendoDropDownList: {value:StsByLeader, data:statreq.dataListStatus,dataTextField: 'text', dataValueField: 'id'}"> </span>
+                              <span data-bind="if : model.JobRoleLevel() == '1'||model.JobRoleLevel() == '6'"><input type="text" data-bind="kendoDropDownList: {value:StsByManager, data:statreq.dataListStatus,dataTextField: 'text', dataValueField: 'id'}"> </span>
+                           </td>
+                           <td>
+                              <textarea class="form-control" data-bind="value:ReasonAction"></textarea>
+                           </td>
+                        </tr>
+                     </tbody>
+                  </table>
+               </div>
+               <div class="col-md-12">
+                  <div class="pull-right" style="padding: 10px 0px;">
+                     <button type="button" class="btn btn-sm btn-danger btn-flat" onclick="statreq.hideModalDetailLeave()"><i class="fa fa-times"></i> Cancel</button>
+                     <button type="button" class="btn btn-sm btn-success btn-flat" onclick="desk.actionForLeaveDetail()"><i class="fa fa-floppy-o"></i> Send Request</button>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+<!-- end modal leave-->
+<!-- modal remote cancel-->
+<div class="modal fade" id="manageCancelModal" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
+   <div class="modal-dialog">
+      <div class="modal-content">
+         <div class="modal-header">
+            <button type="button" class="close"
+               data-dismiss="modal">
+            <span aria-hidden="true">&times;</span>
+            <span class="sr-only">Close</span>
+            </button>
+            <h4 class="modal-title">List Date Of Remote</h4>
+         </div>
+         <div class="modal-body" style="padding-top: 10px;padding-bottom: 0px;">
+            <div class="row">
+               <div class="col-md-12">
+                  <table class="table table-bordered">
+                     <thead>
+                        <tr>
+                           <th>Date Remote</th>
+                           <th>
+                              <center>Remove  <input type="checkbox" class="parent-manage-user" data-bind="click: statreq.selectManageUserDateAll"></center>
+                           </th>
+                        </tr>
+                     </thead>
+                     <tbody data-bind="foreach: statreq.dataRemoteSelectedUser().DateListTemp">
+                        <tr>
+                           <td data-bind="text: Date"></td>
+                           {{UnescapeHTML "<!-- ko if: $data.isDelete == true  -->"}}
+                           <td>
+                              <center><input type="checkbox" class="child-manage-user" data-bind="click: statreq.selectManageUserDate(event, Date)"></center>
+                           </td>
+                           {{UnescapeHTML "<!-- /ko -->"}}
+                           {{UnescapeHTML "<!-- ko if: $data.isDelete == false  -->"}}
+                           <td>
+                              <center><input type="checkbox" class="child-manage-user-disabled" data-bind="click: statreq.selectManageUserDate(event, Date)" disabled></center>
+                           </td>
+                           {{UnescapeHTML "<!-- /ko -->"}}
+                        </tr>
+                     </tbody>
+                  </table>
+               </div>
+               <div class="col-md-12">
+                  <div class="pull-right" style="margin-right: 30px;padding: 10px 0px;">
+                     <button type="button" class="btn btn-sm btn-danger btn-flat" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
+                     <button type="button" class="btn btn-sm btn-success btn-flat" onclick="statreq.processCancelRemote()"><i class="fa fa-floppy-o"></i> Process</button>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+<!-- end modal remote-->
+<!-- new details leave modal -->
+<div class="modal fade" id="newdetailsleave" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
+   <div class="modal-dialog modal-md">
+      <div class="modal-content" data-bind="with:details">
+         <div class="body-panel col-md-12" style="background-color: #f3eeee;" data-bind="visible:isEdit() == false">
+            <div class="col-md-6" style="color:#000; font-weight: bolder;">
+               <div class="form-group">
+                 
+                  <label>
+                     Date leave :
+                  </label>
+                  <ul data-bind="foreach:dateList()">
+                     <li data-bind="text: $data"></li>
+                  </ul>
+               </div>
+               <h4>
+                  
+               </h4>
+            </div>
+            <div class="col-md-6">
+               <h4>
+                     <img id="flagLocation" data-bind="attr:{src: locationIMG}" style="width:30px; float:right;"/>
+               </h4>
+               
+            </div>
+            <div class="col-md-12" style="top: -14px;"></div>
+            <div class="col-md-4">
+               <div class="form-group">
+                  <label>User :</label>
+                  <div data-bind="text:user"></div>
+               </div>
+            </div>
+            <div class="col-md-4">
+               <div class="form-group">
+                  <label>Staff ID :</label>
+                  <div data-bind="text:idEmployee">081-0031</div>
+               </div>
+            </div>
+            <div class="col-md-4">
+               <div class="form-group">
+                  <label>Contact Number :</label>
+                  <div data-bind="text:contact">081234567789</div>
+               </div>
+            </div>
+            <div class="col-md-8">
+               <div class="form-group">
+                  <label>Reason :</label>
+                  <div data-bind="text:reason">Lorem Ipsum Dolor sit amet Censeptur</div>
+               </div>
+            </div>
+            <div class="col-md-4">
+               <div class="form-group">
+                  <label>Address during Leave :</label>
+                  <div data-bind="text:address">Jl. Imam Bonjol no. 123</div>
+               </div>
+            </div>
+            <div class="col-md-12">
+               <div class="form-group">
+                  <label>Project :</label>
+                  <div data-bind="text:(project()).toString()">Project A, Project B</div>
+               </div>
+            </div>
+            <div class="col-md-12" style="padding-top:2%; padding-left: 0px;">
+               <div class="col-md-12">
+                  <table style="width:100%;">
+                     <tr >
+                        <th style="text-align: center;">Leader</th>
+                        <th style="text-align: center;">Project Manager</th>
+                        <th style="text-align: center;">Project Coordinator</th>
+                        <th style="text-align: center;">Status</th>
+                     </tr>
+                     <tr style="text-align: center;">
+                        <th style="text-align: center;" data-bind="text:statusLeader"></th>
+                        <th style="text-align: center;" data-bind="text:pmStatus"></th>
+                        <th style="text-align: center;" data-bind="text:pmStatus"></th>
+                        <th style="text-align: center;" data-bind="text:reqStatus"></th>
+                     </tr>
+                  </table>
+               </div>
+            </div>
+            <div class="col-md-12" style="padding-top:5%;" data-bind="visible:isEdit() == false">
+               <div style="float:right;">
+                     <button type="button" class="btn btn-flat btn-xs btn-primary noa" data-bind= "click:statreq.goEdit, visible: (isLeaderPending() == false && model.JobRoleLevel() != 5)"><i class="fa fa-pencil-square-o"></i></button><button type="button" class="btn btn-flat btn-xs btn-danger" onclick="statreq.closeModalEdit()"><i class="fa fa-times"></i></button>
+               </div>
+            </div>
+         </div>
+         <div class="body-panel col-md-12" style="background-color: #f3eeee;" data-bind="visible:isEdit() == true">
+            <div class="col-md-6" style="color:#000; font-weight: bolder;">
+               <div class="form-group">
+                  <label>
+                        <span>Leave </span><span data-bind="text:id">239182</span>
+                  </label>
+                  <label>
+                        <span>Date Leave : <span data-bind="text:dateLeave">24 OCT 2018 - 30 OCT 2018</span></span>
+                  </label>
+               </div>
+               <h4>
+                  
+               </h4>
+            </div>
+            <div class="col-md-6">
+               <h4>
+                     <img id="flagLocation" data-bind="attr:{src: locationIMG}" style="width:30px; float:right;"/>
+               </h4>
+            </div>
+            <div class="col-md-12">
+               <div class="col-md-6" style="padding:0px;">
+                  <div class="col-md-12" style="padding:0px;">
+                     <div id="calenderEdit" style="font-size:10px;width:18em;">
+
+                     </div>
+                  </div>
+                        
+               </div>
+               <div class="col-md-6">
+                  <div class="col-md-12" style="padding:0px;">
+                     <div class="form-group">
+                        <label>User :</label>
+                        <div data-bind="text:user"></div>
+                     </div>
+                  </div>
+                  <div class="col-md-12" style="padding:0px;">
+                     <div class="form-group">
+                        <label>Staff ID :</label>
+                        <div data-bind="text:idEmployee">081-0031</div>
+                     </div>
+                  </div>
+                  <div class="col-md-12" style="padding:0px;">
+                     <div class="form-group">
+                        <label>Contact Number :</label>
+                        <div data-bind="text:contact">081234567789</div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <div class="col-md-12" style="padding:0px;">
+               <div class="col-md-6">
+                  <div class="form-group">
+                     <label>Reason :</label>
+                     <div data-bind="text:reason">Lorem Ipsum Dolor sit amet Censeptur</div>
+                  </div>
+               </div>
+               <div class="col-md-6">
+                  <div class="form-group">
+                     <label>Address during Leave :</label>
+                     <div data-bind="text:address">Jl. Imam Bonjol no. 123</div>
+                  </div>
+               </div>
+                  
+            </div>
+            <div class="col-md-12">
+               <div class="form-group">
+                  <label>Project :</label>
+                  <div data-bind="text:(project()).toString()">Project A, Project B</div>
+               </div>
+            </div>
+            <div class="col-md-12" style="padding-top:2%; padding-left: 0px;">
+               <div class="col-md-12">
+                  <table style="width:100%;">
+                     <tr >
+                        <th style="text-align: center;">Leader</th>
+                        <th style="text-align: center;">Project Manager</th>
+                        <th style="text-align: center;">Project Coordinator</th>
+                        <th style="text-align: center;">Status</th>
+                     </tr>
+                     <tr style="text-align: center;">
+                        <th style="text-align: center;" data-bind="text:statusLeader"></th>
+                        <th style="text-align: center;" data-bind="text:pmStatus"></th>
+                        <th style="text-align: center;" data-bind="text:pmStatus"></th>
+                        <th style="text-align: center;" data-bind="text:reqStatus"></th>
+                     </tr>
+                  </table>
+               </div>
+            </div>
+            <div class="col-md-12" style="padding-top:5%;" data-bind="visible:isEdit() == true">
+               <div style="float:right;">
+                     <button type="button" class="btn btn-flat btn-xs btn-primary ora" data-bind="click:statreq.EditLeave, visible: isLeaderPending() == false"><i class="fa fa-floppy-o"></i></button><button type="button" class="btn btn-flat btn-xs btn-danger" onclick="statreq.closeModalEdit()"><i class="fa fa-times"></i></button>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+<!-- end new details leave modal -->
+
+<!-- EL Attachment start -->
+<div class="modal fade" id="ELattachment" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
+   <div class="modal-dialog modal-md">
+      <div class="modal-content">
+         <div class="body-panel col-md-12" style="background-color: #f3eeee;">
+            <div class="col-md-12" style="color:#000; font-weight: bolder;">
+               <div class="form-group">
+                  <label>
+                        <span>Attach Image File </span>
+                  </label>
+                  <input name="files" id="files-jpg" type="file" accept="image/*" />
+               </div>
+            </div>
+            <div class="col-md-12" style="padding-top:1%;" >
+               <div style="float:right;">
+                     <button type="button" class="btn btn-flat btn-sm btn-primary" onclick="statreq.saveUploadEL()"><i class="fa fa-upload" aria-hidden="true"></i> Send</button><button type="button" class="btn btn-flat btn-sm btn-danger" onclick="closeModalUploadEL()"><i class="fa fa-times"></i> Cancel</button>
+               </div>
+            </div>  
+         </div>
+      </div>
+   </div>
+</div>
+<!-- EL Attachment end -->
+<div class="modal fade" id="detailsModalOvertime" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
+   <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+         <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">
+            <span aria-hidden="true">×</span>
+            <span class="sr-only">Close</span>
+            </button>
+            <h4 class="modal-title">Details Overtime - <span data-bind="text : dashovertime.project"></span> - 
+               <span data-bind="text : dashovertime.status"></span>
+            </h4>
+         </div>
+         <div class="modal-body" id="dman" style="padding-top: 0;padding-bottom: 0px;">
+
+            <div style="padding: 20px;">
+            <div class="row">
+            <div class="col-md-6">
+            <div class="form-group">
+               <label for="email">Date</label>
+               <!-- <div data-bind="foreach : dashovertime.date">
+                  <li data-bind="text : moment($data,'YYYY-MM-DD').format('DD-MM-YYYY');"></li>
+               </div> -->
+               <div data-bind="text : dashovertime.date"></div>
+             </div>
+             <div class="form-group">
+               <label for="pwd">Leader</label>
+              <div data-bind="text : dashovertime.leader"></div>
+             </div>
+             <div class="form-group">
+                <span data-bind="visible : dashovertime.editable">
+                  <div>Developers / <input name="sdf" onclick="dashovertime.checkall(this)" type="checkbox" >Check All</div>
+                  <span data-bind="foreach : dashovertime.checkedDev" id="dbxs">
+                  <div>
+                  <label><input type="checkbox" data-bind="checked: dashovertime.valCheckedDev, value : $data" > <span data-bind="text : name"></span></label>
+                  </div>
+                 </span>
+               </span>
+
+               <span data-bind="visible : dashovertime.noneditable">
+                 <div>Developers</div>
+                 <span data-bind="foreach : dashovertime.checkedDev" id="dbxs">
+                     <div>
+                      <li><span data-bind="text : name"></span> - <span data-bind="text : result"></span></li>
+                     </div>
+                    </span>
+                  </span>
+            </div>
+             
+            </div>
+            <div class="col-md-6">
+               <div class="form-group" data-bind="visible : dashovertime.visreason">
+                  <label for="email">Decline Reason</label>
+                  <textarea data-bind="value : dashovertime.reason" required validationMessage="Add Reason" class="form-control" ></textarea>
+                </div>
+                <span class="k-invalid-msg" data-for="otype"></span>  
+               </div>
+            </div>
+            </div>
+         </div>
+         <div class="modal-footer">
+            <button type="button" class="btn btn-warning btn-sm btn-flat" data-bind="visible : dashovertime.visiblebtn" onclick="dashovertime.submitView()">Submit Form</button>
+            <button type="button" class="btn btn-danger btn-sm btn-flat" data-dismiss="modal">Close</button>
+         </div>
+      </div>
+   </div>
+</div>
+
+<div class="modal fade" id="detailmodalovertimeleaderuseredit" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
+      <div class="modal-dialog modal-lg">
+         <div class="modal-content">
+            <div class="modal-header">
+               <button type="button" class="close" data-dismiss="modal">
+               <span aria-hidden="true">×</span>
+               <span class="sr-only">Close</span>
+               </button>
+               <h4 class="modal-title">Details Overtime - <span data-bind="text : dashovertime.project"></span> - 
+                  <span data-bind="text : dashovertime.status"></span>
+               </h4>
+            </div>
+            <div class="modal-body" id="dman" style="padding-top: 0;padding-bottom: 0px;">
+               <div style="padding: 20px;">
+               <div class="row">
+               <div class="col-md-12">
+               
+   
+               <!-- <div class="form-group">
+   
+                  <span data-bind="visible : dashovertime.noneditable">
+                     <label>Start time : </label><input  id="timestart_leader_user"  type="text" data-bind="value:dashovertime.timestart"/> s/d 
+                     <label>End time : </label><input id="timeend_leader_user"  type="text" data-bind="value:dashovertime.timeend"/>
+                  </span>   
+               </div> -->
+   
+               <div class="form-group">
+                     <label class="col-lg-2 control-label min5">Date</label>
+                     <div class="col-lg-10 min5">
+                           <label data-bind="text:dashovertime.date">:</label>
+                     </div>
+               </div>
+
+               <div class="form-group">
+                  <label class="col-lg-2 control-label min5">Type:</label>
+                  <div class="col-lg-10 min5">
+                        <input name="typeovertime" id="typeovertime" data-bind="kendoDropDownList: {value:dashovertime.type, data:dashovertime.typeovertime,dataTextField: 'Text', dataValueField: 'Value', optionLabel: 'Select'}" required validationMessage="Type required" >
+                        <span class="k-invalid-msg" data-for="typeovertime"></span>
+                  </div>   
+               </div>
+   
+               <!-- <div class="form-group">
+                     <label class="col-lg-2 control-label min5">Time</label>
+                     <div class="col-lg-10 min5">
+                           <label>Start time : </label><input  id="timestart_leader_user"  type="text" data-bind="value:dashovertime.timestart"/>
+                           <label>End time : </label><input id="timeend_leader_user"  type="text" data-bind="value:dashovertime.timeend"/>
+                     </div>
+               </div> -->
+
+               <div class="form-group">
+                  <label class="col-lg-2 control-label min5">Time</label>
+                  <div class="col-lg-10 min5">
+                     <input  id="timestart_leader_user" name="timestart_leader_user"  type="text" data-bind="value:dashovertime.timestart" required validationMessage="Select Start Time"/><span class="k-invalid-msg" data-for="timestart_leader_user"></span>         
+                     <label> to </label>
+                     <input id="timeend_leader_user" name="timeend_leader_user"  type="text" data-bind="value:dashovertime.timeend" required validationMessage="Select End Time"/><span class="k-invalid-msg" data-for="timeend_leader_user"></span>
+                  </div>
+               </div>
+
+               
+   
+               <div class="form-group">
+                  <label class="col-lg-2 control-label min5">Task</label>
+                  <div class="col-lg-10 min5">
+                     <textarea name="" id="task" class="form-control" cols="30" rows="10" data-bind="text:dashovertime.task"></textarea>
+                  </div>
+               </div>
+   
+               <div class="form-group">
+                  <label class="col-lg-2 control-label min5">Deadline</label>
+                  <div class="col-lg-10 min5">
+                     <input id="deadline" name="deadline"  title="datepicker" data-bind="value:dashovertime.deadline" required validationMessage="Select Deadline"/>
+                     <span class="k-invalid-msg" data-for="deadline"></span>
+                  </div>
+               </div>
+               
+               </div>
+               </div>
+               </div>
+            </div>
+            <div class="modal-footer">
+               <button type="button" class="btn btn-warning btn-sm btn-flat" onclick="dashovertime.submitedittime()">Submit Form</button>
+               <button type="button" class="btn btn-danger btn-sm btn-flat" data-dismiss="modal">Close</button>
+            </div>
+         </div>
+      </div>
+   </div>
+
+   <div class="modal fade" id="detailmodalovertimeleaderuser" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
+      <div class="modal-dialog modal-md">
+         <div class="modal-content">
+            <div class="modal-header">
+               <button type="button" class="close" data-dismiss="modal">
+               <span aria-hidden="true">×</span>
+               <span class="sr-only">Close</span>
+               </button>
+               <h4 class="modal-title">Details Overtime - <span data-bind="text : dashovertime.project"></span> - 
+                  <span data-bind="text : dashovertime.status"></span>
+               </h4>
+            </div>
+            <div class="modal-body" id="dman" style="padding-top: 0;padding-bottom: 0px;">
+               <div style="padding: 20px;">
+               <div class="row">
+               <div class="col-md-12">
+                  <div class="col-md-6">
+                     <div class="form-group">
+                        <label for="email">Date</label>
+                        <div data-bind="text : dashovertime.date"></div>
+                     </div>
+                  </div>
+                  <div class="col-md-6">
+                     <div class="form-group">
+                        <label for="pwd">Leader</label>
+                       <div data-bind="text : dashovertime.leader"></div>
+                     </div>
+                  </div>
+
+                  <div class="col-md-12">
+                     <div class="form-group">
+                        <span data-bind="visible : dashovertime.noneditable">
+                          <div>Developers</div>
+                          <span data-bind="foreach : dashovertime.checkedDev" id="dbxs">
+                              <div>
+                               <li>
+                                 <span data-bind="text : name"></span>  - <span data-bind="text : result"></span>  
+                              </li>
+                              </div>
+                           </span>
+                        </span> 
+                     </div>
+                  </div>                               
+               </div>               
+               </div>
+               </div>
+            </div>
+            <div class="modal-footer">
+               <button type="button" class="btn btn-danger btn-sm btn-flat" data-dismiss="modal">Close</button>
+            </div>
+         </div>
+      </div>
+   </div>
+
+   <div class="modal fade" id="detailDateReq" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
+      <div class="modal-dialog modal-md">
+         <div class="modal-content">
+            <div class="modal-header">
+               <button type="button" class="close" data-dismiss="modal">
+               <span aria-hidden="true">×</span>
+               <span class="sr-only">Close</span>
+               </button>
+               <h4 class="modal-title">Date Details</h4></span>
+               </h4>
+            </div>
+            <div class="modal-body" id="dman" style="padding-top: 0;padding-bottom: 0px;">
+               <div style="padding: 20px;">
+               <div class="row">
+               <div class="col-md-12">
+                  <div class="col-md-6">
+                     <div class="form-group">
+                        <label for="Project">Project</label>
+                        <div data-bind="text:statreq.projectTrack()"></div>
+                     </div>
+                  </div>
+                  <div class="col-md-6">
+                     
+                  </div>
+
+                  <div class="col-md-12">
+                     <div class="form-group">
+                        <label for="request" class="col-md-12 no-padding">Request</label>
+                        <div class="col-md-12 no-padding">
+                           <div id="trackcalendar" ></div>
+                        </div>
+                        
+                     </div>
+                  </div>                               
+               </div>               
+               </div>
+               </div>
+            </div>
+            <div class="modal-footer">
+               <button type="button" class="btn btn-danger btn-sm btn-flat" data-dismiss="modal">Close</button>
+            </div>
+         </div>
+      </div>
+   </div>

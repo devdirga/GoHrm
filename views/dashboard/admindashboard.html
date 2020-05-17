@@ -1,0 +1,817 @@
+<script type="text/javascript">
+    model.PageId("Dashboard");
+    model.BreadCrumbs.push(new BreadCrumb("Dashboard", "Dashboard", "#", "active", ""));
+    model.Access = ko.observable('{{.Menuid}}');
+    model.View = ko.observable('{{.View}}');
+    model.Create= ko.observable('{{.Create}}');
+    model.Delete= ko.observable('{{.Delete}}');
+    model.Process= ko.observable('{{.Process}}');
+    model.Edit= ko.observable('{{.Edit}}')
+    model.User= ko.observable('{{.Username}}');
+    model.UserId= ko.observable('{{.UserId}}');
+    model.JobRoleName= ko.observable('{{.JobRoleName}}');
+    model.JobRoleLevel= ko.observable('{{.JobRoleLevel}}');
+    model.UserId= ko.observable('{{.UserId}}');
+    
+</script>
+
+<link rel="stylesheet" href="/static/css/pretty-checkbox.min.css">
+<style>
+    .container-custom {
+        padding: 10px;
+    }
+
+    .wrapper-custom {
+        margin: auto;
+    }
+
+    .panel-custom {
+        width:100%;
+        padding:4px;
+        margin-left:auto; 
+        margin-right:auto;
+        position: relative;
+    }
+
+    .panel-height_100 {
+        height: 230px;
+        position: relative;
+    }
+    .box {
+        border-right: 1px solid #d8d8d8;
+        /* min-width: 380px; */
+    }
+
+    .circle {
+        padding: 10% 0px;
+        color: white;
+        border-radius: 50%;
+        background: #41C793;
+        margin: auto;
+        width: 150px;
+        height: 150px;
+        position: relative;
+    }
+
+    .circle-text {
+        font-size: 60px;
+        position: absolute;
+        text-align: center;
+        width: 100%;
+        top: 30px;
+    }
+
+    #chart {
+        width: 100%;
+        height: 230px;
+        background: transparent;
+        position: relative;
+    }
+
+    #chartline {
+        width: 100%;
+        height: 230px;
+        background: transparent;
+        position: relative;
+    }
+    #piechart {
+        width: 100%;
+        height: 230px;
+        background: transparent;
+    }
+
+    @media only screen and (max-width: 1500px) {
+        #piechart, #chart {
+            width: 70%;
+        }
+    }
+
+    @media only screen and (max-width: 1300px) {
+        .box {
+            min-width: 260px;
+        }
+    }
+
+    @media only screen and (max-width: 995px) {
+        .box {
+            min-width: unset;
+            width: 50%;
+            float: left;
+        }
+    }
+    
+    @media only screen and (max-width: 560px) {
+        .box {
+            min-width: unset;
+            width: 100%;
+        }
+    }
+
+    .legend-custom {
+        position: absolute;
+        top: 40px;
+        right: 0px;
+    }
+
+    .panel-height_300 {
+        height: 500px;
+    } 
+
+    #stackedbar {
+        width: 100%;
+        height: 400px;
+    }
+
+    #barchart {
+        width: 100%;
+        height: 400px;
+    }
+
+    .active {
+        font-weight: bold;
+    }
+
+    .table>tbody>tr>td, .table>thead>tr>th {
+        border: none;
+        border-right: 1px solid #ece0e0;
+        padding-top: 15px;
+        padding-bottom: 15px;
+    }
+    .table>tbody>tr>td:last-child, .table>thead>tr>th:last-child,
+    .table>tbody>tr>td.left, .table>thead>tr>th.left {
+        border-right: none;
+    }
+    .table>tbody>tr>td>span {
+        padding: 10px 10px;
+        color: #fff;
+    }
+    .leavecolour{
+        background: #02BBC6;
+    }
+    .eleavecolour{
+        background: #ED5628;
+    }
+    .remotecolour{
+        background: #039BE5;
+    }
+    .overtimecolour{
+        background: #928FDE;
+    }
+    .chart-title{
+        font-size: 16px;
+        font-weight: 300;
+        text-align: center;
+    }
+
+</style>
+
+<div class="container-custom" style="background: white; padding-top: 0px;">
+    <div style="background-image: url(/static/img/header-image.png);width: 33%;height: 130px;background-repeat: no-repeat;background-size: contain;min-width: 600px;">
+        <div>
+            <span style="font-size: 40px;color: white;padding: 5px 0px 0px 32px;">Report</span>
+            <br>
+            <span style="font-size: 20px;color: white;padding: 0px 0px 0px 32px;" data-bind="text: ar.monthTextReport">September</span>
+        </div>
+    </div>
+    <div class="wrapper-custom">    
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-custom">
+                    <header class="panel-heading" style="background:#f5f5f5;">
+                        <div class="header-hide-pdf" style="height: 30px;">
+                            <div style="display: inline-block; margin-top: 5px;">
+                                <div style="display: inline-block; padding-right: 10px;" data-bind="css: { active: ar.filterByMonth() == false}">
+                                    Previous Month
+                                </div>
+                                <div class="pretty p-switch p-slim">
+                                    <input type="checkbox" data-bind="checked: ar.filterByMonth, value: ar.filterByMonth"/>
+                                    <div class="state">
+                                        <label></label>
+                                    </div>
+                                </div>
+                                <div style="display: inline-block; padding-left: 10px;" data-bind="css: { active: ar.filterByMonth() == true}">
+                                    Current Month
+                                </div>
+                                <div style="display: inline-block; padding-left: 10px;">
+                                    <input data-bind="kendoDropDownList: { dataTextField: 'text', dataValueField: 'value', data: ar.listLocation, value: ar.valueLocation, change: function(){setTimeout(function(){ar.getadminreport(ar.dateFilter())}, 1)}}" style="width: 185px; font-size: 12px !important"/>
+                                </div>
+                            </div>
+                            <div style="display: inline-block;" class="pull-right">
+                                <button type="button" class="btn btn-primary" style="background: #61DC73;" onclick="ar.generateExcel()"><i class="fa fa-file-excel-o"></i>&nbsp&nbsp Export</button>
+                                <button type="button" class="btn btn-primary" style="background: #FF0000;" onclick="ar.generatePdfFile()"><i class="fa fa-file-pdf-o"></i>&nbsp&nbsp Export</button>
+                            </div>
+                        </div>
+                    </header>
+                    <div class="panel-body" style="padding: 0px 15px;">
+                        <div class="row">
+                            <div class="col-md-2 box">
+                                <div class="chart-title">All Request</div>
+                                <div class="panel-height_100" style="padding-top: 35px;">
+                                    <div class="circle">
+                                        <div class="circle-text">
+                                            <span data-bind="text:ar.countAllLeave"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 box">
+                                <div class="chart-title">Request Type Summary</div>
+                                <div class="panel-height_100">
+                                    <div id="chart">
+                                    </div>
+                                    <div class="legend-custom">
+                                        <div style="margin-top: 10px;">
+                                            <div style="width: 30px;height: 30px;background: #02BBC6;border-radius: 50%;display: table-cell;color: white; text-align: center;padding: 5px 0px;" data-bind="text: ar.countLeaveApproved;"></div>
+                                            <div style="display: table-cell;line-height: 26px;margin-left: 10px;padding-left: 10px;">Leave</div>
+                                        </div>
+                                        <div style="margin-top: 10px;">
+                                            <div style="width: 30px;height: 30px;background: #ED5628;border-radius: 50%;display: table-cell;color: white; text-align: center;padding: 5px 0px;" data-bind="text: ar.countELeaveApproved;"></div>
+                                            <div style="display: table-cell;line-height: 26px;margin-left: 10px;padding-left: 10px;">E. Leave</div>
+                                        </div>
+                                        <div style="margin-top: 10px;">
+                                            <div style="width: 30px;height: 30px;background: #039BE5;border-radius: 50%;display: table-cell;color: white; text-align: center;padding: 5px 0px;" data-bind="text: ar.countRemoteApproved;"></div>
+                                            <div style="display: table-cell;line-height: 26px;margin-left: 10px;padding-left: 10px;">Remote</div>
+                                        </div>
+                                        <div style="margin-top: 10px;">
+                                            <div style="width: 30px;height: 30px;background: #928FDE;border-radius: 50%;display: table-cell;color: white; text-align: center;padding: 5px 0px;" data-bind="text: ar.countOvertimeApproved;"></div>
+                                            <div style="display: table-cell;line-height: 26px;margin-left: 10px;padding-left: 10px;">Overtime</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 box">
+                                <div class="chart-title">This Month Request</div>
+                                <div class="panel-height_100">
+                                    <div id="chartline"></div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 box">
+                                <div class="chart-title">Request Status Summary</div>
+                                <div class="panel-height_100">
+                                    <div id="piechart"></div>
+                                    <div class="legend-custom">
+                                        <!-- <div style="margin-top: 10px;">
+                                            <div style="width: 30px;height: 30px;background: #CCCCCC;border-radius: 50%;display: table-cell;color: white; text-align: center;padding: 5px 0px;" data-bind="text: ar.countRequest;"></div>
+                                            <div style="display: table-cell;line-height: 26px;margin-left: 10px;padding-left: 10px;">Request</div>
+                                        </div> -->
+                                        <div style="margin-top: 10px;">
+                                            <div style="width: 30px;height: 30px;background: #02BBC6;border-radius: 50%;display: table-cell;color: white; text-align: center;padding: 5px 0px;" data-bind="text: ar.countApproved;"></div>
+                                            <div style="display: table-cell;line-height: 26px;margin-left: 10px;padding-left: 10px;">Approve</div>
+                                        </div>
+                                        <div style="margin-top: 10px;">
+                                            <div style="width: 30px;height: 30px;background: #E72453;border-radius: 50%;display: table-cell;color: white; text-align: center;padding: 5px 0px;" data-bind="text: ar.countDeclined;"></div>
+                                            <div style="display: table-cell;line-height: 26px;margin-left: 10px;padding-left: 10px;">Decline</div>
+                                        </div>
+                                        <div style="margin-top: 10px;">
+                                            <div style="width: 30px;height: 30px;background: #CCCCCC;border-radius: 50%;display: table-cell;color: white; text-align: center;padding: 5px 0px;" data-bind="text: ar.countCancelled;"></div>
+                                            <div style="display: table-cell;line-height: 26px;margin-left: 10px;padding-left: 10px;">Cancelled</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div style="width: 100%; margin: auto;">
+                <div class="col-md-4 box">
+                    <div class="panel panel-height_300">
+                        <header class="panel-heading" style="background:#f5f5f5;">
+                            Total Request By Project
+                        </header>
+                        <div class="panel-body" style="padding: 0px 15px;">
+                            <div class="row">
+                                <div class="col-md-12"  style="padding-left: 0px; padding-right: 0px;">
+                                    <div style="padding: 10px 0px 10px 10px;border-bottom: 1px solid #ececec;">
+                                        <div></div>
+                                    </div>
+                                    <div class="content" style="padding: 10px;">
+                                        <div id="stackedbar"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 box">
+                    <div class="panel panel-height_300">
+                        <header class="panel-heading" style="background:#f5f5f5;">
+                            Request Summary By Location
+                        </header>
+                        <div class="panel-body" style="padding: 0px 15px;">
+                            <div class="row">
+                                <div class="col-md-12"  style="padding-left: 0px; padding-right: 0px;">
+                                    <div style="padding: 10px 0px 10px 10px;border-bottom: 1px solid #ececec;">
+                                        <!-- <div>01 February 2015 - 31 January 2016</div> -->
+                                    </div>
+                                    <div class="content" style="padding: 10px;">
+                                        <div id="barchart"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-5 box">
+                    <div class="panel panel-height_300">
+                        <header class="panel-heading" style="background:#f5f5f5;">
+                            Top 5 User
+                        </header>
+                        <div class="panel-body" style="padding: 0px 15px;">
+                            <div class="row">
+                                <div class="col-md-12"  style="padding-left: 0px; padding-right: 0px;">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th class="left">Leave</th>
+                                                <th></th>
+                                                <th class="left">E. Leave</th>
+                                                <th></th>
+                                                <th class="left">Remote</th>
+                                                <th></th>
+                                                <th class="left">Overtime</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody data-bind="foreach: ar.gridTopFive">
+                                            <tr>
+                                                <td class="left" data-bind="text: Leave"></td>
+                                                <td><span data-bind="text: LeaveCount, css: { leavecolour: LeaveCount > 0}"></span></td>
+                                                <td class="left" data-bind="text: ELeave"></td>
+                                                <td><span data-bind="text: ELeaveCount, css: { eleavecolour: ELeaveCount > 0}"></span></td>
+                                                <td class="left" data-bind="text: Remote"></td>
+                                                <td><span data-bind="text: RemoteCount, css: { remotecolour: RemoteCount > 0}"></span></td>
+                                                <td class="left" data-bind="text: Overtime"></td>
+                                                <td><span data-bind="text: OvertimeCount, css: { overtimecolour: OvertimeCount > 0}"></span></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <!-- <div style="padding: 10px 0px 10px 10px;border-bottom: 1px solid #ececec;">
+                                        <div>01 February 2015 - 31 January 2016</div>
+                                    </div>
+                                    <div class="content" style="padding: 10px;">
+                                        <div id="piechart"></div>
+                                    </div> -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    var ar = {};
+    ar.countAllLeave = ko.observable(0);
+    ar.gridTopFive = ko.observableArray([]);
+    ar.filterByMonth = ko.observable(true);
+    ar.dateFilter = ko.observable(moment().format("YYYY-MM").toString());
+    ar.monthTextReport = ko.observable(moment().format("MMMM YYYY").toString());
+    ar.countLeaveApproved = ko.observable(0);
+    ar.countELeaveApproved = ko.observable(0);
+    ar.countRemoteApproved = ko.observable(0);
+    ar.countOvertimeApproved = ko.observable(0);
+
+    ar.countCancelled = ko.observable(0);
+    ar.countApproved = ko.observable(0);
+    ar.countDeclined = ko.observable(0);
+    ar.listLocation= ko.observableArray([]);
+    ar.valueLocation= ko.observable("");
+
+    ar.filterByMonth.subscribe(function(val){
+        var date = moment();
+        if (!val) {
+            date = moment().subtract(1,'months');
+        }
+        
+        var dateString = date.format("YYYY-MM").toString();
+        ar.monthTextReport(date.format("MMMM YYYY"));
+        ar.dateFilter(dateString);
+        ar.getadminreport(dateString);
+    })
+
+    ar.getadminreport = function(date) {
+        ajaxPost("/dashboard/getdashboardforadmin", {DateByMonth: date, Location: ar.valueLocation}, function(res) {
+            if (res.Status == "OK") {
+                ar.countAllLeave(res.Data.CountAll);
+                createChart(res.Data.CountLeaveApproved);
+                createChartLine(res.Data.LeaveByWeek);
+                createStackedBar(res.Data.LeaveByProject);
+                createbarchart(res.Data.LeaveByLocation);
+                createpiechart(res.Data.CountByStatus);
+                renderGridData(res.Data.TopFive);
+            }
+        })
+    }
+
+    var createChart = function(data) {
+        var dataChart = []; 
+        var colorCharts = ["#ED5628","#02BBC6", "#928FDE", "#039BE5"];
+        var cacah = 0;
+        ar.countLeaveApproved(data.Leave);
+        ar.countELeaveApproved(data.ELeave);
+        ar.countRemoteApproved(data.Remote);
+        ar.countOvertimeApproved(data.Overtime);
+        _.each(data, function(o, i) {
+            dataChart.push(
+                {category: i, value: o, color: colorCharts[cacah]}
+            )
+
+            cacah++;
+        })
+        
+        if (dataChart.length > 0) {
+            $("#chart").kendoChart({
+                legend: {
+                    visible: false
+                },
+                seriesDefaults: {
+                    labels: {
+                        template: "#= category # : #= kendo.format('{0:P}', percentage)#",
+                        position: "outsideEnd",
+                        visible: false,
+                        background: "transparent"
+                    },
+                    overlay: {
+                        gradient: "none"
+                    }
+                },
+                series: [{
+                    type: "donut",
+                    data: dataChart
+                }],
+                tooltip: {
+                    visible: true,
+                    template: "#= category # : #= kendo.format('{0:P}', percentage) #"
+                }
+            })
+        }
+    
+    }
+    
+    var createChartLine = function(data) {
+        var categories = [];
+        var dataLeave = [];
+        var dataELeave = [];
+        var dataRemote = [];
+        var dataOvertime = [];
+        
+        _.each(data, function(o, i) {
+            categories.push("week " + i);
+            dataELeave.push(o.ELeave);
+            dataLeave.push(o.Leave);
+            dataRemote.push(o.Remote);
+            dataOvertime.push(o.Overtime);
+        })
+
+        var series = [
+            {
+                name: "Leave",
+                data: dataLeave,
+                color: "#02BBC6"
+            },
+            {
+                name: "E. Leave",
+                data: dataELeave,
+                color: "#ED5628"
+            },
+            {
+                name: "Remote",
+                data: dataRemote,
+                color: "#039BE5"
+            },
+            {
+                name: "Overtime",
+                data: dataOvertime,
+                color: "#928FDE"
+            }
+        ]
+        
+        $("#chartline").kendoChart({
+            legend: {
+                position: "top",
+                visible: true
+            },
+            seriesDefaults: {
+                type: "column",
+                overlay: {
+                    gradient: "none"
+                }
+            },
+            series: series,
+            valueAxis: {
+                labels: {
+                    step: 1
+                    // format: "{0}%"
+                },
+                visible: false,
+                majorGridLines: {
+                    visible: false
+                },
+                minorGridLines: {
+                    visible: false
+                }
+            },
+            categoryAxis: {
+                categories: categories,
+                line: {
+                    visible: false
+                }
+            },
+            tooltip: {
+                visible: true,
+                format: "{0}%",
+                template: "#= series.name #: #= value #"
+            }
+        });
+    
+    }
+    
+    var createStackedBar = function(data) {
+        var categories = [];
+        var dataLeave = [];
+        var dataELeave = [];
+        var dataRemote = [];
+        var dataOvertime = [];
+
+        _.each(data, function(o, i) {
+            categories.push(i);
+            dataLeave.push(o.Leave);
+            dataELeave.push(o.ELeave);
+            dataRemote.push(o.Remote);
+            dataOvertime.push(o.Overtime);
+        })
+
+        var series = [
+            {
+                name: "Leave",
+                data: dataLeave,
+                color: "#02BBC6"
+            },
+            {
+                name: "E. Leave",
+                data: dataELeave,
+                color: "#ED5628"
+            },
+            {
+                name: "Remote",
+                data: dataRemote,
+                color: "#039BE5"
+            },
+            {
+                name: "Overtime",
+                data: dataOvertime,
+                color: "#928FDE"
+            }
+        ]; 
+
+        $("#stackedbar").kendoChart({
+            legend: {
+                visible: false
+            },
+            seriesDefaults: {
+                type: "bar",
+                stack: true,
+                overlay: {
+                    gradient: "none"
+                }
+            },
+            series: series,
+            valueAxis: {
+                line: {
+                    visible: false
+                },
+                minorGridLines: {
+                    visible: false
+                }
+            },
+            categoryAxis: {
+                categories: categories,
+                majorGridLines: {
+                    visible: false
+                }
+            },
+            tooltip: {
+                visible: true,
+                template: "#= series.name #: #= value #"
+            }
+        });
+    
+    }
+    
+    var createbarchart = function(data) {
+        var categories = [];
+        var dataLeave = [];
+        var dataELeave = [];
+        var dataRemote = [];
+        var dataOvertime = [];
+        var leaveSum = 0;
+        var eleaveSum = 0;
+        var remoteSum = 0;
+        var overtimeSum = 0;
+        _.each(data, function(o, i) {
+            categories.push(i);
+            leaveSum = leaveSum + o.Leave;
+            eleaveSum = eleaveSum + o.ELeave;
+            remoteSum = remoteSum + o.Remote;
+            overtimeSum = overtimeSum + o.Overtime;
+        })
+
+        dataLeave.push(leaveSum);
+        dataELeave.push(eleaveSum);
+        dataRemote.push(remoteSum);
+        dataOvertime.push(overtimeSum);
+
+        $("#barchart").kendoChart({
+            legend: {
+                visible: false
+            },
+            seriesDefaults: {
+                type: "bubble",
+                labels: {
+                    visible: true,
+                    format: "{3}: {2:N0}",
+                }
+            },
+            series: [{
+                data: [{
+                    x: 1500,
+                    y: 50000,
+                    size: dataLeave,
+                    category: "Leave",
+                    color:"#02BBC6"
+                }, {
+                    x: 4500,
+                    y: 110000,
+                    size: dataELeave,
+                    category: "E. Leave",
+                    color:"#ED5628"
+                }, {
+                    x: 7000,
+                    y: 19000,
+                    size: dataRemote,
+                    category: "Remote",
+                    color:"#039BE5"
+                }, {
+                    x: 6000,
+                    y: 65000,
+                    size: dataOvertime,
+                    category: "Overtime",
+                    color:"#928FDE"
+                }]
+            }],
+            xAxis: {
+                labels: {
+                    format: "{0:N0}",
+                    skip: 1,
+                    rotation: "auto"
+                },
+                axisCrossingValue: -5000,
+                majorUnit: 2000,
+                plotBands: [{
+                    from: -5000,
+                    to: 0,
+                    color: "#00f",
+                    opacity: 0
+                }],
+                visible: false
+            },
+            yAxis: {
+                labels: {
+                    format: "{0:N0}"
+                },
+                line: {
+                    width: 0
+                },
+                visible: false
+            },
+            tooltip: {
+                visible: true,
+                format: "{3}: {2:N0} applications",
+                opacity: 1
+            }
+        });
+    }
+
+    var createpiechart = function(data) {
+        var dataChart = []; 
+        
+        var colorCharts = ["#02BBC6","#CCCCCC", "#E72453"];
+        var cacah = 0;
+
+        _.each(data, function(o, i) {
+            dataChart.push(
+                {category: i, value: o, color: colorCharts[cacah]}
+            )
+            cacah++;
+        })
+
+        ar.countApproved(data.Approved);
+        ar.countDeclined(data.Decline);
+        ar.countCancelled(data.Cancelled);
+
+        if (dataChart.length > 0) {
+            $("#piechart").kendoChart({
+                legend: {
+                    position: "top",
+                    visible: false
+                },
+                seriesDefaults: {
+                    labels: {
+                        template: "#= category # : #= kendo.format('{0:P}', percentage)#",
+                        position: "outsideEnd",
+                        visible: false,
+                        background: "transparent"
+                    }
+                },
+                series: [{
+                    type: "pie",
+                    data: dataChart
+                }],
+                tooltip: {
+                    visible: true,
+                    template: "#= category # : #= kendo.format('{0:P}', percentage) #"
+                }
+            });
+        }
+    }
+    
+    var renderGridData = function(data) {
+        var dataLeave = data.TopLeave;
+        var dataELeave = data.TopELeave;
+        var dataRemote = data.TopRemote;
+        var dataOvertime = data.TopOvertime;
+
+        ar.gridTopFive([]);
+        _.each(dataLeave, function(o, i) {
+            ar.gridTopFive.push(
+                {
+                    "Leave": o.Name,
+                    "LeaveCount": o.Count == 0 ? "" : o.Count,
+                    "ELeave": dataELeave[i].Name,
+                    "ELeaveCount": dataELeave[i].Count == 0 ? "" : dataELeave[i].Count,
+                    "Remote": dataRemote[i].Name,
+                    "RemoteCount": dataRemote[i].Count == 0 ? "" : dataRemote[i].Count,
+                    "Overtime": dataOvertime[i].Name,
+                    "OvertimeCount": dataOvertime[i].Count == 0 ? "" : dataOvertime[i].Count
+                }
+            )
+        })
+    }
+    
+    ar.generatePdfFile = function(){
+        var draw = kendo.drawing;
+        
+        $(".header-hide-pdf").hide();
+
+        draw.drawDOM($(".container-custom"), {
+            avoidLinks: true,
+            landscape: true
+        })
+        .then(function(root) {
+            return draw.exportPDF(root);
+        })
+        .done(function(data) {
+            kendo.saveAs({
+                dataURI: data,
+                fileName: "admin-dashboard.pdf"
+            });
+
+            $(".header-hide-pdf").show();
+        }); 
+    }
+
+    ar.generateExcel = function() {
+        url =  '/dashboard/writeexceladminreport?DateByMonth=' + ar.dateFilter();
+
+         ajaxPost(url, {}, function(res){ 
+            window.location.href = '/static/doc/' + res;
+        })
+    }
+
+    ar.getLocation = function(){
+        var url = "/location/getdata";
+        ar.listLocation([]);
+        ajaxPost(url, {}, function(res){
+            var dataLocation = Enumerable.From(res).OrderBy("$.Location").ToArray();
+            for (var l in dataLocation){
+                ar.listLocation.push({
+                    "text" : dataLocation[l].Location,
+                    "value" : dataLocation[l].Location,
+                });
+            }
+            ar.valueLocation("Global");
+        });
+    }
+
+    $(document).ready(function() {
+        var date = moment().format("YYYY-MM").toString();
+        ar.getLocation();
+        ar.getadminreport(date);
+        model.Loading(false);
+    })
+</script>

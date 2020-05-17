@@ -1,0 +1,44 @@
+<!-- <script src="/static/core/responseManagerDecline.js"></script> -->
+<div class="col-md-12">
+    <section class="panel" id="formLeave">
+        <div class="panel-body">
+            
+            <div class="col-md-12">
+                <p>You had been declined Cancel Leave Request Please give reason</p>
+            </div>
+            <div class="col-md-12">
+                <textarea class="form-control" data-bind="value:admDec.reason"></textarea>
+            </div>
+            <div class="col-md-12" style="padding-top: 18px;">
+                    <button class="btn btn-sm btn-flat btn-success" onclick="declineReasonAdm()">Send Reason</button>
+            </div>
+            
+        </div>
+    </section>
+</div>
+
+<script>
+    admDec = {
+        reason : ko.observable(""),
+    }
+
+    declineReasonAdm = function(){
+        model.isLoading(true);
+        var urlParams = new URLSearchParams(window.location.search);
+        param ={
+            Param:urlParams.get('param'),
+            Reason:admDec.reason()
+        }
+        var url = "/mail/responseapprovecancel"
+        ajaxPost(url, param, function(res){
+            model.isLoading(false);
+            if(res.IsError == true){
+                swal("info", res.Message, "info");
+            }else{
+                swal("success", "data has been send", "success")
+            }
+            
+            setTimeout(function(){window.close()}, 5000)
+        });
+    }
+</script>

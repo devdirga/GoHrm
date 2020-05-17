@@ -1,0 +1,109 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <script src="/static/js/bootstrap.min.js"></script>
+    <script src="/static/js/bootstrap.min.js"></script>
+    <meta name="viewport" content="width=device-width"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Form Request Approval</title>
+    <style type="text/css">
+      body{
+        margin: 0 auto;
+        padding: 0;
+        min-width: 100%;
+      }
+      table{
+        margin: 0px 0 50px 0;
+      }
+      .header{
+        height: 40px;
+        text-align: center;
+        text-transform: uppercase;
+        font-size: 24px;
+        font-weight: bold;
+      }
+        .content{
+            height: 100px;
+            font-size: 14px;
+            line-height: 10px;
+        }
+     
+     
+     
+        .buttonApprove {
+            background-color: #4ecdc4;
+            border-color: #45b7af;
+            border-radius: 5px;
+            text-align: center;
+            padding: 10px;
+            color: #fff;
+        }
+        .buttonDecline {
+            background-color: #eb3810;
+            border-color: #eb3810;
+            border-radius: 5px;
+            text-align: center;
+            padding: 10px;
+            color: #fff;
+            
+        }
+        a{
+            color: #ffffff;
+            text-decoration: none;
+        }
+    </style>
+  </head>
+  <body>
+    <table bgcolor="#FFFFFF" width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tr class="content">
+        <td>
+          <p>
+             Dear {{.to}},
+          </p>
+          <p>
+              <b>{{.namerequest}}</b> is requesting leave on :
+          </p>
+          <table style="padding: 0 10px 0 0;">
+                <tr>
+                    <td><p>From date</p></td>
+                    <td><p>:</p></td>
+                    <td><p>{{.leaveFrom}}</p></td>
+                </tr>
+                <tr>
+                    <td>To date</td>
+                    <td>:</td>
+                    <td>{{.leaveTo}}</td>
+                </tr>
+                <tr>
+                    <td><p>Days Duration</p></td>
+                    <td><p>:</p></td>
+                    <td><p>{{.noOfDays}}</p></td>
+                </tr>
+                <tr>
+                    <td><p>Reason</p></td>
+                    <td><p>:</p></td>
+                    <td><p>{{.reason}}</p></td>
+                </tr>
+          </table>
+          <table style="padding: 0 10px 0 0;">
+                <tr>
+                    <td>Note :</td>
+                </tr>
+                <tr>
+                    <td><p>{{ .note }}</p></td>
+                </tr>
+            </table>
+            <table>
+                <tr>
+                    <td class="buttonApprove">
+                        <a href="http://{{ .urlApprove }}" class="btn btn-sm btn-flat btn-success">Approve</a>
+                    </td>
+                    <td class="buttonDecline">
+                        <a href="http://{{ .urlDecline }}" class="btn btn-sm btn-flat btn-success">Decline</a>
+                    </td>
+                </tr>
+            </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>

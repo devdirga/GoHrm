@@ -1,0 +1,289 @@
+<link rel="stylesheet" href="{{NoCacheUrl "/static/core/css/userprofile.css"}}">
+<script src="{{ NoCacheUrl "/static/core/userprofile.js" }}"></script>
+<style type="text/css">
+    
+    .image-left{
+        text-align: center;
+        padding: 15px;
+    }
+    .image-left.editprofile-bg{
+        background-color: #F8BF72;  
+    }
+ 
+    .image-left img{
+        margin: 15px 0;
+        /*position: absolute;*/
+        /*top: 50%;*/
+    }   
+    .form-inputan {
+        padding: 15px 0;
+    }
+    .image-left span{
+        font-weight: 600;
+        font-size: 20px;
+        text-align: center;
+        color: white;
+    }   
+</style>
+<div class="wrapper-main">
+    <div class="row wrapper-box">
+        <div class="col-md-3 box-left">
+            <div class="box">
+                <div class="col-md-12">
+                    <div class="user-pic">
+                        <button class="btn-edit btn btn-info" onclick="up.uploadPhoto()"><i class="fa fa-edit"></i></button>
+                        <input type="file" class="file-hidden button-photo-upload" onchange="up.changePhotoUser(this)">
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="box-info margin-top-30">
+                        <a href="/statusrequest/default">
+                            View Leave History
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-9 box-right">
+            <div class="col-md-12">
+                <div class="col-md-6">
+                    <div class="row box-user-info">
+                        <div class="col-md-12">
+                            <div class="label-text">
+                                <span data-bind="text: up.currentUser.Fullname">User Name</span>
+                            </div>
+                            <div class="label-desc" data-bind="text: up.currentUser.EmpId">
+                                ID : 1111-2222-3333-4444
+                                <span>
+                                    <button class="button-edit-fly"><i class="fa fa-edit"></i></button>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-12 margin-top-30">
+                            <div class="label-text">
+                                Staff
+                            </div>
+                            <div class="label-desc" data-bind="text: up.designationText">
+                                Software Developer
+                                <span>
+                                    <button class="button-edit-fly"><i class="fa fa-edit"></i></button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="box-info box-info-leave text-center">
+                        Leave<br>Remaining<br><span class="textbig" data-bind="text: up.currentUser.YearLeave">15</span>
+                    </div>
+                    <!-- <div class="box-info-leave-text">
+                        <div class="box-info-text text-center">
+                            <span style="font-size: 20px;">Last Leave</span> <br>
+                            <span data-bind="text:up.lastLeaveUserText">August 22, 2018</span>
+                        </div>
+                    </div> -->
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="row box-user-desc">
+                    <div class="col-md-12">
+                        <div>
+                            <span><i class="fa fa-user"></i></span>
+                            <span>About</span>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="underline"></div>
+                    </div>
+                    <div class="col-md-12">
+                        <table class="table user-table-desc">
+                            <tr>
+                                <td>Phone</td>
+                                <td data-bind="text: up.currentUser.PhoneNumber"></td>
+                            </tr>
+                            <tr>
+                                <td>Location</td>
+                                <td data-bind="text: up.currentUser.Location"></td>
+                            </tr>
+                            <tr>
+                                <td>Email</td>
+                                <td data-bind="text: up.currentUser.Email"></td>
+                            </tr>
+                            <tr>
+                                <td>Address</td>
+                                <td data-bind="text: up.currentUser.Address"></td>
+                            </tr>
+                            <tr>
+                                <td>Gender</td>
+                                <td data-bind="text: up.currentUser.Gender">Male</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="col-md-12">
+                        <span>
+                            <button class="btn-edit btn btn-info"  onclick="up.showModal()">Edit</button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="userModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <!-- Modal Body -->
+            <div class="modal-body">
+                <div >
+                    <table width="100%">
+                        <tr>
+                            <td  width="25%"  class="image-left editprofile-bg" valign="top">
+                                <span>Hi There !<br>Please Don't Leave <br>Any Field Blank</span>
+                            </td>
+                            <td  width="75%" class="form-inputan"  rowspan="3" valign="top">
+                                <div class="col-md-12">
+                                    <form class="form-horizontal form-custom" id ="AddUserSetting">
+                                        <div class="form-group">
+                                            <div class="col-md-12">
+                                                <div class="col-md-6 form-wrapper">
+                                                    <div class="form-label">
+                                                        <label>Employee ID<span class="mandatory">*</span></label>
+                                                    </div>
+                                                    <div class="form-input-wrapper">
+                                                        <input type="text" class="form-control" name="empid" id="empid" validationMessage="Name required" required data-bind="value:up.currentUser.EmpId"/>
+                                                        <div class="bar"></div>
+                                                        <span class="k-invalid-msg" data-for="empid"></span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 form-wrapper">
+                                                    <div class="form-label">
+                                                        <label>Phone Number<span class="mandatory">*</span></label>
+                                                    </div>
+                                                    <div class="form-input-wrapper">
+                                                        <input type="text" class="form-control" name="phoneNumber" id="phoneNumber" validationMessage="Phone Number required" required data-bind="value:up.currentUser.PhoneNumber"/>
+                                                        <div class="bar"></div>
+                                                        <span class="k-invalid-msg" data-for="phoneNumber"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="col-md-6 form-wrapper">
+                                                    <div class="form-label">
+                                                        <label>Full Name<span class="mandatory">*</span></label>
+                                                    </div>
+                                                    <div class="form-input-wrapper">
+                                                        <input type="text" class="form-control" name="fullName" id="fullName" validationMessage="Full Name required" required data-bind="value:up.currentUser.Fullname"/>
+                                                        <div class="bar"></div>
+                                                        <span class="k-invalid-msg" data-for="fullName"></span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 form-wrapper">
+                                                    <div class="form-label">
+                                                        <label>Email<span class="mandatory">*</span></label>
+                                                    </div>
+                                                    <div class="form-input-wrapper">
+                                                        <input type="email" class="form-control" data-type="email" name="email" id="email" validationMessage="Email required" data-bind="value:up.currentUser.Email" required />
+                                                        <div class="bar"></div>
+                                                        <span class="k-invalid-msg" data-for="email"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="col-md-6 form-wrapper">
+                                                    <div class="form-label">
+                                                        <label>Gender</label>
+                                                    </div>
+                                                    <div class="form-input-wrapper">
+                                                        <input name="gender" id="gender" data-bind="kendoDropDownList: {data:up.genderList, value:up.currentUser.Gender, dataTextField: 'Gender', dataValueField: 'Gender'}" validationMessage="Gender required" >
+                                                        <div class="bar"></div>
+                                                        <span class="k-invalid-msg" data-for="gender"></span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 form-wrapper">
+                                                    <div class="form-label">
+                                                        <label>Designation<span class="mandatory">*</span></label>
+                                                    </div>
+                                                    <div class="form-input-wrapper">
+                                                        <input name="designation" id="designation" data-bind="kendoDropDownList: {data:up.designationList, value:up.currentUser.Designation, dataTextField: 'Designation', dataValueField: 'Designation', optionLabel: 'select designation'}"  >
+                                                        <div class="bar"></div>
+                                                        <span class="k-invalid-msg" data-for="designation"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="col-md-6 form-wrapper">
+                                                    <div class="form-label">
+                                                        <label>Address<span class="mandatory">*</span></label>
+                                                    </div>
+                                                    <div class="form-input-wrapper">
+                                                        <input class="form-control" data-type="address" name="address" id="address" validationMessage="Address required" required data-bind="value:up.currentUser.Address" />
+                                                        <div class="bar"></div>
+                                                        <span class="k-invalid-msg" data-for="address"></span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 form-wrapper">
+                                                    <div class="form-label">
+                                                        <label>Password</label>
+                                                    </div>
+                                                    <div class="form-input-wrapper">
+                                                        <input type="password" class="form-control" data-type="password" data-bind="value:up.currentUser.Password"/>
+                                                        <div class="bar"></div>
+                                                        <span class="k-invalid-msg" data-for="password"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="col-md-6 form-wrapper">
+                                                    <div class="form-label">
+                                                        <label>Location</label>
+                                                    </div>
+                                                    <div class="form-input-wrapper">
+                                                        <input name="location" id="location" data-bind="kendoDropDownList: {data:up.locationList, value:up.currentUser.Location, dataTextField: 'Location', dataValueField: 'Location', optionLabel: 'select location'}"  >
+                                                        <div class="bar"></div>
+                                                        <span class="k-invalid-msg" data-for="location"></span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 form-wrapper">
+                                                    <div class="form-label">
+                                                        <label>Confirm Password</label>
+                                                    </div>
+                                                    <div class="form-input-wrapper">
+                                                        <input type="password" class="form-control" data-type="confirmPassword" data-bind="value:up.confirmPassword"/>
+                                                        <div class="bar"></div>
+                                                        <span class="k-invalid-msg" data-for="confirmPassword"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                                <div class="pull-right" style="padding-top: 50px;">
+                                                    <span>*All fields are mandatory</span>
+                                                    <button type="button" class="btn btn-sm btn-default btn-flat" onclick="up.cancelModal()"><i class="fa fa-times"></i> Cancel</button>
+                                                    <button type="button" class="btn btn-sm btn-primary btn-flat" onclick="up.save()"><i class="fa fa-floppy-o"></i> Save</button>
+                                                </div>            
+                                            </div>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                        </tr>
+                           <td class="image-left editprofile-bg">
+                                <img src="/static/img/editprofile.png" class="img-fluid signup">
+                           </td>
+                        </tr>
+                         </tr>
+                            <td class="image-left editprofile-bg" valign="bottom" >    
+                                <span>Have a Great Day !</span>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    up.userTemplateObject({{.UserTemplate}})
+    ko.mapping.fromJS(up.userTemplate(), up.currentUser)
+</script>

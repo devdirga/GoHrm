@@ -1,0 +1,159 @@
+<style>
+#ssovertime.k-spreadsheet .k-spreadsheet-quick-access-toolbar .k-button:hover, #ssovertime.k-spreadsheet .k-spreadsheet-sheets-bar .k-button:hover {
+    background-color: #3fdccb;
+    border-color: #3fdccb;
+}
+#ssovertime.k-spreadsheet .k-spreadsheet-quick-access-toolbar .k-button, #ssovertime.k-spreadsheet .k-spreadsheet-sheets-bar .k-button {
+    color: rgb(22, 7, 79) !important;
+}
+div.k-window-titlebar.k-header{
+    margin-top: -60px !important;
+    height: 50px !important;
+}
+</style>
+<div class="tab-content" style="padding-top: 10px;">
+    <div id="chart" class="tab-pane fade in active">
+        <div class="panel panel-custom" data-bind="with:report">
+            <div class="panel-body">
+                <header class="panel-heading" style="background:#f5f5f5;">
+                    <div class="header-hide-pdf" style="height: 30px;">
+                        <div style="display: inline-block; margin-top: 5px;">
+                            <div style="display: inline-block; padding-right: 10px;" data-bind="css: { activeFilter: report.filterByMonth() == false}">
+                                Yearly <span data-bind="text: report.annualYear"></span>
+                            </div>
+                            <div class="pretty p-switch p-slim">
+                                <input type="checkbox" data-bind="checked: report.filterByMonth, value: report.filterByMonth"/>
+                                <div class="state">
+                                    <label></label>
+                                </div>
+                            </div>
+                            <div style="display: inline-block; padding-left: 10px;" data-bind="css: { activeFilter: report.filterByMonth() == true}">
+                                Select Monthly
+                            </div>
+                            <div style="display: none; padding-left: 10px;" data-bind="css: { displayFilter: report.filterByMonth() == true}">
+                                <input name="date" id="dateFilterLeave" data-bind="kendoDatePicker:{value:report.dateFilter, start: 'year', depth: 'year',format: 'MMM-yyyy', change: function(){setTimeout(function(){report.changeData()}, 1)}}" style="width: 185px; font-size: 12px !important">
+                            </div>
+                        </div>
+                    </div>
+                </header>
+            </div>
+            <div class="panel-body" style="padding: 0px 15px;">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="panel-height_100">
+                            <div class="circle">
+                                <div class="circle-text">
+                                    <div id="column_chart_leave1" class="donut-chart" style="margin-left:50px"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="panel-height_100">
+                            <div class="circle">
+                                <div class="circle-text">
+                                    <div id="column_chart_leave2" class="donut-chart"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="panel-height_100">
+                            <div class="circle">
+                                <div class="circle-text">
+                                    <div id="bar_chart_leave" class="donut-chart"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="tab-content">
+    <div id="data" class="tab-pane fade in active">
+
+            <ul class="nav nav-tabs">
+                    <li class="active"><a data-toggle="tab" href="#homesd">Table</a></li>
+                    <li id="ssexcelovertime"><a data-toggle="tab" href="#menu1sd">Excel</a></li>
+                  </ul>
+                  <div class="tab-content">
+                        <div id="homesd" class="tab-pane in active">           
+                                <div data-bind="with:report">
+                                <section class="panel">
+                                    <div class="panel-body">
+                                        <header class="panel-heading filter" style="background:#f5f5f5;">
+                                            <div class="header-hide-pdf">
+                                                <div style="display: inline-block">
+                                                    <div style="display: inline-block; padding-right: 10px;">
+                                                        Search Name
+                                                    </div>
+                                                    <div style="display: inline-block; padding-left: 10px;">
+                                                        <select class="k-textbox" type="text" data-bind="kendoMultiSelect: {value:filterUserLeave, data: listFullName, dataTextField: 'text', dataValueField: 'value'}" style="width: 185px;" onchange="report.initLeave()"></select>
+                                                    </div>
+                                                    <div style="display: inline-block; padding-left: 10px;">
+                                                        <input data-bind="kendoDropDownList: { dataTextField: 'text', dataValueField: 'value', data: report.listProject, value: report.valueProjectLeave, change: function(){setTimeout(function(){report.initLeave()}, 1)}}" style="width: 185px"/>
+                                                    </div>
+                                                    <div style="display: inline-block; padding-left: 10px;">
+                                                        <input data-bind="kendoDropDownList: { dataTextField: 'text', dataValueField: 'value', data: report.listLocation, value: report.valueLocationLeave, change: function(){setTimeout(function(){report.initLeave()}, 1)}}" style="width: 185px"/>
+                                                    </div>
+                                                    <div  style="display: none; padding-left: 10px;" data-bind="css: { displayFilter: report.filterByMonth() == true}">
+                                                        <input name="date" id="leaveDate" data-bind="kendoDatePicker:{value:report.datedayleave, start: 'day', depth: 'day',format: 'dd-MMM-yyyy', change: function(){setTimeout(function(){report.changeData()}, 1)}}"
+                                                        style="width: 100%; font-size: 12px !important;">
+                                                    </div>
+                                                </div>
+                                                <div style="display: inline-block;" class="pull-right">
+                                                    <button type="button" class="btn btn-primary" style="background: #61DC72;" data-bind="click:ExportLeaveExcelDetails.bind()"><i class="fa fa-file-excel-o"></i>&nbsp&nbsp Export</button>
+                                                    <button type="button" class="btn btn-primary" style="background: #FE0000;" data-bind="click:exportPDFGridReport.bind(this, 'printLayoutLeave')"><i class="fa fa-file-pdf-o"></i>&nbsp&nbsp Export</button>
+                                                </div>
+                                            </div>
+                                        </header>
+                                        <div id="printLayoutLeave" class="printPdf"></div>
+                                        <div id="LeaveGridReport" class="hideHeader"></div>
+                    
+                                        <script type="text/x-kendo-template" id="templateleave">
+                                            <div class="tabstrip">
+                                                <ul>
+                                                    <li class="k-state-active">Leave</li>
+                                                    <li>ELeave</li>
+                                                    <li>Decline</li>
+                                                </ul>
+                                                <div>
+                                                    <div class="leave"></div>
+                                                </div>
+                                                <div>
+                                                    <div class="eleave"></div>
+                                                </div>
+                                                <div>
+                                                    <div class="decline"></div>
+                                                </div>
+                                            </div>
+                                        </script>
+                    
+                                    </div>
+                                </section>
+                            </div>
+
+                        </div>
+
+                        <div id="menu1sd" class="tab-pane">
+                                <section class="panel">
+                                        <div class="panel-body">
+                                            <div style="padding: 0px 0px 10px 0px;">
+                                                <input data-bind="kendoDatePicker:{value:report.exdatefrom,format: 'dd-MMM-yyyy'}" style="width: 185px; font-size: 12px !important">  
+                                                &nbsp;<input data-bind="kendoDatePicker:{value:report.exdateto,format: 'dd-MMM-yyyy'}" style="width: 185px; font-size: 12px !important">        
+                                                &nbsp;<button type="button" class="btn btn-primary btn-sm" data-bind="click : report.pover">Process</button>
+                                            </div>
+                                                <div id="ssovertime" style="width: 70%"></div>
+                            </div>
+                                </section>
+                               
+
+                        </div>
+                       
+                      </div>
+       
+
+    </div>
+</div>

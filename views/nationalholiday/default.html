@@ -1,0 +1,237 @@
+<script type="text/javascript">
+    model.PageId("ADMINISTRATOR");
+    model.PageSubId();
+    model.BreadCrumbs.push(new BreadCrumb('{{.Menuname}}', '{{.Menuname}}', "#", "active", ""));
+    model.Access = ko.observable('{{.Menuid}}');
+    model.View = ko.observable('{{.View}}');
+    model.Create= ko.observable('{{.Create}}');
+    model.Delete= ko.observable('{{.Delete}}');
+    model.Process= ko.observable('{{.Process}}');
+    model.Edit= ko.observable('{{.Edit}}')
+    model.User= ko.observable('{{.Username}}');
+    model.JobRoleName= ko.observable('{{.JobRoleName}}');
+    model.JobRoleLevel= ko.observable('{{.JobRoleLevel}}');
+</script>
+<script src="/static/switch-js/bootstrap-switch.js"></script>
+<script src="/static/switch-js/highlight.js"></script>
+<script src="/static/switch-js/main.js"></script>
+<script src="{{NoCacheUrl "/static/core/nationalholiday.js"}}"></script>
+<style>
+    .image-left{
+		text-align: center;
+		padding: 15px;
+	}
+    .image-left-bg{
+		background-color: #03BBC7;	
+    }
+    .image-left img{
+		margin: 15px 0;
+		/*position: absolute;*/
+		/*top: 50%;*/
+	}	
+	.form-inputan {
+		padding: 15px 0;
+	}
+	.image-left span{
+		font-weight: 600;
+		font-size: 20px;
+	    text-align: center;
+	    color: white;
+    }
+    .modal-header{
+        background: #ffffff;
+        color: #000;
+    }	
+</style>
+<div class="container" style="padding: 10px;">
+    <header class="panel-heading" style="height: 100px;border-bottom: 0; background-color:white;">
+        <div class="header-img">
+            <span style="color:white;font-size: x-large;font-weight: bolder;">National Holidays</span><br>
+            <span style="color: white;font-weight: bolder;">List</span>
+        </div>
+    </header>
+    <div class="tab-content" style="padding-top: 10px;">
+        <div id="home" class="tab-pane fade in active">
+            <div data-bind="with:holiday">
+                <section class="panel">
+                    <header class="panel-heading">
+                        Filter
+                    </header>
+                    <div class="panel-body">
+                        <form class="form-inline" role="form">
+                            <div class="col-md-4">
+                                <div class="col-md-3">
+                                    <label style="padding-top:8px;">Year </label>
+                                </div>
+                                <div class="col-md-9">
+                                    <input name="date" id="dateFilter" data-bind="kendoDatePicker:{value:holiday.dateFilter, start: 'decade', depth: 'decade',format: 'yyyy'}" style="width: 185px">
+                                </div>
+                            </div>
+                        </form>
+                        <button class="btn btn-sm btn-primary" onclick="holiday.refresh()"><i class="fa fa-refresh"></i> Refresh</button>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+    <div class="tab-content" style="padding-top: 10px;">
+        <div id="home" class="tab-pane fade in active">
+            <div data-bind="with:holiday">
+                <section class="panel">
+                    <header class="panel-heading">
+                        Data National holidays
+                        <span class="tools pull-right" style="margin-top: -4px;">
+                            <button class="btn btn-sm btn-success" data-toggle="modal" data-target="#NationalHolidayModal" onclick="holiday.addNew()"><i class="fa fa-plus"></i> Add New</button>
+                            <!-- <button class="btn btn-sm btn-success" data-toggle="modal" data-target="#NewNationalHolidayModal" onclick="holiday.addNew()"><i class="fa fa-plus"></i> Add New New</button> -->
+                        </span>
+                    </header>
+                    <div class="panel-body">
+                        <div id="MasterGridNH"></div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="NationalHolidayModal" role="dialog" aria-labelledby="NationalHolidayModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="NationalHolidayModalLabel">Form National Holiday</h5>
+            </div>
+            <div class="modal-body">
+                <div class="col-md-12 body-panel"  style=' padding-left: 0; padding-bottom: 0px;'>
+	                <form class="form-custom" id="formnationalHoliday" method="POST" data-bind="with: holiday.record">
+	                    <div style="margin-top: -15px;">
+	                        <table width="100%">
+		                        <tr>
+                                    <td width="25%"  class="image-left-bg" valign="top">
+                                        <!-- <span>Hi There !<br>Please Don't Leave <br>Any Field Blank</span> -->
+                                    </td>
+			                        <td width="75%" class="form-inputan" rowspan="3" valign="top">
+                                        <div class="col-md-12">
+                                            <div class="col-md-12">
+                                                <div class="form-wrapper col-md-5" id="calender">
+                                                    <div class="form-label">
+                                                        <label class="err-msg">Holiday Date<span class="k-invalid-msg" data-for="HolidayDate"></span></label>
+                                                    </div>
+                                                    <div id="dateCalendarHoliday"></div>		                                           
+                                                </div>
+                                                <div class="form-wrapper col-md-5" id="calender">
+                                                    <div class="col-md-12">
+                                                        <div class="form-label">
+                                                            <label class="err-msg">Description<span class="k-invalid-msg" data-for="Description"></span></label>
+                                                        </div>
+                                                        <div class="form-input-wrapper">
+                                                            <input type="text" class="form-control" name="Description" id="Description" data-bind="value:Description" validationMessage=" " required />
+                                                            <div class="bar"></div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-wrapper col-md-12">
+                                                        <div class="form-label">
+                                                            <label class="err-msg">Location<span class="k-invalid-msg" data-for="Location"></span></label>
+                                                        </div>
+                                                        <div class="form-input-wrapper">
+                                                            <input style="width:100%;" class="form-control" type="text" data-bind="kendoDropDownList:{value: Location, data: holiday.ListLocation,  dataTextField: 'Location', dataValueField: 'Location', optionLabel: 'Select one', filter:'contains'}" name="Location" id="Location" validationMessage=" " required/>
+                                                        </div>
+                                                    </div>                                          
+                                                </div>
+                                            </div>
+                                        </div>
+			                    	</td>
+			                    </tr> 
+			                    <tr>
+			                       <td class="image-left-bg">
+			                        	<img src="/static/img/leave.png" class="img-fluid signup">
+			                       </td>
+			                    </tr>
+			                    <tr>
+			                       	<td class="image-left-bg" valign="bottom" >    
+			                            <!-- <span>Have a Great Day !</span> -->
+			                        </td>
+			                    </tr>
+		                    </table>
+	                    </div>  
+	                </form>
+	            </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="holiday.Save()">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--New Modal National Holiday-->
+<div class="modal fade" id="NewNationalHolidayModal" role="dialog" aria-labelledby="NationalHolidayModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="NationalHolidayModalLabel">Form National Holiday</h5>
+            </div>
+            <div class="modal-body">
+                <div class="col-md-12 body-panel"  style=' padding-left: 0; padding-bottom: 0px;'>
+	                <form class="form-custom" id="formnationalHoliday" method="POST" data-bind="with: holiday.record">
+	                    <div style="margin-top: -15px;">
+	                        <table width="100%">
+		                        <tr>
+                                    <td width="25%"  class="image-left-bg" valign="top">
+                                        <!-- <span>Hi There !<br>Please Don't Leave <br>Any Field Blank</span> -->
+                                    </td>
+			                        <td width="75%" class="form-inputan" rowspan="3" valign="top">
+                                        <div class="col-md-12">
+                                            <div class="col-md-12">
+                                                <div class="form-wrapper col-md-5" id="calender">
+                                                    <div class="form-label">
+                                                        <label class="err-msg">Holiday Date<span class="k-invalid-msg" data-for="HolidayDate"></span></label>
+                                                    </div>
+                                                    <div id="dateCalendarHoliday"></div>		                                           
+                                                </div>
+                                                <!-- <div class="form-wrapper col-md-5" id="calender">
+                                                    <div class="col-md-12">
+                                                        <div class="form-label">
+                                                            <label class="err-msg">Description<span class="k-invalid-msg" data-for="Description"></span></label>
+                                                        </div>
+                                                        <div class="form-input-wrapper">
+                                                            <input type="text" class="form-control" name="Description" id="Description" data-bind="value:Description" validationMessage=" " required />
+                                                            <div class="bar"></div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-wrapper col-md-12">
+                                                        <div class="form-label">
+                                                            <label class="err-msg">Location<span class="k-invalid-msg" data-for="Location"></span></label>
+                                                        </div>
+                                                        <div class="form-input-wrapper">
+                                                            <input style="width:100%;" class="form-control" type="text" data-bind="kendoDropDownList:{value: Location, data: holiday.ListLocation,  dataTextField: 'Location', dataValueField: 'Location', optionLabel: 'Select one', filter:'contains'}" name="Location" id="Location" validationMessage=" " required/>
+                                                        </div>
+                                                    </div>                                          
+                                                </div> -->
+                                            </div>
+                                        </div>
+			                    	</td>
+			                    </tr> 
+			                    <tr>
+			                       <td class="image-left-bg">
+			                        	<img src="/static/img/leave.png" class="img-fluid signup">
+			                       </td>
+			                    </tr>
+			                    <tr>
+			                       	<td class="image-left-bg" valign="bottom" >    
+			                            <!-- <span>Have a Great Day !</span> -->
+			                        </td>
+			                    </tr>
+		                    </table>
+	                    </div>  
+	                </form>
+	            </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="holiday.Save()">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
